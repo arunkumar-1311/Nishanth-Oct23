@@ -7,6 +7,7 @@ import (
 	"blog_post/repository"
 	"blog_post/service"
 	"blog_post/service/helper"
+	"fmt"
 	"net/http"
 
 	"github.com/go-playground/validator/v10"
@@ -50,26 +51,46 @@ func CreatePost(c *fiber.Ctx) error {
 
 // Helps to read all the post
 func ReadAllPosts(c *fiber.Ctx) error {
-	var posts []models.Post
+	var allPosts models.AllPost
 
-	if err := repository.ReadPosts(&posts); err != nil {
+	if err := repository.ReadPosts(&allPosts.Post); err != nil {
 		logger.Logging().Error(err)
 		service.SendResponse(c, http.StatusBadRequest, err.Error(), "Oops error occurs", http.MethodGet, "")
 		return nil
 	}
 
-	for i := 0; i < len(posts); i++ {
+	category := make(map[string]int)
+	archieve := make(map[string]int)
+ 	for i := 0; i < len(allPosts.Post); i++ {
 		var count int64
-		if err := repository.NumberOfComments(posts[i].PostID, &count); err != nil {
+		if err := repository.NumberOfComments(allPosts.Post[i].PostID, &count); err != nil {
 			logger.Logging().Error(err)
 			service.SendResponse(c, http.StatusBadRequest, err.Error(), "Oops error occurs", http.MethodGet, "")
 			return nil
 		}
-
-		posts[i].Comments = int(count)
+		allPosts.Post[i].Comments = int(count)
+		year, month, _ :=allPosts.Post[i].CreatedAt.Date()
+		archieve[fmt.Sprint(month.String(),"-", year)] = 1
+		for _, value := range allPosts.Post[i].CategoryID {
+			name, err := repository.ReadCategoryByID(value)
+			if err != nil {
+				logger.Logging().Error(err)
+				service.SendResponse(c, http.StatusInternalServerError, err.Error(), "Oops error occurs", http.MethodGet, "")
+				return nil
+			}
+			category[name] = category[name] + 1
+		}
 	}
 
-	service.SendResponse(c, http.StatusOK, "", "All available categories", http.MethodGet, posts)
+	for key := range category {
+		data := models.CategoriesCount{CategoryName: key, Total: category[key]}
+		allPosts.CategoriesCount = append(allPosts.CategoriesCount, data)
+	}
+
+	for key := range archieve{
+		allPosts.Archieves = append(allPosts.Archieves, key)
+	}
+	service.SendResponse(c, http.StatusOK, "", "All available categories", http.MethodGet, allPosts)
 	return nil
 }
 

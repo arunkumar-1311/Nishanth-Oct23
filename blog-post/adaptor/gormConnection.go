@@ -40,7 +40,6 @@ func dbConn() (db *gorm.DB) {
 
 // Check if the connection is exist of helps to occur the connection
 func GetConn() (db *gorm.DB) {
-
 	if db == nil {
 		db = dbConn()
 	}

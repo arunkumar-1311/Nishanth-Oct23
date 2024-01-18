@@ -46,3 +46,12 @@ func UpdateCategory(id string, content models.Category) error {
 	}
 	return nil
 }
+
+// Helps to read the category by its id
+func ReadCategoryByID(id string) (string, error) {
+	var name string
+	if result := adaptor.GetConn().Model(&models.Category{}).Where("category_id = ?", id).Select("name").Scan(&name); result.Error != nil {
+		return name, result.Error
+	}
+	return name, nil
+}

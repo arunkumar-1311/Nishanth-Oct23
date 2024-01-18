@@ -12,8 +12,9 @@ type Post struct {
 	Content    string         `gorm:"column:content; type:varchar" json:"content"  validate:"required"`
 	Excerpt    string         `gorm:"column:excerpt; type:varchar" json:"excerpt"  validate:"required"`
 	Status     string         `gorm:"column:status; type:varchar" json:"status" validate:"required"`
-	Comments   int            `gorm:"-" json:"comments"`
 	CategoryID pq.StringArray `gorm:"column:category_id; type:varchar[]" json:"category_id"  validate:"required"`
+	Comments   int            `gorm:"-" json:"comments,omitempty"`
+	Archieves  []string       `gorm:"-" json:"archieves,omitempty"`
 }
 
 type Category struct {
@@ -57,4 +58,15 @@ type Claims struct {
 	Email   string `json:"email"`
 	UsersID string `gorm:"column:user_id; type:varchar" json:"user_id"`
 	RolesID string `json:"role"`
+}
+
+type CategoriesCount struct {
+	CategoryName string `json:"name"`
+	Total        int    `json:"total"`
+}
+
+type AllPost struct {
+	Post            []Post            `json:"posts"`
+	CategoriesCount []CategoriesCount `json:"categories"`
+	Archieves       []string            `json:"archieves"`
 }
