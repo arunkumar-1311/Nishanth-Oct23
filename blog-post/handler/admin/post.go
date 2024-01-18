@@ -61,17 +61,21 @@ func ReadAllPosts(c *fiber.Ctx) error {
 
 	category := make(map[string]int)
 	archieve := make(map[string]int)
- 	for i := 0; i < len(allPosts.Post); i++ {
+
+	for i := 0; i < len(allPosts.Post); i++ {
 		var count int64
+
 		if err := repository.NumberOfComments(allPosts.Post[i].PostID, &count); err != nil {
 			logger.Logging().Error(err)
 			service.SendResponse(c, http.StatusBadRequest, err.Error(), "Oops error occurs", http.MethodGet, "")
 			return nil
 		}
 		allPosts.Post[i].Comments = int(count)
-		year, month, _ :=allPosts.Post[i].CreatedAt.Date()
-		archieve[fmt.Sprint(month.String(),"-", year)] = 1
-		for _, value := range allPosts.Post[i].CategoryID {
+
+		year, month, _ := allPosts.Post[i].CreatedAt.Date()
+		archieve[fmt.Sprint(month.String(), "-", year)] = 1
+
+		for key, value := range allPosts.Post[i].CategoryID {
 			name, err := repository.ReadCategoryByID(value)
 			if err != nil {
 				logger.Logging().Error(err)
@@ -79,6 +83,13 @@ func ReadAllPosts(c *fiber.Ctx) error {
 				return nil
 			}
 			category[name] = category[name] + 1
+			allPosts.Post[i].CategoryID[key] = name
+		}
+
+		if err := repository.PostComments(allPosts.Post[i].PostID, &allPosts.Post[i].PostComments); err != nil {
+			logger.Logging().Error(err)
+			service.SendResponse(c, http.StatusInternalServerError, err.Error(), "Oops error occurs", http.MethodGet, "")
+			return nil
 		}
 	}
 
@@ -87,7 +98,7 @@ func ReadAllPosts(c *fiber.Ctx) error {
 		allPosts.CategoriesCount = append(allPosts.CategoriesCount, data)
 	}
 
-	for key := range archieve{
+	for key := range archieve {
 		allPosts.Archieves = append(allPosts.Archieves, key)
 	}
 	service.SendResponse(c, http.StatusOK, "", "All available categories", http.MethodGet, allPosts)

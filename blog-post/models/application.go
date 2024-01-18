@@ -7,14 +7,15 @@ import (
 
 type Post struct {
 	gorm.Model
-	PostID     string         `gorm:"column:post_id; uniqueIndex;primaryKey; type:varchar" json:"post_id"  validate:"required"`
-	Title      string         `gorm:"column:title; type:varchar" json:"title"  validate:"required"`
-	Content    string         `gorm:"column:content; type:varchar" json:"content"  validate:"required"`
-	Excerpt    string         `gorm:"column:excerpt; type:varchar" json:"excerpt"  validate:"required"`
-	Status     string         `gorm:"column:status; type:varchar" json:"status" validate:"required"`
-	CategoryID pq.StringArray `gorm:"column:category_id; type:varchar[]" json:"category_id"  validate:"required"`
-	Comments   int            `gorm:"-" json:"comments,omitempty"`
-	Archieves  []string       `gorm:"-" json:"archieves,omitempty"`
+	PostID       string         `gorm:"column:post_id; uniqueIndex;primaryKey; type:varchar" json:"post_id"  validate:"required"`
+	Title        string         `gorm:"column:title; type:varchar" json:"title"  validate:"required"`
+	Content      string         `gorm:"column:content; type:varchar" json:"content"  validate:"required"`
+	Excerpt      string         `gorm:"column:excerpt; type:varchar" json:"excerpt"  validate:"required"`
+	Status       string         `gorm:"column:status; type:varchar" json:"status" validate:"required"`
+	CategoryID   pq.StringArray `gorm:"column:category_id; type:varchar[]" json:"category_id"  validate:"required"`
+	Comments     int            `gorm:"-" json:"comments,omitempty"`
+	Archieves    []string       `gorm:"-" json:"archieves,omitempty"`
+	PostComments []Comments     `json:"post_comments" gorm:"_"`
 }
 
 type Category struct {
@@ -38,14 +39,14 @@ type Users struct {
 }
 
 type Comments struct {
-	gorm.Model
-	CommentID string `gorm:"column:comment_id; type:varchar; uniqueIndex;primaryKey;" json:"comment_id" validate:"required"`
-	Content   string `gorm:"column:content; type:varchar" json:"content" validate:"required"`
-	Website   string `gorm:"column:source; type:varchar" json:"source" validate:"required"`
-	UsersID   string `gorm:"column:user_id; type:varchar" json:"user_id" validate:"required"`
-	Users     Users  `gorm:"references:user_id" validate:"omitempty,uuid4"`
-	PostID    string `gorm:"column:post_id; type:varchar" json:"post_id" validate:"required"`
-	Post      Post   `gorm:"references:post_id" validate:"omitempty,uuid4"`
+	gorm.Model 
+	CommentID  string `gorm:"column:comment_id; type:varchar; uniqueIndex;primaryKey;" json:"comment_id" validate:"required"`
+	Content    string `gorm:"column:content; type:varchar" json:"content" validate:"required"`
+	Website    string `gorm:"column:source; type:varchar" json:"source" validate:"required"`
+	UsersID    string `gorm:"column:user_id; type:varchar" json:"user_id" validate:"required"`
+	Users      Users  `gorm:"references:user_id" json:"-" validate:"omitempty,uuid4"`
+	PostID     string `gorm:"column:post_id; type:varchar" json:"post_id" validate:"required"`
+	Post       Post   `gorm:"references:post_id" json:"-" validate:"omitempty,uuid4"`
 }
 
 type Login struct {
@@ -66,7 +67,7 @@ type CategoriesCount struct {
 }
 
 type AllPost struct {
-	Post            []Post            `json:"posts"`
+	Post            []Post            `json:"posts" gorm:"posts"`
 	CategoriesCount []CategoriesCount `json:"categories"`
-	Archieves       []string            `json:"archieves"`
+	Archieves       []string          `json:"archieves"`
 }

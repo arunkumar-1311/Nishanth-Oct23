@@ -90,23 +90,22 @@ func UpdateComment(c *fiber.Ctx) error {
 }
 
 // Helps to Read Comment
-func ReadMyComment(c *fiber.Ctx) error {
+func ReadComment(c *fiber.Ctx) error {
+
+	if err := helper.AdminAccess(c.Get("Authorization")); err != nil {
+		logger.Logging().Error(err)
+		service.SendResponse(c, http.StatusBadRequest, err.Error(), "Try Again Later", http.MethodPatch, "")
+		return nil
+	}
 	var comments []models.Comments
 
-	var claims models.Claims
-	if err := helper.Claims(c.Get("Authorization"), &claims); err != nil {
+	if err := repository.ReadCommentByUser(c.Params("id"), &comments); err != nil {
 		logger.Logging().Print(err)
 		service.SendResponse(c, http.StatusBadRequest, err.Error(), "Try again", http.MethodGet)
 		return nil
 	}
 
-	if err := repository.ReadCommentByUser(claims.UsersID, &comments); err != nil {
-		logger.Logging().Print(err)
-		service.SendResponse(c, http.StatusBadRequest, err.Error(), "Try again", http.MethodGet)
-		return nil
-	}
-
-	service.SendResponse(c, http.StatusOK, "", fmt.Sprintf("Fetching all comments of %v", claims.UsersID), http.MethodGet, comments)
+	service.SendResponse(c, http.StatusOK, "", fmt.Sprintf("Fetching all comments of %v", c.Params("id")), http.MethodGet, comments)
 	return nil
 }
 

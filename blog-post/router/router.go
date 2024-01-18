@@ -32,7 +32,7 @@ func Routes(router *fiber.App) *fiber.App {
 	// Helps to add filter the post displaying
 
 	// Helps to manipulate with the comments
-	router.Get("/comments", handler.Authorization(), handler.ReadMyComment)
+	router.Get("/comment/:id", handler.Authorization(), handler.ReadComment)
 	router.Post("/comment/:id", handler.Authorization(), handler.AddComment)      // This id indicates Post ID
 	router.Patch("/comment/:id", handler.Authorization(), handler.UpdateComment)  // This id indicates comment ID
 	router.Delete("/comment/:id", handler.Authorization(), handler.DeleteComment) // This id indicates comment ID

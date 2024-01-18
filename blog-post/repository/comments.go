@@ -65,3 +65,15 @@ func ReadComment(id string, dest *models.Comments) error {
 	}
 	return nil
 }
+
+// Helps to retrive the comments by its post
+func PostComments(id string, dest *[]models.Comments) error {
+	var result *gorm.DB
+	if result = adaptor.GetConn().Model(&models.Comments{}).Where("post_id = ?", id).Find(&dest); result.Error != nil {
+		return result.Error
+	}
+	if result.RowsAffected == 0 {
+		return fmt.Errorf("invalid user id")
+	}
+	return nil
+}
