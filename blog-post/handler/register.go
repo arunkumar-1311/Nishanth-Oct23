@@ -6,9 +6,9 @@ import (
 	"blog_post/repository"
 	"blog_post/service"
 	"blog_post/service/helper"
-	"net/http"
 	"github.com/go-playground/validator/v10"
 	"github.com/gofiber/fiber/v2"
+	"net/http"
 )
 
 func Register(c *fiber.Ctx) error {

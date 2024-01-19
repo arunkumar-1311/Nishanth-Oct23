@@ -21,7 +21,6 @@ func CommentsAndCategory(Post []models.Post, CategoriesCount *[]models.Categorie
 			return err
 		}
 	}
-
 	// Helps to find the all categories and archieves data
 	var totalPost []models.Post
 	category := make(map[string]int)

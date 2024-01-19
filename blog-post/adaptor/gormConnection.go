@@ -9,17 +9,19 @@ import (
 	"github.com/joho/godotenv"
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
-	"gorm.io/gorm/schema"
 	log "gorm.io/gorm/logger"
+	"gorm.io/gorm/schema"
 )
 
+var db *gorm.DB
+
 // Get a new connection
-func dbConn() (db *gorm.DB) {
+func dbConn() {
 	err := godotenv.Load(".env")
 	if err != nil {
 		logger.Logging().Error(err)
 		fmt.Print("\nenv error")
-
+		panic(err)
 	}
 
 	dbConn := fmt.Sprintf("postgres://%s:%s@%s:%s/%s", os.Getenv("user"), os.Getenv("password"), os.Getenv("host"), os.Getenv("port"), os.Getenv("dbname"))
@@ -33,15 +35,17 @@ func dbConn() (db *gorm.DB) {
 		logger.Logging().Error(err)
 		panic(err)
 	}
-	db.AutoMigrate(&models.Post{}, &models.Category{}, &models.Roles{}, &models.Users{}, &models.Comments{})
+	if err := db.AutoMigrate(&models.Post{}, &models.Category{}, &models.Roles{}, &models.Users{}, &models.Comments{}); err != nil {
+		logger.Logging().Error(err)
+		panic(err)
+	}
 
-	return
 }
 
 // Check if the connection is exist of helps to occur the connection
-func GetConn() (db *gorm.DB) {
+func GetConn() *gorm.DB {
 	if db == nil {
-		db = dbConn()
+		dbConn()
 	}
 	return db
 }

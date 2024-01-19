@@ -16,12 +16,6 @@ import (
 // Helps to create the post
 func CreatePost(c *fiber.Ctx) error {
 
-	if err := helper.AdminAccess(c.Get("Authorization")); err != nil {
-		logger.Logging().Error(err)
-		service.SendResponse(c, http.StatusBadRequest, err.Error(), "Try Again Later", http.MethodPatch, "")
-		return nil
-	}
-
 	c.Accepts("application/json")
 	var post models.Post
 	validate := validator.New()
@@ -50,8 +44,8 @@ func CreatePost(c *fiber.Ctx) error {
 
 // Helps to read all the post
 func ReadAllPosts(c *fiber.Ctx) error {
-	var allPosts models.AllPost
 
+	var allPosts models.AllPost
 	if err := repository.ReadPosts(&allPosts.Post); err != nil {
 		logger.Logging().Error(err)
 		service.SendResponse(c, http.StatusBadRequest, err.Error(), "Oops error occurs", http.MethodGet, "")
@@ -69,12 +63,6 @@ func ReadAllPosts(c *fiber.Ctx) error {
 
 // Helps to update the existing post
 func UpdatePost(c *fiber.Ctx) error {
-
-	if err := helper.AdminAccess(c.Get("Authorization")); err != nil {
-		logger.Logging().Error(err)
-		service.SendResponse(c, http.StatusBadRequest, err.Error(), "Try Again Later", http.MethodPatch, "")
-		return nil
-	}
 
 	c.Accepts("application/json")
 	var post models.Post
@@ -98,12 +86,6 @@ func UpdatePost(c *fiber.Ctx) error {
 // helps to delete the post with its id
 func DeletePost(c *fiber.Ctx) error {
 
-	if err := helper.AdminAccess(c.Get("Authorization")); err != nil {
-		logger.Logging().Error(err)
-		service.SendResponse(c, http.StatusBadRequest, err.Error(), "Try Again Later", http.MethodDelete, "")
-		return nil
-	}
-
 	id := c.Params("id")
 	if err := repository.DeletePost(id); err != nil {
 		logger.Logging().Error(err)
@@ -117,18 +99,14 @@ func DeletePost(c *fiber.Ctx) error {
 // Its shows overview statistics of the website
 func Overview(c *fiber.Ctx) error {
 
-	if err := helper.AdminAccess(c.Get("Authorization")); err != nil {
-		logger.Logging().Error(err)
-		service.SendResponse(c, http.StatusBadRequest, err.Error(), "Try Again Later", http.MethodGet, "")
-		return nil
-	}
-
 	var overview models.Overview
-	if err := repository.Overview(&overview); err != nil{
+
+	if err := repository.Overview(&overview); err != nil {
 		logger.Logging().Error(err)
 		service.SendResponse(c, http.StatusInternalServerError, err.Error(), "Try Again Later", http.MethodGet, "")
 		return nil
 	}
+
 	service.SendResponse(c, http.StatusOK, "", "Blog Created successfully", http.MethodGet, overview)
 	return nil
 }

@@ -5,7 +5,6 @@ import (
 	"blog_post/models"
 	"blog_post/repository"
 	"blog_post/service"
-	"blog_post/service/helper"
 	"net/http"
 
 	"github.com/go-playground/validator/v10"
@@ -14,12 +13,6 @@ import (
 
 // Helps to create the category
 func CreateCategory(c *fiber.Ctx) error {
-
-	if err := helper.AdminAccess(c.Get("Authorization")); err != nil {
-		logger.Logging().Error(err)
-		service.SendResponse(c, http.StatusBadRequest, err.Error(), "Try Again Later", http.MethodPost, "")
-		return nil
-	}
 
 	c.Accepts("application/json")
 	var category models.Category
@@ -49,11 +42,6 @@ func CreateCategory(c *fiber.Ctx) error {
 // Helps to read all the category
 func ReadAllCategories(c *fiber.Ctx) error {
 
-	if err := helper.AdminAccess(c.Get("Authorization")); err != nil {
-		logger.Logging().Error(err)
-		service.SendResponse(c, http.StatusBadRequest, err.Error(), "Try Again Later", http.MethodGet, "")
-		return nil
-	}
 	var categories []models.Category
 	if err := repository.ReadCategories(&categories); err != nil {
 		logger.Logging().Error(err)
@@ -67,12 +55,6 @@ func ReadAllCategories(c *fiber.Ctx) error {
 
 // Helps to update the existing post
 func UpdateCategory(c *fiber.Ctx) error {
-
-	if err := helper.AdminAccess(c.Get("Authorization")); err != nil {
-		logger.Logging().Error(err)
-		service.SendResponse(c, http.StatusBadRequest, err.Error(), "Try Again Later", http.MethodPatch, "")
-		return nil
-	}
 
 	c.Accepts("application/json")
 	var category models.Category
@@ -94,12 +76,6 @@ func UpdateCategory(c *fiber.Ctx) error {
 
 // helps to delete the post with its id
 func DeleteCategory(c *fiber.Ctx) error {
-
-	if err := helper.AdminAccess(c.Get("Authorization")); err != nil {
-		logger.Logging().Error(err)
-		service.SendResponse(c, http.StatusBadRequest, err.Error(), "Try Again Later", http.MethodDelete, "")
-		return nil
-	}
 
 	id := c.Params("id")
 	if err := repository.DeleteCategory(id); err != nil {

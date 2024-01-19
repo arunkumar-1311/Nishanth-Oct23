@@ -15,22 +15,22 @@ func Routes(router *fiber.App) *fiber.App {
 	router.Post("/register", handler.Register)
 
 	// Helps to login the existing user
-	router.Post("/login", handler.Authentication(), admin.ReadAllPosts)
+	router.Post("/login", handler.Authentication)
 
 	// Helps to manipulate with list
-	router.Post("/category", handler.Authorization(), admin.CreateCategory)
-	router.Get("/category", handler.Authorization(), admin.ReadAllCategories)
-	router.Patch("/category/:id", handler.Authorization(), admin.UpdateCategory)  // This id indicates category ID
-	router.Delete("/category/:id", handler.Authorization(), admin.DeleteCategory) // This id indicates category ID
+	router.Post("/admin/category", handler.Authorization(), admin.CreateCategory)
+	router.Get("/admin/category", handler.Authorization(), admin.ReadAllCategories)
+	router.Patch("/admin/category/:id", handler.Authorization(), admin.UpdateCategory)  // This id indicates category ID
+	router.Delete("/admin/category/:id", handler.Authorization(), admin.DeleteCategory) // This id indicates category ID
 
 	// Helps to manipulate with posts
-	router.Post("/post", handler.Authorization(), admin.CreatePost)
+	router.Post("/admin/post", handler.Authorization(), admin.CreatePost)
 	router.Get("/posts", admin.ReadAllPosts)
-	router.Patch("/post/:id", handler.Authorization(), admin.UpdatePost)  // This id indicates Post ID
-	router.Delete("/post/:id", handler.Authorization(), admin.DeletePost) // This id indicates Post ID
+	router.Patch("/admin/post/:id", handler.Authorization(), admin.UpdatePost)  // This id indicates Post ID
+	router.Delete("/admin/post/:id", handler.Authorization(), admin.DeletePost) // This id indicates Post ID
 
 	// Helps to manipulate with the comments
-	router.Get("/comment/:id", handler.Authorization(), handler.ReadComment)      // This id indicates User ID
+	router.Get("/admin/comment/:id", handler.Authorization(), handler.ReadComment)      // This id indicates User ID
 	router.Post("/comment/:id", handler.Authorization(), handler.AddComment)      // This id indicates Post ID
 	router.Patch("/comment/:id", handler.Authorization(), handler.UpdateComment)  // This id indicates comment ID
 	router.Delete("/comment/:id", handler.Authorization(), handler.DeleteComment) // This id indicates comment ID
@@ -40,6 +40,6 @@ func Routes(router *fiber.App) *fiber.App {
 	router.Get("/posts/:id", handler.CategoryFilter) // This id indicates category ID
 
 	// Overview of the profile
-	router.Get("/overview", handler.Authorization(), admin.Overview)
+	router.Get("/admin/overview", handler.Authorization(), admin.Overview)
 	return router
 }

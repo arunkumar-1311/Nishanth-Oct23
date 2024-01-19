@@ -1,8 +1,6 @@
 package models
 
 import (
-	"time"
-
 	"github.com/lib/pq"
 	"gorm.io/gorm"
 )
@@ -15,7 +13,7 @@ type Post struct {
 	Excerpt      string         `gorm:"column:excerpt; type:varchar" json:"excerpt"  validate:"required"`
 	Status       string         `gorm:"column:status; type:varchar" json:"status" validate:"required"`
 	CategoryID   pq.StringArray `gorm:"column:category_id; type:varchar[]" json:"category_id"  validate:"required"`
-	Comments     int            `gorm:"-" json:"comments,omitempty"`
+	Comments     int            `gorm:"-" json:"comments"`
 	PostComments []Comments     `json:"post_comments" gorm:"-"`
 }
 
@@ -34,9 +32,9 @@ type Users struct {
 	UserID   string `gorm:"column:user_id; uniqueIndex;primaryKey; type:varchar" json:"user_id" validate:"required"`
 	Email    string `gorm:"column:email; type:varchar" json:"email" validate:"email,required"`
 	Name     string `gorm:"column:name; type:varchar" json:"name" validate:"required"`
-	Password string `gorm:"column:password; type:varchar" json:"password" validate:"required"`
+	Password string `gorm:"column:password; type:varchar" json:"-" validate:"required"`
 	RolesID  string `gorm:"column:role_id; type :varchar" json:"-"`
-	Roles    Roles  `gorm:"references:role_id"`
+	Roles    Roles  `gorm:"references:role_id" json:"-"`
 }
 
 type Comments struct {
@@ -45,7 +43,7 @@ type Comments struct {
 	Content   string `gorm:"column:content; type:varchar" json:"content" validate:"required"`
 	Website   string `gorm:"column:source; type:varchar" json:"source" validate:"required"`
 	UsersID   string `gorm:"column:user_id; type:varchar" json:"user_id" validate:"required"`
-	Users     Users  `gorm:"references:user_id" json:"-" validate:"omitempty,uuid4"`
+	Users     Users  `gorm:"references:user_id;" json:"user" validate:"omitempty,uuid4"`
 	PostID    string `gorm:"column:post_id; type:varchar" json:"post_id" validate:"required"`
 	Post      Post   `gorm:"references:post_id" json:"-" validate:"omitempty,uuid4"`
 }
@@ -80,7 +78,7 @@ type Filter struct {
 }
 
 type Overview struct {
-	TotalPost     int64     `json:"total_posts"`
-	TotalComments int64     `json:"total_comments"`
-	OldestPost    time.Time `json:"first_post"`
+	TotalPost     int64  `json:"total_posts"`
+	TotalComments int64  `json:"total_comments"`
+	OldestPost    string `json:"first_post"`
 }

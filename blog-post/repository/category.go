@@ -32,6 +32,9 @@ func DeleteCategory(id string) error {
 	if result.RowsAffected == 0 {
 		return fmt.Errorf("invalid category id")
 	}
+	if result = adaptor.GetConn().Model(&models.Post{}).Where("? = ANY(category_id)", id).Update("category_id", gorm.Expr("array_remove(category_id, ?)", id)); result.Error != nil {
+		return result.Error
+	}
 	return nil
 }
 
@@ -55,4 +58,3 @@ func ReadCategoryByID(id string) (string, error) {
 	}
 	return name, nil
 }
-

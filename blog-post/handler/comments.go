@@ -92,11 +92,6 @@ func UpdateComment(c *fiber.Ctx) error {
 // Helps to Read all comments posted by single user
 func ReadComment(c *fiber.Ctx) error {
 
-	if err := helper.AdminAccess(c.Get("Authorization")); err != nil {
-		logger.Logging().Error(err)
-		service.SendResponse(c, http.StatusBadRequest, err.Error(), "Try Again Later", http.MethodPatch, "")
-		return nil
-	}
 	var comments []models.Comments
 
 	if err := repository.ReadCommentByUser(c.Params("id"), &comments); err != nil {
