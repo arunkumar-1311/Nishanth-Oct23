@@ -49,6 +49,11 @@ func CreateCategory(c *fiber.Ctx) error {
 // Helps to read all the category
 func ReadAllCategories(c *fiber.Ctx) error {
 
+	if err := helper.AdminAccess(c.Get("Authorization")); err != nil {
+		logger.Logging().Error(err)
+		service.SendResponse(c, http.StatusBadRequest, err.Error(), "Try Again Later", http.MethodGet, "")
+		return nil
+	}
 	var categories []models.Category
 	if err := repository.ReadCategories(&categories); err != nil {
 		logger.Logging().Error(err)

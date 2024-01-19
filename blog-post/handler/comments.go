@@ -89,7 +89,7 @@ func UpdateComment(c *fiber.Ctx) error {
 	return nil
 }
 
-// Helps to Read Comment
+// Helps to Read all comments posted by single user
 func ReadComment(c *fiber.Ctx) error {
 
 	if err := helper.AdminAccess(c.Get("Authorization")); err != nil {
@@ -125,7 +125,6 @@ func DeleteComment(c *fiber.Ctx) error {
 		service.SendResponse(c, http.StatusBadRequest, err.Error(), "Try again", http.MethodDelete)
 		return nil
 	}
-	
 
 	if comment.UsersID == claims.UsersID || claims.UsersID == "ADMIN1" {
 		if err := repository.DeleteComment(comment.CommentID); err != nil {
@@ -134,10 +133,9 @@ func DeleteComment(c *fiber.Ctx) error {
 			return nil
 		}
 		service.SendResponse(c, http.StatusOK, "", "Comment Deleted Successfully", http.MethodDelete, "")
-	} else {
-		service.SendResponse(c, http.StatusBadRequest, "Invalid authorization", "You can't delete this comment", http.MethodPatch)
+		return nil
 	}
-
+	service.SendResponse(c, http.StatusBadRequest, "Invalid authorization", "You can't delete this comment", http.MethodPatch)
 	return nil
 
 }

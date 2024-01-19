@@ -19,7 +19,7 @@ func Routes(router *fiber.App) *fiber.App {
 
 	// Helps to manipulate with list
 	router.Post("/category", handler.Authorization(), admin.CreateCategory)
-	router.Get("/category", admin.ReadAllCategories)
+	router.Get("/category", handler.Authorization(), admin.ReadAllCategories)
 	router.Patch("/category/:id", handler.Authorization(), admin.UpdateCategory)  // This id indicates category ID
 	router.Delete("/category/:id", handler.Authorization(), admin.DeleteCategory) // This id indicates category ID
 
@@ -29,12 +29,17 @@ func Routes(router *fiber.App) *fiber.App {
 	router.Patch("/post/:id", handler.Authorization(), admin.UpdatePost)  // This id indicates Post ID
 	router.Delete("/post/:id", handler.Authorization(), admin.DeletePost) // This id indicates Post ID
 
-	// Helps to add filter the post displaying
-
 	// Helps to manipulate with the comments
-	router.Get("/comment/:id", handler.Authorization(), handler.ReadComment)
+	router.Get("/comment/:id", handler.Authorization(), handler.ReadComment)      // This id indicates User ID
 	router.Post("/comment/:id", handler.Authorization(), handler.AddComment)      // This id indicates Post ID
 	router.Patch("/comment/:id", handler.Authorization(), handler.UpdateComment)  // This id indicates comment ID
 	router.Delete("/comment/:id", handler.Authorization(), handler.DeleteComment) // This id indicates comment ID
+
+	// Helps to add filter the post displaying
+	router.Post("/posts/date", handler.DateFilter)
+	router.Get("/posts/:id", handler.CategoryFilter) // This id indicates category ID
+
+	// Overview of the profile
+	router.Get("/overview", handler.Authorization(), admin.Overview)
 	return router
 }

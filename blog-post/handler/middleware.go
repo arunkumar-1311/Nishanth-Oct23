@@ -20,7 +20,7 @@ func Authentication() fiber.Handler {
 
 		if err := c.BodyParser(&credentials); err != nil {
 			logger.Logging().Error(err)
-			service.SendResponse(c, http.StatusBadRequest, err.Error(), "Enter valid body", http.MethodPost, "")
+			service.SendResponse(c, http.StatusBadRequest, err.Error(), "Enter valid json", http.MethodPost, "")
 			return nil
 		}
 

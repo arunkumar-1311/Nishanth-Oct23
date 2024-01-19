@@ -7,7 +7,6 @@ import (
 	"blog_post/repository"
 	"blog_post/service"
 	"blog_post/service/helper"
-	"fmt"
 	"net/http"
 
 	"github.com/go-playground/validator/v10"
@@ -59,47 +58,10 @@ func ReadAllPosts(c *fiber.Ctx) error {
 		return nil
 	}
 
-	category := make(map[string]int)
-	archieve := make(map[string]int)
-
-	for i := 0; i < len(allPosts.Post); i++ {
-		var count int64
-
-		if err := repository.NumberOfComments(allPosts.Post[i].PostID, &count); err != nil {
-			logger.Logging().Error(err)
-			service.SendResponse(c, http.StatusBadRequest, err.Error(), "Oops error occurs", http.MethodGet, "")
-			return nil
-		}
-		allPosts.Post[i].Comments = int(count)
-
-		year, month, _ := allPosts.Post[i].CreatedAt.Date()
-		archieve[fmt.Sprint(month.String(), "-", year)] = 1
-
-		for key, value := range allPosts.Post[i].CategoryID {
-			name, err := repository.ReadCategoryByID(value)
-			if err != nil {
-				logger.Logging().Error(err)
-				service.SendResponse(c, http.StatusInternalServerError, err.Error(), "Oops error occurs", http.MethodGet, "")
-				return nil
-			}
-			category[name] = category[name] + 1
-			allPosts.Post[i].CategoryID[key] = name
-		}
-
-		if err := repository.PostComments(allPosts.Post[i].PostID, &allPosts.Post[i].PostComments); err != nil {
-			logger.Logging().Error(err)
-			service.SendResponse(c, http.StatusInternalServerError, err.Error(), "Oops error occurs", http.MethodGet, "")
-			return nil
-		}
-	}
-
-	for key := range category {
-		data := models.CategoriesCount{CategoryName: key, Total: category[key]}
-		allPosts.CategoriesCount = append(allPosts.CategoriesCount, data)
-	}
-
-	for key := range archieve {
-		allPosts.Archieves = append(allPosts.Archieves, key)
+	if err := helper.CommentsAndCategory(allPosts.Post, &allPosts.CategoriesCount, &allPosts.Archieves); err != nil {
+		logger.Logging().Error(err)
+		service.SendResponse(c, http.StatusBadRequest, err.Error(), "Oops error occurs", http.MethodGet, "")
+		return nil
 	}
 	service.SendResponse(c, http.StatusOK, "", "All available categories", http.MethodGet, allPosts)
 	return nil
@@ -138,7 +100,7 @@ func DeletePost(c *fiber.Ctx) error {
 
 	if err := helper.AdminAccess(c.Get("Authorization")); err != nil {
 		logger.Logging().Error(err)
-		service.SendResponse(c, http.StatusBadRequest, err.Error(), "Try Again Later", http.MethodPatch, "")
+		service.SendResponse(c, http.StatusBadRequest, err.Error(), "Try Again Later", http.MethodDelete, "")
 		return nil
 	}
 
@@ -149,5 +111,24 @@ func DeletePost(c *fiber.Ctx) error {
 		return nil
 	}
 	service.SendResponse(c, http.StatusOK, "", "Post Deleted successfully", http.MethodDelete, "")
+	return nil
+}
+
+// Its shows overview statistics of the website
+func Overview(c *fiber.Ctx) error {
+
+	if err := helper.AdminAccess(c.Get("Authorization")); err != nil {
+		logger.Logging().Error(err)
+		service.SendResponse(c, http.StatusBadRequest, err.Error(), "Try Again Later", http.MethodGet, "")
+		return nil
+	}
+
+	var overview models.Overview
+	if err := repository.Overview(&overview); err != nil{
+		logger.Logging().Error(err)
+		service.SendResponse(c, http.StatusInternalServerError, err.Error(), "Try Again Later", http.MethodGet, "")
+		return nil
+	}
+	service.SendResponse(c, http.StatusOK, "", "Blog Created successfully", http.MethodGet, overview)
 	return nil
 }
