@@ -32,7 +32,7 @@ type Users struct {
 	UserID   string `gorm:"column:user_id; uniqueIndex;primaryKey; type:varchar" json:"user_id" validate:"required"`
 	Email    string `gorm:"column:email; type:varchar" json:"email" validate:"email,required"`
 	Name     string `gorm:"column:name; type:varchar" json:"name" validate:"required"`
-	Password string `gorm:"column:password; type:varchar" json:"-" validate:"required"`
+	Password string `gorm:"column:password; type:varchar" json:"password,omitempty" validate:"required"`
 	RolesID  string `gorm:"column:role_id; type :varchar" json:"-"`
 	Roles    Roles  `gorm:"references:role_id" json:"-"`
 }
