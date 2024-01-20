@@ -30,10 +30,12 @@ func Routes(router *fiber.App) *fiber.App {
 	router.Delete("/admin/post/:id", handler.Authorization(), admin.DeletePost) // This id indicates Post ID
 
 	// Helps to manipulate with the comments
-	router.Get("/admin/comment/:id", handler.Authorization(), handler.ReadComment)      // This id indicates User ID
-	router.Post("/comment/:id", handler.Authorization(), handler.AddComment)      // This id indicates Post ID
-	router.Patch("/comment/:id", handler.Authorization(), handler.UpdateComment)  // This id indicates comment ID
-	router.Delete("/comment/:id", handler.Authorization(), handler.DeleteComment) // This id indicates comment ID
+	router.Get("/admin/comment/user/:id", handler.Authorization(), handler.ReadCommentByUser) // This id indicates User ID
+	router.Get("/comment/post/:id", handler.ReadCommentByPost)                                // This id indicates Post ID
+	router.Get("/comment/:id", handler.ReadCommentByID)                                       // This id indicates comment ID
+	router.Post("/comment/:id", handler.Authorization(), handler.AddComment)                  // This id indicates Post ID
+	router.Patch("/comment/:id", handler.Authorization(), handler.UpdateComment)              // This id indicates comment ID
+	router.Delete("/comment/:id", handler.Authorization(), handler.DeleteComment)             // This id indicates comment ID
 
 	// Helps to add filter the post displaying
 	router.Post("/posts/date", handler.DateFilter)

@@ -89,21 +89,6 @@ func UpdateComment(c *fiber.Ctx) error {
 	return nil
 }
 
-// Helps to Read all comments posted by single user
-func ReadComment(c *fiber.Ctx) error {
-
-	var comments []models.Comments
-
-	if err := repository.ReadCommentByUser(c.Params("id"), &comments); err != nil {
-		logger.Logging().Print(err)
-		service.SendResponse(c, http.StatusBadRequest, err.Error(), "Try again", http.MethodGet)
-		return nil
-	}
-
-	service.SendResponse(c, http.StatusOK, "", fmt.Sprintf("Fetching all comments of %v", c.Params("id")), http.MethodGet, comments)
-	return nil
-}
-
 // Helps to delete Comment
 func DeleteComment(c *fiber.Ctx) error {
 
@@ -133,4 +118,46 @@ func DeleteComment(c *fiber.Ctx) error {
 	service.SendResponse(c, http.StatusBadRequest, "Invalid authorization", "You can't delete this comment", http.MethodPatch)
 	return nil
 
+}
+
+// Helps to Read all comments posted by single user
+func ReadCommentByUser(c *fiber.Ctx) error {
+
+	var comments []models.Comments
+
+	if err := repository.ReadCommentByUser(c.Params("id"), &comments); err != nil {
+		logger.Logging().Print(err)
+		service.SendResponse(c, http.StatusBadRequest, err.Error(), "Try again", http.MethodGet)
+		return nil
+	}
+
+	service.SendResponse(c, http.StatusOK, "", fmt.Sprintf("Fetching all comments of %v", c.Params("id")), http.MethodGet, comments)
+	return nil
+}
+
+// Helps to read all the comments in the particular post
+func ReadCommentByPost(c *fiber.Ctx) error {
+	var comments []models.Comments
+
+	if err := repository.PostComments(c.Params("id"), &comments); err != nil {
+		logger.Logging().Print(err)
+		service.SendResponse(c, http.StatusBadRequest, err.Error(), "Try again", http.MethodGet)
+		return nil
+	}
+
+	service.SendResponse(c, http.StatusOK, "", fmt.Sprintf("Fetching all comments of %v Post", c.Params("id")), http.MethodGet, comments)
+	return nil
+}
+
+// Helps to read the comment by its id
+func ReadCommentByID(c *fiber.Ctx) error {
+	var comment models.Comments
+
+	if err := repository.ReadComment(c.Params("id"), &comment); err != nil {
+		logger.Logging().Print(err)
+		service.SendResponse(c, http.StatusBadRequest, err.Error(), "Try again", http.MethodGet)
+		return nil
+	}
+	service.SendResponse(c, http.StatusOK, "", fmt.Sprintf("Fetching all comment of %v ", c.Params("id")), http.MethodGet, comment)
+	return nil
 }
