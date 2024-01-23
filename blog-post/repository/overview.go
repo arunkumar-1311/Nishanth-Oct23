@@ -7,6 +7,7 @@ import (
 	"time"
 )
 
+// Helps to return the overview of the blog post profile
 func Overview(data *models.Overview) (err error) {
 
 	if result := adaptor.GetConn().Model(&models.Post{}).Count(&data.TotalPost); result.Error != nil {

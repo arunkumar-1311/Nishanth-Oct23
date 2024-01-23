@@ -6,8 +6,6 @@ import (
 	"blog_post/repository"
 	"blog_post/service"
 	"blog_post/service/helper"
-	"fmt"
-	"net/http"
 	"time"
 
 	"github.com/gofiber/fiber/v2"
@@ -20,38 +18,45 @@ func DateFilter(c *fiber.Ctx) error {
 
 	if err := c.BodyParser(&filter); err != nil {
 		logger.Logging().Error(err)
-		service.SendResponse(c, http.StatusInternalServerError, err.Error(), "Try Again Later", http.MethodPost, "")
+		service.SendResponse(c, fiber.StatusInternalServerError, err.Error(), "Try Again Later", fiber.MethodPost, "")
 		return nil
 	}
 
-	fromDate, err := time.Parse("2006-01-02", fmt.Sprint(filter["from"], "-01"))
+	fromDate, err := time.Parse("2006-01-02", filter["from"])
 	if err != nil {
 		logger.Logging().Error(err)
-		service.SendResponse(c, http.StatusInternalServerError, err.Error(), "Try Again Later", http.MethodPost, "")
+		service.SendResponse(c, fiber.StatusInternalServerError, err.Error(), "Try Again Later", fiber.MethodPost, "")
 		return nil
 	}
 
-	toDate, err := time.Parse("2006-01-02", fmt.Sprint(filter["to"], "-01"))
+	toDate, err := time.Parse("2006-01-02", filter["to"])
 	if err != nil {
 		logger.Logging().Error(err)
-		service.SendResponse(c, http.StatusInternalServerError, err.Error(), "Try Again Later", http.MethodPost, "")
+		service.SendResponse(c, fiber.StatusInternalServerError, err.Error(), "Try Again Later", fiber.MethodPost, "")
 		return nil
 	}
 
-	toDate = time.Date(toDate.Year(), toDate.Month() +1, toDate.Day() - 1, 23, 59, 59, 999999999, time.Local)
+	toDate = time.Date(toDate.Year(), toDate.Month(), toDate.Day(), 23, 59, 59, 999999999, time.Local)
 	err = repository.DateFilter(fromDate, toDate, &Posts.Post)
 	if err != nil {
 		logger.Logging().Error(err)
-		service.SendResponse(c, http.StatusInternalServerError, err.Error(), "Try Again Later", http.MethodPost, "")
+		service.SendResponse(c, fiber.StatusInternalServerError, err.Error(), "Try Again Later", fiber.MethodPost, "")
 		return nil
 	}
 
 	if err := helper.CommentsAndCategory(Posts.Post); err != nil {
 		logger.Logging().Error(err)
-		service.SendResponse(c, http.StatusBadRequest, err.Error(), "Oops error occurs", http.MethodPost, "")
+		service.SendResponse(c, fiber.StatusBadRequest, err.Error(), "Oops error occurs", fiber.MethodPost, "")
 		return nil
 	}
-	service.SendResponse(c, http.StatusOK, "", "All available categories", http.MethodPost, Posts)
+
+	postResp := new([]models.PostResponse)
+	if err := helper.PostResp(Posts, postResp); err != nil {
+		logger.Logging().Error(err)
+		service.SendResponse(c, fiber.StatusBadRequest, err.Error(), "Oops error occurs", fiber.MethodGet, "")
+		return nil
+	}
+	service.SendResponse(c, fiber.StatusOK, "", "All available categories", fiber.MethodPost, postResp)
 
 	return nil
 }
@@ -63,15 +68,22 @@ func CategoryFilter(c *fiber.Ctx) error {
 
 	if err := repository.CategoryFilter(c.Params("id"), &Posts.Post); err != nil {
 		logger.Logging().Error(err)
-		service.SendResponse(c, http.StatusBadRequest, err.Error(), "Oops error occurs", http.MethodGet, "")
+		service.SendResponse(c, fiber.StatusBadRequest, err.Error(), "Oops error occurs", fiber.MethodGet, "")
 		return nil
 	}
 
 	if err := helper.CommentsAndCategory(Posts.Post); err != nil {
 		logger.Logging().Error(err)
-		service.SendResponse(c, http.StatusBadRequest, err.Error(), "Oops error occurs", http.MethodGet, "")
+		service.SendResponse(c, fiber.StatusBadRequest, err.Error(), "Oops error occurs", fiber.MethodGet, "")
 		return nil
 	}
-	service.SendResponse(c, http.StatusOK, "", "All available categories", http.MethodPost, Posts)
+
+	postResp := new([]models.PostResponse)
+	if err := helper.PostResp(Posts, postResp); err != nil {
+		logger.Logging().Error(err)
+		service.SendResponse(c, fiber.StatusBadRequest, err.Error(), "Oops error occurs", fiber.MethodGet, "")
+		return nil
+	}
+	service.SendResponse(c, fiber.StatusOK, "", "All available categories", fiber.MethodPost, postResp)
 	return nil
 }

@@ -4,9 +4,7 @@ import (
 	"blog_post/logger"
 	"blog_post/service"
 	"blog_post/service/helper"
-	"net/http"
 	"strings"
-
 	"github.com/gofiber/fiber/v2"
 )
 
@@ -20,19 +18,19 @@ func Authorization() fiber.Handler {
 				"Regiter": "localhost:8000/register",
 				"Login":   "localhost:8000/login",
 			}
-			service.SendResponse(c, http.StatusBadRequest, "Please login or register", "Login or register to make this action", http.MethodGet, data)
+			service.SendResponse(c, fiber.StatusBadRequest, "Please login or register", "Login or register to make this action", fiber.MethodGet, data)
 			return nil
 		}
 
 		if _, err := helper.VerifyToken(tokenString[7:]); err != nil {
 			logger.Logging().Error(err)
-			service.SendResponse(c, http.StatusBadRequest, err.Error(), "invalid token", http.MethodGet, "")
+			service.SendResponse(c, fiber.StatusBadRequest, err.Error(), "invalid token", fiber.MethodGet, "")
 			return nil
 		}
 
 		if err := helper.AdminAccess(tokenString); strings.Contains(c.Path(), "admin") && err != nil {
 			logger.Logging().Error(err)
-			service.SendResponse(c, http.StatusBadRequest, err.Error(), "Try Again", http.MethodGet, "")
+			service.SendResponse(c, fiber.StatusBadRequest, err.Error(), "Try Again", fiber.MethodGet, "")
 			return nil
 		}
 		return c.Next()

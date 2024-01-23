@@ -8,6 +8,7 @@ import (
 	"gorm.io/gorm"
 )
 
+// Helps to create the new category
 func CreateCategory(data models.Category) error {
 	var result *gorm.DB
 	if result = adaptor.GetConn().Create(data); result.Error != nil {
@@ -20,8 +21,8 @@ func CreateCategory(data models.Category) error {
 }
 
 // Helps to read all data
-func ReadCategories(dest *[]models.Category) error {
-	if result := adaptor.GetConn().Find(&dest); result.Error != nil {
+func ReadCategories(dest *[]models.CategoryResponse) error {
+	if result := adaptor.GetConn().Model(&models.Category{}).Find(&dest); result.Error != nil {
 		return result.Error
 	}
 	return nil

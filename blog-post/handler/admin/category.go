@@ -6,7 +6,7 @@ import (
 	"blog_post/repository"
 	"blog_post/service"
 	"blog_post/service/helper"
-	"net/http"
+
 
 	"github.com/go-playground/validator/v10"
 	"github.com/gofiber/fiber/v2"
@@ -21,42 +21,42 @@ func CreateCategory(c *fiber.Ctx) error {
 
 	if err := c.BodyParser(&category); err != nil {
 		logger.Logging().Error(err)
-		service.SendResponse(c, http.StatusInternalServerError, err.Error(), "Try Again Later", http.MethodPost, "")
+		service.SendResponse(c, fiber.StatusInternalServerError, err.Error(), "Try Again Later", fiber.MethodPost, "")
 		return nil
 	}
 	category.CategoryID = helper.UniqueID()
 	if err := validate.Struct(category); err != nil {
 		logger.Logging().Error(err)
-		service.SendResponse(c, http.StatusBadRequest, err.Error(), "Give all required fields", http.MethodPost, "")
+		service.SendResponse(c, fiber.StatusBadRequest, err.Error(), "Give all required fields", fiber.MethodPost, "")
 		return nil
 	}
 
 	if err := repository.CreateCategory(category); err != nil {
 		logger.Logging().Error(err)
-		service.SendResponse(c, http.StatusBadRequest, err.Error(), "Oops error occurs", http.MethodPost, "")
+		service.SendResponse(c, fiber.StatusBadRequest, err.Error(), "Oops error occurs", fiber.MethodPost, "")
 		return nil
 	}
-	service.SendResponse(c, http.StatusOK, "", "Category Added", http.MethodPost, "Category Created successfully")
+	service.SendResponse(c, fiber.StatusOK, "", "Category Added", fiber.MethodPost, "Category Created successfully")
 	return nil
 }
 
 // Helps to read all the category
 func ReadAllCategories(c *fiber.Ctx) error {
 
-	var categories []models.Category
+	var categories []models.CategoryResponse
 	if err := repository.ReadCategories(&categories); err != nil {
 		logger.Logging().Error(err)
-		service.SendResponse(c, http.StatusBadRequest, err.Error(), "Oops error occurs", http.MethodGet, "")
+		service.SendResponse(c, fiber.StatusBadRequest, err.Error(), "Oops error occurs", fiber.MethodGet, "")
 		return nil
 	}
 
-	var categoriesCount []models.CategoriesCount
-	if err := helper.Categories(&categoriesCount); err != nil {
+	
+	if err := helper.Categories(categories); err != nil {
 		logger.Logging().Error(err)
-		service.SendResponse(c, http.StatusBadRequest, err.Error(), "Oops error occurs", http.MethodGet, "")
+		service.SendResponse(c, fiber.StatusBadRequest, err.Error(), "Oops error occurs", fiber.MethodGet, "")
 		return nil
 	}
-	service.SendResponse(c, http.StatusOK, "", "All available categories", http.MethodGet, categories, categoriesCount)
+	service.SendResponse(c, fiber.StatusOK, "", "All available categories", fiber.MethodGet, categories)
 	return nil
 }
 
@@ -68,16 +68,16 @@ func UpdateCategory(c *fiber.Ctx) error {
 	id := c.Params("id")
 	if err := c.BodyParser(&category); err != nil {
 		logger.Logging().Error(err)
-		service.SendResponse(c, http.StatusInternalServerError, err.Error(), "Try Again Later", http.MethodPatch, "")
+		service.SendResponse(c, fiber.StatusInternalServerError, err.Error(), "Try Again Later", fiber.MethodPatch, "")
 		return nil
 	}
 	if err := repository.UpdateCategory(id, category); err != nil {
 		logger.Logging().Error(err)
-		service.SendResponse(c, http.StatusBadRequest, err.Error(), "Use valid id", http.MethodPatch, "")
+		service.SendResponse(c, fiber.StatusBadRequest, err.Error(), "Use valid id", fiber.MethodPatch, "")
 		return nil
 	}
 
-	service.SendResponse(c, http.StatusOK, "", "Category Updated successfully", http.MethodPatch, "updated successfully")
+	service.SendResponse(c, fiber.StatusOK, "", "Category Updated successfully", fiber.MethodPatch, "updated successfully")
 	return nil
 }
 
@@ -87,9 +87,9 @@ func DeleteCategory(c *fiber.Ctx) error {
 	id := c.Params("id")
 	if err := repository.DeleteCategory(id); err != nil {
 		logger.Logging().Error(err)
-		service.SendResponse(c, http.StatusBadRequest, err.Error(), "use valid id", http.MethodDelete, "")
+		service.SendResponse(c, fiber.StatusBadRequest, err.Error(), "use valid id", fiber.MethodDelete, "")
 		return nil
 	}
-	service.SendResponse(c, http.StatusOK, "", "Category Deleted successfully", http.MethodDelete, "")
+	service.SendResponse(c, fiber.StatusOK, "", "Category Deleted successfully", fiber.MethodDelete, "")
 	return nil
 }

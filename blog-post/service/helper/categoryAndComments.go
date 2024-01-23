@@ -32,8 +32,8 @@ func CommentsAndCategory(Post []models.Post) error {
 	return nil
 }
 
-// Helps to find the all categories 
-func Categories(CategoriesCount *[]models.CategoriesCount) error {
+// Helps to find the all categories
+func Categories(Categories []models.CategoryResponse) error {
 	var totalPost []models.Post
 
 	category := make(map[string]int)
@@ -54,9 +54,12 @@ func Categories(CategoriesCount *[]models.CategoriesCount) error {
 
 	}
 
-	for key := range category {
-		data := models.CategoriesCount{CategoryName: key, Total: category[key]}
-		*CategoriesCount = append(*CategoriesCount, data)
+	for i := 0; i < len(Categories); i++ {
+		for key := range category {
+			if Categories[i].Category.Name == key {
+				Categories[i].Total = category[key]
+			}
+		}
 	}
 
 	return nil
