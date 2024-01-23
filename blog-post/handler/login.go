@@ -30,7 +30,7 @@ func Authentication(c *fiber.Ctx) error {
 	}
 
 	var user models.Users
-	if err := repository.User(credentials.Name, &user); err != nil {
+	if err := repository.User(credentials.Name, credentials.Email, &user); err != nil {
 		logger.Logging().Error(err)
 		service.SendResponse(c, http.StatusInternalServerError, err.Error(), "Try Again Later", http.MethodPost, "")
 		return nil

@@ -33,7 +33,7 @@ func AddComment(c *fiber.Ctx) error {
 
 	comment.UsersID = claimsDetails.UsersID
 	comment.PostID = c.Params("id")
-
+	comment.CommentID = helper.UniqueID()
 	validate := validator.New()
 	if err := validate.Struct(comment); err != nil {
 		logger.Logging().Error(err)
@@ -46,7 +46,7 @@ func AddComment(c *fiber.Ctx) error {
 		service.SendResponse(c, http.StatusBadRequest, err.Error(), "Try again", http.MethodPost)
 		return nil
 	}
-	service.SendResponse(c, http.StatusOK, "", "comments added", http.MethodPost, "")
+	service.SendResponse(c, http.StatusOK, "", "comments added", http.MethodPost, comment)
 	return nil
 }
 
@@ -115,7 +115,7 @@ func DeleteComment(c *fiber.Ctx) error {
 		service.SendResponse(c, http.StatusOK, "", "Comment Deleted Successfully", http.MethodDelete, "")
 		return nil
 	}
-	service.SendResponse(c, http.StatusBadRequest, "Invalid authorization", "You can't delete this comment", http.MethodPatch)
+	service.SendResponse(c, http.StatusBadRequest, "Invalid authorization", "You can't delete this comment", http.MethodDelete)
 	return nil
 
 }

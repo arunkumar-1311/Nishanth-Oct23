@@ -21,7 +21,8 @@ func Register(c *fiber.Ctx) error {
 		service.SendResponse(c, http.StatusInternalServerError, err.Error(), "Try Again Later", http.MethodPost, "")
 		return nil
 	}
-
+	user.RolesID = "US1"
+	user.UserID = helper.UniqueID()
 	if err := validate.Struct(user); err != nil {
 		logger.Logging().Error(err)
 		service.SendResponse(c, http.StatusBadRequest, err.Error(), "Give all required fields", http.MethodPost, "")
@@ -34,11 +35,9 @@ func Register(c *fiber.Ctx) error {
 		return nil
 	}
 
-	user.RolesID = "US1"
-
-	if result := helper.EmailValidation(user.Email); !result {
-		logger.Logging().Error("Error in email validation")
-		service.SendResponse(c, http.StatusBadRequest, "email id already exists", "Oops error occurs", http.MethodPost, "")
+	if result := helper.EmailAndNameValidation(user); result != nil {
+		logger.Logging().Error(result)
+		service.SendResponse(c, http.StatusBadRequest, result.Error(), "Oops error occurs", http.MethodPost, "")
 		return nil
 	}
 

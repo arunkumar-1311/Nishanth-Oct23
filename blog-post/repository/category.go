@@ -9,8 +9,12 @@ import (
 )
 
 func CreateCategory(data models.Category) error {
-	if result := adaptor.GetConn().Create(data); result.Error != nil {
+	var result *gorm.DB
+	if result = adaptor.GetConn().Create(data); result.Error != nil {
 		return result.Error
+	}
+	if result.RowsAffected == 0 {
+		return fmt.Errorf("can't create category try again later")
 	}
 	return nil
 }
@@ -53,8 +57,12 @@ func UpdateCategory(id string, content models.Category) error {
 // Helps to read the category by its id
 func ReadCategoryByID(id string) (string, error) {
 	var name string
-	if result := adaptor.GetConn().Model(&models.Category{}).Where("category_id = ?", id).Select("name").Scan(&name); result.Error != nil {
+	var result *gorm.DB
+	if result = adaptor.GetConn().Model(&models.Category{}).Where("category_id = ?", id).Select("name").Scan(&name); result.Error != nil {
 		return name, result.Error
+	}
+	if result.RowsAffected == 0 {
+		return "",fmt.Errorf("invalid category id of %v", id)
 	}
 	return name, nil
 }

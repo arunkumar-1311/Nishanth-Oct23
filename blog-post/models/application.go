@@ -13,6 +13,7 @@ type Post struct {
 	Excerpt      string         `gorm:"column:excerpt; type:varchar" json:"excerpt"  validate:"required"`
 	Status       string         `gorm:"column:status; type:varchar" json:"status" validate:"required"`
 	CategoryID   pq.StringArray `gorm:"column:category_id; type:varchar[]" json:"category_id"  validate:"required"`
+	Categories   []string       `json:"categories" gorm:"-"`
 	Comments     int            `gorm:"-" json:"comments"`
 	PostComments []Comments     `json:"post_comments" gorm:"-"`
 }
@@ -50,7 +51,8 @@ type Comments struct {
 
 // These type struct's are used to send and recieve data to the client
 type Login struct {
-	Name     string `json:"name" validate:"required"`
+	Name     string `json:"name" validate:"required_without=Email"`
+	Email    string `json:"email" validate:"required_without=Name"`
 	Password string `json:"password" validate:"required"`
 }
 
@@ -67,14 +69,7 @@ type CategoriesCount struct {
 }
 
 type AllPost struct {
-	Post            []Post            `json:"posts" gorm:"posts"`
-	CategoriesCount []CategoriesCount `json:"categories"`
-	Archieves       []string          `json:"archieves"`
-}
-
-type Filter struct {
-	Date     string `json:"archieve"`
-	Category string `json:"categories"`
+	Post []Post `json:"posts" gorm:"posts"`
 }
 
 type Overview struct {

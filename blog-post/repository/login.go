@@ -9,10 +9,10 @@ import (
 )
 
 // Helps to return the user with his name
-func User(name string, dest *models.Users) error {
+func User(name string, email string, dest *models.Users) error {
 	var result *gorm.DB
 
-	if result = adaptor.GetConn().Where("name", name).Find(&dest); result.Error != nil {
+	if result = adaptor.GetConn().Where("name = ?", name).Or("email = ?", email).Find(&dest); result.Error != nil {
 		return result.Error
 	}
 

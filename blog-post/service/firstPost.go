@@ -5,6 +5,7 @@ import (
 	"time"
 )
 
+// Helps to find the time difference between 2 time period
 func TimeDifference(date, now time.Time, timeDuration *string) error {
 
 	if date.Location() != now.Location() {
@@ -30,6 +31,6 @@ func TimeDifference(date, now time.Time, timeDuration *string) error {
 		month += 12
 		year--
 	}
-	*timeDuration = fmt.Sprintf("%vd %vm %vy", day, month, year)
+	*timeDuration = fmt.Sprintf("%vy %vm %vd", year, month, day)
 	return nil
 }

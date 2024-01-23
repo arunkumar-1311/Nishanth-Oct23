@@ -5,6 +5,7 @@ import (
 	"blog_post/models"
 	"blog_post/repository"
 	"blog_post/service"
+	"blog_post/service/helper"
 	"net/http"
 
 	"github.com/go-playground/validator/v10"
@@ -23,7 +24,7 @@ func CreateCategory(c *fiber.Ctx) error {
 		service.SendResponse(c, http.StatusInternalServerError, err.Error(), "Try Again Later", http.MethodPost, "")
 		return nil
 	}
-
+	category.CategoryID = helper.UniqueID()
 	if err := validate.Struct(category); err != nil {
 		logger.Logging().Error(err)
 		service.SendResponse(c, http.StatusBadRequest, err.Error(), "Give all required fields", http.MethodPost, "")
@@ -49,7 +50,13 @@ func ReadAllCategories(c *fiber.Ctx) error {
 		return nil
 	}
 
-	service.SendResponse(c, http.StatusOK, "", "All available categories", http.MethodGet, categories)
+	var categoriesCount []models.CategoriesCount
+	if err := helper.Categories(&categoriesCount); err != nil {
+		logger.Logging().Error(err)
+		service.SendResponse(c, http.StatusBadRequest, err.Error(), "Oops error occurs", http.MethodGet, "")
+		return nil
+	}
+	service.SendResponse(c, http.StatusOK, "", "All available categories", http.MethodGet, categories, categoriesCount)
 	return nil
 }
 

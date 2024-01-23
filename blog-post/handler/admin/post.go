@@ -26,6 +26,14 @@ func CreatePost(c *fiber.Ctx) error {
 		return nil
 	}
 
+	for _, value := range post.CategoryID {
+		if _, err := repository.ReadCategoryByID(value); err != nil {
+			logger.Logging().Error(err)
+			service.SendResponse(c, http.StatusBadRequest, err.Error(), "Try Again Later", http.MethodPost, "")
+			return nil
+		}
+	}
+	post.PostID = helper.UniqueID()
 	if err := validate.Struct(post); err != nil {
 		logger.Logging().Error(err)
 		service.SendResponse(c, http.StatusBadRequest, err.Error(), "Give all required fields", http.MethodPost, "")
@@ -52,12 +60,12 @@ func ReadAllPosts(c *fiber.Ctx) error {
 		return nil
 	}
 
-	if err := helper.CommentsAndCategory(allPosts.Post, &allPosts.CategoriesCount, &allPosts.Archieves); err != nil {
+	if err := helper.CommentsAndCategory(allPosts.Post); err != nil {
 		logger.Logging().Error(err)
 		service.SendResponse(c, http.StatusBadRequest, err.Error(), "Oops error occurs", http.MethodGet, "")
 		return nil
 	}
-	service.SendResponse(c, http.StatusOK, "", "All available categories", http.MethodGet, allPosts)
+	service.SendResponse(c, http.StatusOK, "", "All available Posts", http.MethodGet, allPosts)
 	return nil
 }
 

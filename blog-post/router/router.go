@@ -19,7 +19,7 @@ func Routes(router *fiber.App) *fiber.App {
 
 	// Helps to manipulate with list
 	router.Post("/admin/category", handler.Authorization(), admin.CreateCategory)
-	router.Get("/admin/category", handler.Authorization(), admin.ReadAllCategories)
+	router.Get("/category", admin.ReadAllCategories)
 	router.Patch("/admin/category/:id", handler.Authorization(), admin.UpdateCategory)  // This id indicates category ID
 	router.Delete("/admin/category/:id", handler.Authorization(), admin.DeleteCategory) // This id indicates category ID
 
