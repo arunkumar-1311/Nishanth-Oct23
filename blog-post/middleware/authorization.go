@@ -1,4 +1,6 @@
-package handler
+package middleware
+
+
 
 import (
 	"blog_post/logger"
@@ -36,3 +38,4 @@ func Authorization() fiber.Handler {
 		return c.Next()
 	}
 }
+
