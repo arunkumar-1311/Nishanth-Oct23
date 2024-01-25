@@ -2,7 +2,6 @@ package adaptor
 
 import (
 	"blog_post/logger"
-	"blog_post/models"
 	"fmt"
 	"os"
 
@@ -32,10 +31,6 @@ func dbConn() {
 		Logger: log.Default.LogMode(log.Silent),
 	})
 	if err != nil {
-		logger.Logging().Error(err)
-		panic(err)
-	}
-	if err := db.AutoMigrate(&models.Post{}, &models.Category{}, &models.Roles{}, &models.Users{}, &models.Comments{}); err != nil {
 		logger.Logging().Error(err)
 		panic(err)
 	}
