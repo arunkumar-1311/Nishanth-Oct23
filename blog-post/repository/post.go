@@ -6,8 +6,8 @@ import (
 	"gorm.io/gorm"
 )
 
+// Helps to manipulate with all posts
 type Post interface {
-	// Helps to manipulate with all posts
 	ReadPosts(*[]models.Post) error
 	NumberOfComments(string, *int64) error
 	DeletePost(string) error

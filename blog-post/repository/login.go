@@ -6,8 +6,8 @@ import (
 	"gorm.io/gorm"
 )
 
+// Return the profile of the user
 type User interface {
-	// Return the profile of the user
 	User(string, string, *models.Users) error
 }
 

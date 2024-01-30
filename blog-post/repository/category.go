@@ -11,8 +11,8 @@ type GORM_Connection struct {
 	DB *gorm.DB
 }
 
+// Methods helps to manipulate categories
 type Categories interface{
-	// Methods helps to manipulate categories
 	CreateCategory(models.Category) error
 	ReadCategories(*[]models.CategoryResponse) error
 	DeleteCategory(string) error

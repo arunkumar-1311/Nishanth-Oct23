@@ -6,8 +6,8 @@ import (
 	"gorm.io/gorm"
 )
 
+// Methods helps to manipulate with comments
 type Comments interface {
-	// Methods helps to manipulate with comments
 	CreateComment(models.Comments) error
 	DeleteComment(string) error
 	ReadCommentByUser(string, *[]models.Comments) error

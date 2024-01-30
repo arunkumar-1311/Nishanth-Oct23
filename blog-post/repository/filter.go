@@ -5,8 +5,8 @@ import (
 	"time"
 )
 
+// Helps to filter the post content
 type Filters interface {
-	// Helps to filter the post content
 	DateFilter(time.Time, time.Time, *[]models.Post) error
 	CategoryFilter(string, *[]models.Post) error
 }

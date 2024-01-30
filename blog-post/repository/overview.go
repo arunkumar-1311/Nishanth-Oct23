@@ -6,8 +6,8 @@ import (
 	"time"
 )
 
+// Helps to see the overview of the profile
 type Overview interface {
-	// Helps to see the overview of the profile
 	Overview(*models.Overview) error
 }
 
