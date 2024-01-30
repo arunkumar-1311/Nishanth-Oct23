@@ -1,10 +1,8 @@
-package admin
+package handler
 
 import (
-	"blog_post/adaptor"
 	"blog_post/logger"
 	"blog_post/models"
-	"blog_post/repository"
 	"blog_post/service"
 	"blog_post/service/helper"
 
@@ -13,7 +11,7 @@ import (
 )
 
 // Helps to create the post
-func CreatePost(c *fiber.Ctx) error {
+func (h *Handler) CreatePost(c *fiber.Ctx) error {
 
 	c.Accepts("application/json")
 	var post models.Post
@@ -26,7 +24,7 @@ func CreatePost(c *fiber.Ctx) error {
 	}
 
 	for _, value := range post.CategoryID {
-		if _, err := repository.ReadCategoryByID(value); err != nil {
+		if _, err := h.Method.ReadCategoryByID(value); err != nil {
 			logger.Logging().Error(err)
 			service.SendResponse(c, fiber.StatusBadRequest, err.Error(), "Try Again Later", fiber.MethodPost, "")
 			return nil
@@ -39,7 +37,7 @@ func CreatePost(c *fiber.Ctx) error {
 		return nil
 	}
 
-	if err := adaptor.GetConn().Create(&post).Error; err != nil {
+	if err := h.Method.CreatePost(post); err != nil {
 		logger.Logging().Error(err)
 		service.SendResponse(c, fiber.StatusBadRequest, err.Error(), "User Valid Values", fiber.MethodPost, "")
 		return nil
@@ -50,16 +48,16 @@ func CreatePost(c *fiber.Ctx) error {
 }
 
 // Helps to read all the post
-func ReadAllPosts(c *fiber.Ctx) error {
+func (h *Handler) ReadAllPosts(c *fiber.Ctx) error {
 
 	var allPosts models.AllPost
-	if err := repository.ReadPosts(&allPosts.Post); err != nil {
+	if err := h.Method.ReadPosts(&allPosts.Post); err != nil {
 		logger.Logging().Error(err)
 		service.SendResponse(c, fiber.StatusBadRequest, err.Error(), "Oops error occurs", fiber.MethodGet, "")
 		return nil
 	}
 
-	if err := helper.CommentsAndCategory(allPosts.Post); err != nil {
+	if err := helper.CommentsAndCategory(allPosts.Post, h.Method); err != nil {
 		logger.Logging().Error(err)
 		service.SendResponse(c, fiber.StatusBadRequest, err.Error(), "Oops error occurs", fiber.MethodGet, "")
 		return nil
@@ -78,7 +76,7 @@ func ReadAllPosts(c *fiber.Ctx) error {
 }
 
 // Helps to update the existing post
-func UpdatePost(c *fiber.Ctx) error {
+func (h *Handler) UpdatePost(c *fiber.Ctx) error {
 
 	c.Accepts("application/json")
 	var post models.Post
@@ -89,7 +87,7 @@ func UpdatePost(c *fiber.Ctx) error {
 		return nil
 	}
 
-	if err := repository.UpdatePost(id, post); err != nil {
+	if err := h.Method.UpdatePost(id, post); err != nil {
 		logger.Logging().Error(err)
 		service.SendResponse(c, fiber.StatusBadRequest, err.Error(), "Use valid id", fiber.MethodPatch, "")
 		return nil
@@ -100,10 +98,10 @@ func UpdatePost(c *fiber.Ctx) error {
 }
 
 // helps to delete the post with its id
-func DeletePost(c *fiber.Ctx) error {
+func (h *Handler) DeletePost(c *fiber.Ctx) error {
 
 	id := c.Params("id")
-	if err := repository.DeletePost(id); err != nil {
+	if err := h.Method.DeletePost(id); err != nil {
 		logger.Logging().Error(err)
 		service.SendResponse(c, fiber.StatusBadRequest, err.Error(), "use valid id", fiber.MethodDelete, "")
 		return nil
@@ -113,11 +111,11 @@ func DeletePost(c *fiber.Ctx) error {
 }
 
 // Its shows overview statistics of the website
-func Overview(c *fiber.Ctx) error {
+func (h *Handler) Overview(c *fiber.Ctx) error {
 
 	var overview models.Overview
 
-	if err := repository.Overview(&overview); err != nil {
+	if err := h.Method.Overview(&overview); err != nil {
 		logger.Logging().Error(err)
 		service.SendResponse(c, fiber.StatusInternalServerError, err.Error(), "Try Again Later", fiber.MethodGet, "")
 		return nil

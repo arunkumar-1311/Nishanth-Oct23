@@ -3,15 +3,15 @@ package handler
 import (
 	"blog_post/logger"
 	"blog_post/models"
-	"blog_post/repository"
 	"blog_post/service"
 	"blog_post/service/helper"
+
 	"github.com/go-playground/validator/v10"
 	"github.com/gofiber/fiber/v2"
 )
 
 // helps to authentuicate the user
-func Authentication(c *fiber.Ctx) error {
+func (h *Handler) Authentication(c *fiber.Ctx) error {
 
 	var credentials models.Login
 	validate := validator.New()
@@ -29,7 +29,7 @@ func Authentication(c *fiber.Ctx) error {
 	}
 
 	var user models.Users
-	if err := repository.User(credentials.Name, credentials.Email, &user); err != nil {
+	if err := h.Method.User(credentials.Name, credentials.Email, &user); err != nil {
 		logger.Logging().Error(err)
 		service.SendResponse(c, fiber.StatusInternalServerError, err.Error(), "Try Again Later", fiber.MethodPost, "")
 		return nil

@@ -1,19 +1,21 @@
-package admin
+package handler
 
 import (
+	"blog_post/adaptor"
 	"blog_post/logger"
 	"blog_post/models"
-	"blog_post/repository"
 	"blog_post/service"
 	"blog_post/service/helper"
-
 
 	"github.com/go-playground/validator/v10"
 	"github.com/gofiber/fiber/v2"
 )
 
+type Handler struct {
+	Method adaptor.Database
+}
 // Helps to create the category
-func CreateCategory(c *fiber.Ctx) error {
+func(h *Handler)CreateCategory(c *fiber.Ctx) error {
 
 	c.Accepts("application/json")
 	var category models.Category
@@ -31,7 +33,7 @@ func CreateCategory(c *fiber.Ctx) error {
 		return nil
 	}
 
-	if err := repository.CreateCategory(category); err != nil {
+	if err := h.Method.CreateCategory(category); err != nil {
 		logger.Logging().Error(err)
 		service.SendResponse(c, fiber.StatusBadRequest, err.Error(), "Oops error occurs", fiber.MethodPost, "")
 		return nil
@@ -41,17 +43,16 @@ func CreateCategory(c *fiber.Ctx) error {
 }
 
 // Helps to read all the category
-func ReadAllCategories(c *fiber.Ctx) error {
+func(h *Handler) ReadAllCategories(c *fiber.Ctx) error {
 
 	var categories []models.CategoryResponse
-	if err := repository.ReadCategories(&categories); err != nil {
+	if err := h.Method.ReadCategories(&categories); err != nil {
 		logger.Logging().Error(err)
 		service.SendResponse(c, fiber.StatusBadRequest, err.Error(), "Oops error occurs", fiber.MethodGet, "")
 		return nil
 	}
 
-	
-	if err := helper.Categories(categories); err != nil {
+	if err := helper.Categories(categories, h.Method); err != nil {
 		logger.Logging().Error(err)
 		service.SendResponse(c, fiber.StatusBadRequest, err.Error(), "Oops error occurs", fiber.MethodGet, "")
 		return nil
@@ -61,7 +62,7 @@ func ReadAllCategories(c *fiber.Ctx) error {
 }
 
 // Helps to update the existing post
-func UpdateCategory(c *fiber.Ctx) error {
+func (h *Handler)UpdateCategory(c *fiber.Ctx) error {
 
 	c.Accepts("application/json")
 	var category models.Category
@@ -71,7 +72,7 @@ func UpdateCategory(c *fiber.Ctx) error {
 		service.SendResponse(c, fiber.StatusInternalServerError, err.Error(), "Try Again Later", fiber.MethodPatch, "")
 		return nil
 	}
-	if err := repository.UpdateCategory(id, category); err != nil {
+	if err := h.Method.UpdateCategory(id, category); err != nil {
 		logger.Logging().Error(err)
 		service.SendResponse(c, fiber.StatusBadRequest, err.Error(), "Use valid id", fiber.MethodPatch, "")
 		return nil
@@ -82,10 +83,10 @@ func UpdateCategory(c *fiber.Ctx) error {
 }
 
 // helps to delete the post with its id
-func DeleteCategory(c *fiber.Ctx) error {
+func(h *Handler) DeleteCategory(c *fiber.Ctx) error {
 
 	id := c.Params("id")
-	if err := repository.DeleteCategory(id); err != nil {
+	if err := h.Method.DeleteCategory(id); err != nil {
 		logger.Logging().Error(err)
 		service.SendResponse(c, fiber.StatusBadRequest, err.Error(), "use valid id", fiber.MethodDelete, "")
 		return nil

@@ -3,16 +3,16 @@ package handler
 import (
 	"blog_post/logger"
 	"blog_post/models"
-	"blog_post/repository"
 	"blog_post/service"
 	"blog_post/service/helper"
 	"fmt"
+
 	"github.com/go-playground/validator/v10"
 	"github.com/gofiber/fiber/v2"
 )
 
 // Helps to add a comment in the post
-func AddComment(c *fiber.Ctx) error {
+func (h *Handler) AddComment(c *fiber.Ctx) error {
 
 	var comment models.Comments
 	if err := c.BodyParser(&comment); err != nil {
@@ -39,7 +39,7 @@ func AddComment(c *fiber.Ctx) error {
 		return nil
 	}
 
-	if err := repository.CreateComment(comment); err != nil {
+	if err := h.Method.CreateComment(comment); err != nil {
 		logger.Logging().Print(err)
 		service.SendResponse(c, fiber.StatusBadRequest, err.Error(), "Try again", fiber.MethodPost)
 		return nil
@@ -49,7 +49,7 @@ func AddComment(c *fiber.Ctx) error {
 }
 
 // Helps to Update Comment
-func UpdateComment(c *fiber.Ctx) error {
+func (h *Handler) UpdateComment(c *fiber.Ctx) error {
 
 	var updateComment models.Comments
 	if err := c.BodyParser(&updateComment); err != nil {
@@ -59,7 +59,7 @@ func UpdateComment(c *fiber.Ctx) error {
 	}
 
 	var comment models.Comments
-	if err := repository.ReadComment(c.Params("id"), &comment); err != nil {
+	if err := h.Method.ReadComment(c.Params("id"), &comment); err != nil {
 		logger.Logging().Print(err)
 		service.SendResponse(c, fiber.StatusBadRequest, err.Error(), "Try again", fiber.MethodPatch)
 		return nil
@@ -77,7 +77,7 @@ func UpdateComment(c *fiber.Ctx) error {
 		return nil
 	}
 
-	if err := repository.UpdateComment(comment.CommentID, updateComment); err != nil {
+	if err := h.Method.UpdateComment(comment.CommentID, updateComment); err != nil {
 		logger.Logging().Print(err)
 		service.SendResponse(c, fiber.StatusBadRequest, err.Error(), "Try again", fiber.MethodPatch)
 		return nil
@@ -88,7 +88,7 @@ func UpdateComment(c *fiber.Ctx) error {
 }
 
 // Helps to delete Comment
-func DeleteComment(c *fiber.Ctx) error {
+func (h *Handler) DeleteComment(c *fiber.Ctx) error {
 
 	var claims models.Claims
 	if err := helper.Claims(c.Get("Authorization"), &claims); err != nil {
@@ -98,14 +98,14 @@ func DeleteComment(c *fiber.Ctx) error {
 	}
 
 	var comment models.Comments
-	if err := repository.ReadComment(c.Params("id"), &comment); err != nil {
+	if err := h.Method.ReadComment(c.Params("id"), &comment); err != nil {
 		logger.Logging().Print(err)
 		service.SendResponse(c, fiber.StatusBadRequest, err.Error(), "Try again", fiber.MethodDelete)
 		return nil
 	}
 
-	if comment.UsersID == claims.UsersID || claims.UsersID == "ADMIN1" {
-		if err := repository.DeleteComment(comment.CommentID); err != nil {
+	if comment.UsersID == claims.UsersID || claims.UsersID == "49231e30-d267-4a75-947f-a2d344f54064" {
+		if err := h.Method.DeleteComment(comment.CommentID); err != nil {
 			logger.Logging().Print(err)
 			service.SendResponse(c, fiber.StatusBadRequest, err.Error(), "Try again", fiber.MethodDelete)
 			return nil
@@ -119,11 +119,11 @@ func DeleteComment(c *fiber.Ctx) error {
 }
 
 // Helps to Read all comments posted by single user
-func ReadCommentByUser(c *fiber.Ctx) error {
+func (h *Handler) ReadCommentByUser(c *fiber.Ctx) error {
 
 	var comments []models.Comments
 	var commentsResp []models.CommentsResponse
-	if err := repository.ReadCommentByUser(c.Params("id"), &comments); err != nil {
+	if err := h.Method.ReadCommentByUser(c.Params("id"), &comments); err != nil {
 		logger.Logging().Print(err)
 		service.SendResponse(c, fiber.StatusBadRequest, err.Error(), "Try again", fiber.MethodGet)
 		return nil
@@ -141,10 +141,10 @@ func ReadCommentByUser(c *fiber.Ctx) error {
 }
 
 // Helps to read all the comments in the particular post
-func ReadCommentByPost(c *fiber.Ctx) error {
+func (h *Handler) ReadCommentByPost(c *fiber.Ctx) error {
 	var comments []models.Comments
 	var commentsResp []models.CommentsResponse
-	if err := repository.PostComments(c.Params("id"), &comments); err != nil {
+	if err := h.Method.PostComments(c.Params("id"), &comments); err != nil {
 		logger.Logging().Print(err)
 		service.SendResponse(c, fiber.StatusBadRequest, err.Error(), "Try again", fiber.MethodGet)
 		return nil
@@ -162,10 +162,10 @@ func ReadCommentByPost(c *fiber.Ctx) error {
 }
 
 // Helps to read the comment by its id
-func ReadCommentByID(c *fiber.Ctx) error {
+func (h *Handler) ReadCommentByID(c *fiber.Ctx) error {
 	var comment models.Comments
 
-	if err := repository.ReadComment(c.Params("id"), &comment); err != nil {
+	if err := h.Method.ReadComment(c.Params("id"), &comment); err != nil {
 		logger.Logging().Print(err)
 		service.SendResponse(c, fiber.StatusBadRequest, err.Error(), "Try again", fiber.MethodGet)
 		return nil

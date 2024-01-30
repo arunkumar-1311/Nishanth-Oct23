@@ -3,14 +3,14 @@ package handler
 import (
 	"blog_post/logger"
 	"blog_post/models"
-	"blog_post/repository"
 	"blog_post/service"
 	"blog_post/service/helper"
+
 	"github.com/go-playground/validator/v10"
 	"github.com/gofiber/fiber/v2"
 )
 
-func Register(c *fiber.Ctx) error {
+func (h *Handler) Register(c *fiber.Ctx) error {
 	c.Accepts("application/json")
 	var user models.Users
 	validate := validator.New()
@@ -34,13 +34,13 @@ func Register(c *fiber.Ctx) error {
 		return nil
 	}
 
-	if result := helper.EmailAndNameValidation(user); result != nil {
+	if result := helper.EmailAndNameValidation(user, h.Method); result != nil {
 		logger.Logging().Error(result)
 		service.SendResponse(c, fiber.StatusBadRequest, result.Error(), "Oops error occurs", fiber.MethodPost, "")
 		return nil
 	}
 
-	if err := repository.Create(user); err != nil {
+	if err := h.Method.Create(user); err != nil {
 		logger.Logging().Error(err)
 		service.SendResponse(c, fiber.StatusBadRequest, err.Error(), "Oops error occurs", fiber.MethodPost, "")
 		return nil

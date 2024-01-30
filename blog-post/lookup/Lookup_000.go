@@ -1,13 +1,14 @@
 package lookup
 
 import (
-	"blog_post/adaptor"
 	"blog_post/logger"
+	"gorm.io/gorm"
 )
 
-func (*Empty) Lookup_000() {
+// Helps to create the lookup table
+func (*Empty) Lookup_000(db *gorm.DB) {
 
-	if err := adaptor.GetConn().AutoMigrate(&Lookup{}); err != nil {
+	if err := db.AutoMigrate(&Lookup{}); err != nil {
 		logger.Logging().Error(err)
 		panic(err)
 	}

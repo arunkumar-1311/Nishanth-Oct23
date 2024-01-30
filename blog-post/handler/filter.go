@@ -3,7 +3,6 @@ package handler
 import (
 	"blog_post/logger"
 	"blog_post/models"
-	"blog_post/repository"
 	"blog_post/service"
 	"blog_post/service/helper"
 	"time"
@@ -12,7 +11,7 @@ import (
 )
 
 // Helps to filter the post by its published date
-func DateFilter(c *fiber.Ctx) error {
+func (h *Handler)DateFilter(c *fiber.Ctx) error {
 	var filter map[string]string
 	var Posts models.AllPost
 
@@ -37,14 +36,14 @@ func DateFilter(c *fiber.Ctx) error {
 	}
 
 	toDate = time.Date(toDate.Year(), toDate.Month(), toDate.Day(), 23, 59, 59, 999999999, time.Local)
-	err = repository.DateFilter(fromDate, toDate, &Posts.Post)
+	err = h.Method.DateFilter(fromDate, toDate, &Posts.Post)
 	if err != nil {
 		logger.Logging().Error(err)
 		service.SendResponse(c, fiber.StatusInternalServerError, err.Error(), "Try Again Later", fiber.MethodPost, "")
 		return nil
 	}
 
-	if err := helper.CommentsAndCategory(Posts.Post); err != nil {
+	if err := helper.CommentsAndCategory(Posts.Post, h.Method); err != nil {
 		logger.Logging().Error(err)
 		service.SendResponse(c, fiber.StatusBadRequest, err.Error(), "Oops error occurs", fiber.MethodPost, "")
 		return nil
@@ -62,17 +61,17 @@ func DateFilter(c *fiber.Ctx) error {
 }
 
 // Helps to filter the post by its Category
-func CategoryFilter(c *fiber.Ctx) error {
+func (h *Handler)CategoryFilter(c *fiber.Ctx) error {
 
 	var Posts models.AllPost
 
-	if err := repository.CategoryFilter(c.Params("id"), &Posts.Post); err != nil {
+	if err := h.Method.CategoryFilter(c.Params("id"), &Posts.Post); err != nil {
 		logger.Logging().Error(err)
 		service.SendResponse(c, fiber.StatusBadRequest, err.Error(), "Oops error occurs", fiber.MethodGet, "")
 		return nil
 	}
 
-	if err := helper.CommentsAndCategory(Posts.Post); err != nil {
+	if err := helper.CommentsAndCategory(Posts.Post, h.Method); err != nil {
 		logger.Logging().Error(err)
 		service.SendResponse(c, fiber.StatusBadRequest, err.Error(), "Oops error occurs", fiber.MethodGet, "")
 		return nil

@@ -1,27 +1,28 @@
 package helper
 
 import (
+	"blog_post/adaptor"
 	"blog_post/models"
-	"blog_post/repository"
+	
 )
 
 // Helps to find the total comments and categories in the post
-func CommentsAndCategory(Post []models.Post) error {
+func CommentsAndCategory(Post []models.Post, db adaptor.Database) error {
 
 	// Helps to find the number of comments in that particular posts
 	for i := 0; i < len(Post); i++ {
 		var count int64
 
-		if err := repository.NumberOfComments(Post[i].PostID, &count); err != nil {
+		if err := db.NumberOfComments(Post[i].PostID, &count); err != nil {
 			return err
 		}
 		Post[i].Comments = int(count)
-		if err := repository.PostComments(Post[i].PostID, &Post[i].PostComments); err != nil {
+		if err := db.PostComments(Post[i].PostID, &Post[i].PostComments); err != nil {
 			return err
 		}
 
 		for _, value := range Post[i].CategoryID {
-			category, err := repository.ReadCategoryByID(value)
+			category, err := db.ReadCategoryByID(value)
 			if err != nil {
 				return err
 			}
@@ -33,18 +34,18 @@ func CommentsAndCategory(Post []models.Post) error {
 }
 
 // Helps to find the all categories
-func Categories(Categories []models.CategoryResponse) error {
+func Categories(Categories []models.CategoryResponse, db adaptor.Database) error {
 	var totalPost []models.Post
 
 	category := make(map[string]int)
 
-	if err := repository.ReadPosts(&totalPost); err != nil {
+	if err := db.ReadPosts(&totalPost); err != nil {
 		return err
 	}
 
 	for i := 0; i < len(totalPost); i++ {
 		for key, value := range totalPost[i].CategoryID {
-			name, err := repository.ReadCategoryByID(value)
+			name, err := db.ReadCategoryByID(value)
 			if err != nil {
 				return err
 			}

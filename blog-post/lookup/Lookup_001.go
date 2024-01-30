@@ -1,14 +1,15 @@
 package lookup
 
 import (
-	"blog_post/adaptor"
 	"blog_post/logger"
 	"blog_post/models"
+	"gorm.io/gorm"
 )
 
-func (*Empty) Lookup_001() {
+// Create all needed table to work with the application
+func (*Empty) Lookup_001(db *gorm.DB) {
 
-	if err := adaptor.GetConn().AutoMigrate(&models.Post{}, &models.Category{}, &models.Roles{}, &models.Users{}, &models.Comments{}); err != nil {
+	if err := db.AutoMigrate(&models.Post{}, &models.Category{}, &models.Roles{}, &models.Users{}, &models.Comments{}); err != nil {
 		logger.Logging().Error(err)
 		panic(err)
 	}

@@ -2,6 +2,7 @@ package adaptor
 
 import (
 	"blog_post/logger"
+	"blog_post/repository"
 	"fmt"
 	"os"
 
@@ -12,10 +13,21 @@ import (
 	"gorm.io/gorm/schema"
 )
 
-var db *gorm.DB
 
-// Get a new connection
-func dbConn() {
+
+// Contains all needed methods to manipulate db operations
+type Database interface {
+	repository.Categories
+	repository.Comments
+	repository.Filters
+	repository.User
+	repository.Overview
+	repository.Post
+	repository.Register
+}
+
+// Helps to get new DB connection
+func NewDB_Connection() *gorm.DB {
 	err := godotenv.Load(".env")
 	if err != nil {
 		logger.Logging().Error(err)
@@ -24,7 +36,7 @@ func dbConn() {
 	}
 
 	dbConn := fmt.Sprintf("postgres://%s:%s@%s:%s/%s", os.Getenv("user"), os.Getenv("password"), os.Getenv("host"), os.Getenv("port"), os.Getenv("dbname"))
-	db, err = gorm.Open(postgres.Open(dbConn), &gorm.Config{
+	DB, err := gorm.Open(postgres.Open(dbConn), &gorm.Config{
 		NamingStrategy: schema.NamingStrategy{
 			SingularTable: true,
 		},
@@ -34,13 +46,11 @@ func dbConn() {
 		logger.Logging().Error(err)
 		panic(err)
 	}
-
+	return DB
 }
 
-// Check if the connection is exist of helps to occur the connection
-func GetConn() *gorm.DB {
-	if db == nil {
-		dbConn()
-	}
-	return db
+// Set the db connection to the interface
+func AcquireConnection(db *gorm.DB) Database {
+	return &repository.GORM_Connection{DB: db}
+
 }

@@ -1,28 +1,32 @@
 package repository
 
 import (
-	"blog_post/adaptor"
 	"blog_post/models"
 	"blog_post/service"
 	"time"
 )
 
-// Helps to return the overview of the blog post profile
-func Overview(data *models.Overview) (err error) {
+type Overview interface {
+	// Helps to see the overview of the profile
+	Overview(*models.Overview) error
+}
 
-	if result := adaptor.GetConn().Model(&models.Post{}).Count(&data.TotalPost); result.Error != nil {
+// Helps to return the overview of the blog post profile
+func (d *GORM_Connection) Overview(data *models.Overview) (err error) {
+
+	if result := d.DB.Model(&models.Post{}).Count(&data.TotalPost); result.Error != nil {
 		return result.Error
 	}
 
-	if result := adaptor.GetConn().Model(&models.Comments{}).Count(&data.TotalComments); result.Error != nil {
+	if result := d.DB.Model(&models.Comments{}).Count(&data.TotalComments); result.Error != nil {
 		return result.Error
 	}
 
 	var postDate time.Time
-	if result := adaptor.GetConn().Model(&models.Post{}).Select("created_at").Order("created_at ASC").First(&postDate); result.Error != nil {
+	if result := d.DB.Model(&models.Post{}).Select("created_at").Order("created_at ASC").First(&postDate); result.Error != nil {
 		return result.Error
 	}
-	
+
 	if err := service.TimeDifference(postDate, time.Now(), &data.OldestPost); err != nil {
 		return err
 	}
