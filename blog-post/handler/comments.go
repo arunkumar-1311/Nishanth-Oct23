@@ -104,7 +104,7 @@ func (h *Handler) DeleteComment(c *fiber.Ctx) error {
 		return nil
 	}
 
-	if comment.UsersID == claims.UsersID || claims.UsersID == "49231e30-d267-4a75-947f-a2d344f54064" {
+	if comment.UsersID == claims.UsersID || claims.RolesID == "AD1" {
 		if err := h.Method.DeleteComment(comment.CommentID); err != nil {
 			logger.Logging().Print(err)
 			service.SendResponse(c, fiber.StatusBadRequest, err.Error(), "Try again", fiber.MethodDelete)

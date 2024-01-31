@@ -55,7 +55,7 @@ func main() {
 		AppName:       "Blog Post v1.0.1",
 	})
 
-	routes := routing.Routes(router, db)
+	routes := routing.Routes(router, adaptor.AcquireConnection(db))
 	if err := routes.Listen(":8000"); err != nil {
 		fmt.Println("Can't listen to the server ", err)
 		logger.Logging().Print(err)

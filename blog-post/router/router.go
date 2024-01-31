@@ -7,14 +7,13 @@ import (
 	"fmt"
 
 	"github.com/gofiber/fiber/v2"
-	"gorm.io/gorm"
 )
 
-func Routes(router *fiber.App, db *gorm.DB) *fiber.App {
+func Routes(router *fiber.App, db adaptor.Database) *fiber.App {
 	defer fmt.Println("Starting the server....")
 
 	var handler handlers.Handler
-	handler.Method = adaptor.AcquireConnection(db)
+	handler.Method = db
 	// Helps to register the user
 	router.Post("/register", handler.Register)
 
