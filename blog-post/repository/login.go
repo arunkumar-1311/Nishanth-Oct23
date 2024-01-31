@@ -1,18 +1,21 @@
 package repository
 
 import (
-	"blog_post/adaptor"
 	"blog_post/models"
 	"fmt"
-
 	"gorm.io/gorm"
 )
 
+// Return the profile of the user
+type User interface {
+	User(string, string, *models.Users) error
+}
+
 // Helps to return the user with his name
-func User(name string, dest *models.Users) error {
+func (d *GORM_Connection) User(name string, email string, dest *models.Users) error {
 	var result *gorm.DB
-	
-	if result = adaptor.GetConn().Where("name", name).Find(&dest); result.Error != nil {
+
+	if result = d.DB.Where("name = ?", name).Or("email = ?", email).Find(&dest); result.Error != nil {
 		return result.Error
 	}
 

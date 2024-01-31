@@ -11,6 +11,7 @@ import (
 func SendResponse(c *fiber.Ctx, status int, err string, message, method string, data ...interface{}) {
 
 	resp := models.Message{Data: data, Error: err, Code: status, Message: message}
+	c.SendStatus(status)
 	resultErr := c.JSON(resp)
 	if resultErr != nil {
 		logger.Logging().Error(err)

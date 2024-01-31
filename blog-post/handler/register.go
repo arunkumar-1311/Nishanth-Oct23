@@ -3,51 +3,49 @@ package handler
 import (
 	"blog_post/logger"
 	"blog_post/models"
-	"blog_post/repository"
 	"blog_post/service"
 	"blog_post/service/helper"
-	"net/http"
+
 	"github.com/go-playground/validator/v10"
 	"github.com/gofiber/fiber/v2"
 )
 
-func Register(c *fiber.Ctx) error {
+func (h *Handler) Register(c *fiber.Ctx) error {
 	c.Accepts("application/json")
 	var user models.Users
 	validate := validator.New()
 
 	if err := c.BodyParser(&user); err != nil {
 		logger.Logging().Error(err)
-		service.SendResponse(c, http.StatusInternalServerError, err.Error(), "Try Again Later", http.MethodPost, "")
+		service.SendResponse(c, fiber.StatusInternalServerError, err.Error(), "Try Again Later", fiber.MethodPost, "")
 		return nil
 	}
-
+	user.RolesID = "US1"
+	user.UserID = helper.UniqueID()
 	if err := validate.Struct(user); err != nil {
 		logger.Logging().Error(err)
-		service.SendResponse(c, http.StatusBadRequest, err.Error(), "Give all required fields", http.MethodPost, "")
+		service.SendResponse(c, fiber.StatusBadRequest, err.Error(), "Give all required fields", fiber.MethodPost, "")
 		return nil
 	}
 
 	if err := helper.GenerateHash(&user.Password); err != nil {
 		logger.Logging().Error(err)
-		service.SendResponse(c, http.StatusInternalServerError, err.Error(), "Try Again Later", http.MethodPost, "")
+		service.SendResponse(c, fiber.StatusInternalServerError, err.Error(), "Try Again Later", fiber.MethodPost, "")
 		return nil
 	}
 
-	user.RolesID = "US1"
-
-	if result := helper.EmailValidation(user.Email); !result {
-		logger.Logging().Error("Error in email validation")
-		service.SendResponse(c, http.StatusBadRequest, "email id already exists", "Oops error occurs", http.MethodPost, "")
+	if result := helper.EmailAndNameValidation(user, h.Method); result != nil {
+		logger.Logging().Error(result)
+		service.SendResponse(c, fiber.StatusBadRequest, result.Error(), "Oops error occurs", fiber.MethodPost, "")
 		return nil
 	}
 
-	if err := repository.Create(user); err != nil {
+	if err := h.Method.Create(user); err != nil {
 		logger.Logging().Error(err)
-		service.SendResponse(c, http.StatusBadRequest, err.Error(), "Oops error occurs", http.MethodPost, "")
+		service.SendResponse(c, fiber.StatusBadRequest, err.Error(), "Oops error occurs", fiber.MethodPost, "")
 		return nil
 	}
 
-	service.SendResponse(c, http.StatusOK, "", "Please login", http.MethodPost, "User Created successfully")
+	service.SendResponse(c, fiber.StatusOK, "", "Please login", fiber.MethodPost, "User Created successfully")
 	return nil
 }

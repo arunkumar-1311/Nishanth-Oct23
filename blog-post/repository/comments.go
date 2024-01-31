@@ -1,17 +1,25 @@
 package repository
 
 import (
-	"blog_post/adaptor"
 	"blog_post/models"
 	"fmt"
-
 	"gorm.io/gorm"
 )
 
-// Helps to add comment
-func CreateComment(data models.Comments) error {
+// Methods helps to manipulate with comments
+type Comments interface {
+	CreateComment(models.Comments) error
+	DeleteComment(string) error
+	ReadCommentByUser(string, *[]models.Comments) error
+	UpdateComment(string, models.Comments) error
+	ReadComment(string, *models.Comments) error
+	PostComments(string, *[]models.Comments) error
+}
 
-	if result := adaptor.GetConn().Create(&data); result.Error != nil {
+// Helps to add comment
+func (d *GORM_Connection) CreateComment(data models.Comments) error {
+
+	if result := d.DB.Create(&data); result.Error != nil {
 		return result.Error
 	}
 	return nil
@@ -19,9 +27,9 @@ func CreateComment(data models.Comments) error {
 }
 
 // Helps to delete the comment
-func DeleteComment(id string) error {
+func (d *GORM_Connection) DeleteComment(id string) error {
 	var result *gorm.DB
-	if result = adaptor.GetConn().Model(&models.Comments{}).Where("comment_id = ?", id).Unscoped().Delete(&models.Comments{}); result.Error != nil {
+	if result = d.DB.Model(&models.Comments{}).Where("comment_id = ?", id).Unscoped().Delete(&models.Comments{}); result.Error != nil {
 		return result.Error
 	}
 	if result.RowsAffected == 0 {
@@ -31,21 +39,19 @@ func DeleteComment(id string) error {
 }
 
 // helps to read all the comments by single user
-func ReadCommentByUser(id string, dest *[]models.Comments) error {
-	var result *gorm.DB
-	if result = adaptor.GetConn().Model(&models.Comments{}).Where("user_id = ?", id).Find(&dest); result.Error != nil {
+func (d *GORM_Connection) ReadCommentByUser(id string, dest *[]models.Comments) error {
+
+	if result := d.DB.Preload("Users").Where("user_id = ?", id).Find(&dest); result.Error != nil {
 		return result.Error
 	}
-	if result.RowsAffected == 0 {
-		return fmt.Errorf("no comment added by %v", id)
-	}
+
 	return nil
 }
 
 // Helps to update the comment
-func UpdateComment(id string, content models.Comments) error {
+func (d *GORM_Connection) UpdateComment(id string, content models.Comments) error {
 	var result *gorm.DB
-	if result = adaptor.GetConn().Where("comment_id = ?", id).Updates(&content); result.Error != nil {
+	if result = d.DB.Where("comment_id = ?", id).Updates(&content); result.Error != nil {
 		return result.Error
 	}
 	if result.RowsAffected == 0 {
@@ -55,9 +61,9 @@ func UpdateComment(id string, content models.Comments) error {
 }
 
 // Helps to read the comment with its unique id
-func ReadComment(id string, dest *models.Comments) error {
+func (d *GORM_Connection) ReadComment(id string, dest *models.Comments) error {
 	var result *gorm.DB
-	if result = adaptor.GetConn().Model(&models.Comments{}).Where("comment_id = ?", id).Find(&dest); result.Error != nil {
+	if result = d.DB.Model(&models.Comments{}).Preload("Users").Where("comment_id = ?", id).Find(&dest); result.Error != nil {
 		return result.Error
 	}
 	if result.RowsAffected == 0 {
@@ -67,13 +73,11 @@ func ReadComment(id string, dest *models.Comments) error {
 }
 
 // Helps to retrive the comments by its post
-func PostComments(id string, dest *[]models.Comments) error {
+func (d *GORM_Connection) PostComments(id string, dest *[]models.Comments) error {
 	var result *gorm.DB
-	if result = adaptor.GetConn().Model(&models.Comments{}).Where("post_id = ?", id).Find(&dest); result.Error != nil {
+	if result = d.DB.Model(&models.Comments{}).Preload("Users").Where("post_id = ?", id).Find(&dest); result.Error != nil {
 		return result.Error
 	}
-	if result.RowsAffected == 0 {
-		return fmt.Errorf("invalid user id")
-	}
+
 	return nil
 }

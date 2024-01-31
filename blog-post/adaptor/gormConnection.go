@@ -2,28 +2,41 @@ package adaptor
 
 import (
 	"blog_post/logger"
-	"blog_post/models"
+	"blog_post/repository"
 	"fmt"
 	"os"
 
 	"github.com/joho/godotenv"
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
-	"gorm.io/gorm/schema"
 	log "gorm.io/gorm/logger"
+	"gorm.io/gorm/schema"
 )
 
-// Get a new connection
-func dbConn() (db *gorm.DB) {
+
+
+// Contains all needed methods to manipulate db operations
+type Database interface {
+	repository.Categories
+	repository.Comments
+	repository.Filters
+	repository.User
+	repository.Overview
+	repository.Post
+	repository.Register
+}
+
+// Helps to get new DB connection
+func NewDB_Connection() *gorm.DB {
 	err := godotenv.Load(".env")
 	if err != nil {
 		logger.Logging().Error(err)
 		fmt.Print("\nenv error")
-
+		panic(err)
 	}
 
 	dbConn := fmt.Sprintf("postgres://%s:%s@%s:%s/%s", os.Getenv("user"), os.Getenv("password"), os.Getenv("host"), os.Getenv("port"), os.Getenv("dbname"))
-	db, err = gorm.Open(postgres.Open(dbConn), &gorm.Config{
+	DB, err := gorm.Open(postgres.Open(dbConn), &gorm.Config{
 		NamingStrategy: schema.NamingStrategy{
 			SingularTable: true,
 		},
@@ -33,15 +46,11 @@ func dbConn() (db *gorm.DB) {
 		logger.Logging().Error(err)
 		panic(err)
 	}
-	db.AutoMigrate(&models.Post{}, &models.Category{}, &models.Roles{}, &models.Users{}, &models.Comments{})
-
-	return
+	return DB
 }
 
-// Check if the connection is exist of helps to occur the connection
-func GetConn() (db *gorm.DB) {
-	if db == nil {
-		db = dbConn()
-	}
-	return db
+// Set the db connection to the interface
+func AcquireConnection(db *gorm.DB) Database {
+	return &repository.GORM_Connection{DB: db}
+
 }

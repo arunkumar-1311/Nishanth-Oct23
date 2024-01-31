@@ -3,10 +3,10 @@ package helper
 import "golang.org/x/crypto/bcrypt"
 
 // Helps to generate the hash of given password
-func GenerateHash(password *string) (error) {
+func GenerateHash(password *string) error {
 	byte, err := bcrypt.GenerateFromPassword([]byte(*password), 14)
 	*password = string(byte)
-	return  err
+	return err
 
 }
 
