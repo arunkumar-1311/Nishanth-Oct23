@@ -1,9 +1,8 @@
 package logger
 
 import (
-	"os"
-
 	"go.uber.org/zap"
+	"os"
 )
 
 func ZapLog() *zap.Logger {
@@ -15,6 +14,7 @@ func ZapLog() *zap.Logger {
 	cfg := zap.NewProductionConfig()
 	cfg.OutputPaths = []string{"./log.log"}
 	cfg.ErrorOutputPaths = []string{"./log.log"}
+	cfg.DisableStacktrace = true
 
 	logger, _ := cfg.Build()
 	return logger

@@ -34,18 +34,31 @@ type Users struct {
 }
 
 type Orders struct {
-    OrderID       string      `gorm:"column:order_id; uniqueIndex;primaryKey; type:varchar" json:"order_id" validate:"required"`
-    FullName      string      `gorm:"column:full_name; type:varchar" json:"full_name" validate:"required"`
-    UserID        string      `gorm:"column:user_id; type:varchar" json:"user_id" validate:"required"`
-    User          Users       `gorm:"references:UserID;" json:"user"`
-    PhoneNumber   string      `gorm:"column:phone_number; type:varchar" json:"phone_number" validate:"required"`
-    BrandID       string      `gorm:"column:brand_id; type:varchar" json:"brand_id" validate:"required"`
-    Brand         Brand       `gorm:"references:BrandID;" json:"brand"`
-    RamID         string      `gorm:"column:ram_id; type:varchar" json:"ram_id" validate:"required"`
-    Ram           Ram         `gorm:"references:RamID;" json:"ram"`
-    DVD           bool        `gorm:"column:dvd_rw; type:boolean;" json:"dvd_rw" validate:"required"`
-    Total         int         `gorm:"column:total; type:int" json:"total" validate:"required"`
-    OrderStatusID string      `gorm:"column:order_status_id; type:varchar" json:"order_status_id" validate:"required"`
-    OrderStatus   OrderStatus `gorm:"references:OrderStatusID;" json:"order_status"`
-    Active        bool        `gorm:"column:active; type:boolean;" json:"active" validate:"required"`
+	OrderID       string      `gorm:"column:order_id; uniqueIndex;primaryKey; type:varchar" json:"order_id" validate:"required"`
+	FullName      string      `gorm:"column:full_name; type:varchar" json:"full_name" validate:"required"`
+	UserID        string      `gorm:"column:user_id; type:varchar" json:"user_id" validate:"required"`
+	User          Users       `gorm:"references:UserID;" json:"user"`
+	PhoneNumber   string      `gorm:"column:phone_number; type:varchar" json:"phone_number" validate:"required"`
+	BrandID       string      `gorm:"column:brand_id; type:varchar" json:"brand_id" validate:"required"`
+	Brand         Brand       `gorm:"references:BrandID;" json:"brand"`
+	RamID         string      `gorm:"column:ram_id; type:varchar" json:"ram_id" validate:"required"`
+	Ram           Ram         `gorm:"references:RamID;" json:"ram"`
+	DVD           bool        `gorm:"column:dvd_rw; type:boolean;" json:"dvd_rw" validate:"required"`
+	Total         int         `gorm:"column:total; type:int" json:"total" validate:"required"`
+	OrderStatusID string      `gorm:"column:order_status_id; type:varchar" json:"order_status_id" validate:"required"`
+	OrderStatus   OrderStatus `gorm:"references:OrderStatusID;" json:"order_status"`
+	Active        bool        `gorm:"column:active; type:boolean;" json:"active" validate:"required"`
+}
+
+// These type struct's are used to send and recieve data to the client
+type Login struct {
+	Name     string `json:"name" validate:"required"`
+	Password string `json:"password" validate:"required"`
+}
+
+type Claims struct {
+	Name    string `json:"name"`
+	Email   string `json:"email"`
+	UsersID string `json:"user_id"`
+	RolesID string `json:"role"`
 }

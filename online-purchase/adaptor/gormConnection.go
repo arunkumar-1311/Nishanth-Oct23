@@ -14,6 +14,7 @@ import (
 
 // Contains all needed methods to manipulate db operations
 type Database interface {
+	repository.Register
 }
 
 // Helps to get new DB connection

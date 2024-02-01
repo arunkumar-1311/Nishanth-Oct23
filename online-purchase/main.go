@@ -5,6 +5,7 @@ import (
 	"online-purchase/adaptor"
 	"online-purchase/logger"
 	"online-purchase/lookup"
+	"online-purchase/router"
 	"os"
 	"path/filepath"
 	"reflect"
@@ -14,13 +15,13 @@ import (
 )
 
 func main() {
-
 	// Getting DB connection
 	db, err := adaptor.NewDB_Connection()
 	if err != nil {
 		logger.ZapLog().Error(fmt.Sprint(err))
 	}
-
+	router.Routes(adaptor.AcquireConnection(db))
+	
 	// Helps to load the lookup
 	file, err := os.ReadDir("./lookup")
 	if err != nil {
