@@ -27,3 +27,60 @@
 {"level":"error","ts":1706781578.7252066,"caller":"handler/account.go:51","msg":"ERROR: insert or update on table \"users\" violates foreign key constraint \"fk_users_roles\" (SQLSTATE 23503)"}
 {"level":"error","ts":1706781596.850785,"caller":"handler/account.go:85","msg":"Invalid password"}
 {"level":"error","ts":1706781611.3288743,"caller":"handler/account.go:72","msg":"Key: 'Login.Password' Error:Field validation for 'Password' failed on the 'required' tag"}
+{"level":"error","ts":1706784039.895487,"caller":"handler/brand.go:21","msg":"EOF"}
+{"level":"error","ts":1706784125.7334864,"caller":"handler/brand.go:21","msg":"invalid character '}' looking for beginning of object key string"}
+{"level":"error","ts":1706784129.323697,"caller":"handler/brand.go:29","msg":"Key: 'Brand.Status' Error:Field validation for 'Status' failed on the 'required' tag"}
+{"level":"error","ts":1706784144.3483756,"caller":"handler/brand.go:29","msg":"Key: 'Brand.Price' Error:Field validation for 'Price' failed on the 'required' tag"}
+{"level":"error","ts":1706784148.0735412,"caller":"handler/brand.go:29","msg":"Key: 'Brand.Name' Error:Field validation for 'Name' failed on the 'required' tag"}
+{"level":"error","ts":1706786426.4925559,"caller":"handler/brand.go:69","msg":"invalid brand id"}
+{"level":"error","ts":1706786465.956926,"caller":"handler/brand.go:70","msg":"invalid brand id"}
+{"level":"error","ts":1706786489.274772,"caller":"handler/brand.go:70","msg":"invalid brand id"}
+{"level":"error","ts":1706786490.356493,"caller":"handler/brand.go:70","msg":"invalid brand id"}
+{"level":"error","ts":1706786505.6867075,"caller":"handler/brand.go:70","msg":"invalid brand id"}
+{"level":"error","ts":1706786579.736113,"caller":"handler/brand.go:70","msg":"invalid brand id"}
+{"level":"error","ts":1706786698.0527117,"caller":"handler/brand.go:70","msg":"invalid brand id"}
+{"level":"error","ts":1706787150.8186119,"caller":"handler/brand.go:72","msg":"invalid brand id"}
+{"level":"error","ts":1706787189.4175339,"caller":"handler/brand.go:72","msg":"invalid brand id"}
+{"level":"error","ts":1706787211.1327693,"caller":"handler/brand.go:72","msg":"invalid brand id"}
+{"level":"error","ts":1706787404.8196652,"caller":"handler/brand.go:70","msg":"invalid brand id"}
+{"level":"error","ts":1706787431.879985,"caller":"handler/brand.go:70","msg":"invalid brand id"}
+{"level":"error","ts":1706787460.507494,"caller":"handler/brand.go:70","msg":"invalid brand id"}
+{"level":"error","ts":1706787479.3132663,"caller":"handler/brand.go:70","msg":"invalid brand id"}
+{"level":"error","ts":1706787480.5522285,"caller":"handler/brand.go:70","msg":"invalid brand id"}
+{"level":"error","ts":1706787505.154821,"caller":"handler/brand.go:70","msg":"invalid brand id"}
+{"level":"error","ts":1706787518.724447,"caller":"handler/brand.go:70","msg":"invalid brand id"}
+{"level":"error","ts":1706789206.3033895,"caller":"handler/brand.go:70","msg":"invalid brand id"}
+{"level":"error","ts":1706789266.9508193,"caller":"handler/brand.go:70","msg":"invalid brand id"}
+{"level":"error","ts":1706789315.9168155,"caller":"handler/brand.go:70","msg":"invalid brand id"}
+{"level":"error","ts":1706789341.6702428,"caller":"handler/brand.go:70","msg":"invalid brand id"}
+{"level":"error","ts":1706789367.2279396,"caller":"handler/brand.go:70","msg":"invalid brand id"}
+{"level":"error","ts":1706789446.9675517,"caller":"handler/brand.go:70","msg":"invalid brand id"}
+{"level":"error","ts":1706789477.8919168,"caller":"handler/brand.go:70","msg":"invalid brand id"}
+{"level":"error","ts":1706789492.915473,"caller":"handler/brand.go:70","msg":"invalid brand id"}
+{"level":"error","ts":1706790278.1331964,"caller":"handler/brand.go:70","msg":"invalid brand id"}
+{"level":"error","ts":1706790327.3325171,"caller":"handler/brand.go:70","msg":"invalid brand id"}
+{"level":"error","ts":1706790330.3962612,"caller":"handler/brand.go:70","msg":"invalid brand id"}
+{"level":"error","ts":1706790348.0541422,"caller":"handler/brand.go:70","msg":"invalid brand id"}
+{"level":"error","ts":1706790349.0063658,"caller":"handler/brand.go:70","msg":"invalid brand id"}
+{"level":"error","ts":1706792632.7638383,"caller":"handler/brand.go:70","msg":"invalid brand id"}
+{"level":"error","ts":1706792641.736249,"caller":"handler/brand.go:70","msg":"invalid brand id"}
+{"level":"error","ts":1706792650.7225065,"caller":"handler/brand.go:70","msg":"invalid brand id"}
+{"level":"error","ts":1706792743.3757362,"caller":"handler/brand.go:70","msg":"ERROR: duplicate key value violates unique constraint \"brand_pkey\" (SQLSTATE 23505)"}
+{"level":"error","ts":1706792785.6831381,"caller":"handler/brand.go:70","msg":"ERROR: duplicate key value violates unique constraint \"brand_pkey\" (SQLSTATE 23505)"}
+{"level":"error","ts":1706792786.8594694,"caller":"handler/brand.go:70","msg":"ERROR: duplicate key value violates unique constraint \"brand_pkey\" (SQLSTATE 23505)"}
+{"level":"error","ts":1706792873.3037665,"caller":"handler/brand.go:70","msg":"ERROR: duplicate key value violates unique constraint \"brand_pkey\" (SQLSTATE 23505)"}
+{"level":"error","ts":1706792885.4734054,"caller":"handler/brand.go:70","msg":"ERROR: duplicate key value violates unique constraint \"brand_pkey\" (SQLSTATE 23505)"}
+{"level":"error","ts":1706792897.76094,"caller":"handler/brand.go:70","msg":"ERROR: duplicate key value violates unique constraint \"brand_pkey\" (SQLSTATE 23505)"}
+{"level":"error","ts":1706793013.2082112,"caller":"handler/brand.go:70","msg":"invalid brand id"}
+{"level":"error","ts":1706793014.7525678,"caller":"handler/brand.go:70","msg":"invalid brand id"}
+{"level":"error","ts":1706793035.5273082,"caller":"handler/brand.go:70","msg":"invalid brand id"}
+{"level":"error","ts":1706793181.6533754,"caller":"handler/brand.go:63","msg":"invalid character '}' looking for beginning of object key string"}
+{"level":"error","ts":1706793441.3285418,"caller":"handler/brand.go:63","msg":"json: cannot unmarshal string into Go struct field Brand.status of type bool"}
+{"level":"error","ts":1706793710.4087305,"caller":"handler/brand.go:70","msg":"invalid brand id"}
+{"level":"error","ts":1706793739.963928,"caller":"handler/brand.go:101","msg":"unsupported data type: 6276de15-e578-4f8c-add7-292564801738: Table not set, please set it like: db.Model(&user) or db.Table(\"users\")"}
+{"level":"error","ts":1706793826.7141933,"caller":"handler/brand.go:90","msg":"invalid brand id"}
+{"level":"error","ts":1706794578.0792675,"caller":"handler/brand.go:71","msg":"invalid brand id"}
+{"level":"error","ts":1706794597.8591142,"caller":"handler/brand.go:71","msg":"invalid brand id"}
+{"level":"error","ts":1706794935.1251845,"caller":"middleware/authorization.go:33","msg":"admin can only access this feature"}
+{"level":"error","ts":1706794959.3683958,"caller":"handler/brand.go:71","msg":"invalid brand id"}
+{"level":"error","ts":1706794962.9361854,"caller":"handler/brand.go:71","msg":"invalid brand id"}

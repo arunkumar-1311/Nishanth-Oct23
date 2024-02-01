@@ -9,7 +9,7 @@ import (
 
 // Helps to create the user
 // Find the user by email id
-type Register interface {
+type Account interface {
 	CreateUser(models.Users) error
 	FindUserAndEmail(string, string) (models.Users, error)
 	User(string, *models.Users) error

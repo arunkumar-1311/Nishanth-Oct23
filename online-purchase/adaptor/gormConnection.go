@@ -14,7 +14,8 @@ import (
 
 // Contains all needed methods to manipulate db operations
 type Database interface {
-	repository.Register
+	repository.Account
+	repository.Brand
 }
 
 // Helps to get new DB connection
