@@ -16,6 +16,8 @@ import (
 type Database interface {
 	repository.Account
 	repository.Brand
+	repository.Ram
+	repository.Order
 }
 
 // Helps to get new DB connection

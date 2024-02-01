@@ -20,8 +20,7 @@ func main() {
 	if err != nil {
 		logger.ZapLog().Error(fmt.Sprint(err))
 	}
-	router.Routes(adaptor.AcquireConnection(db))
-	
+
 	// Helps to load the lookup
 	file, err := os.ReadDir("./lookup")
 	if err != nil {
@@ -53,5 +52,7 @@ func main() {
 			}
 		}
 	}
+
+	router.Routes(adaptor.AcquireConnection(db))
 
 }

@@ -13,108 +13,109 @@ import (
 	"github.com/go-playground/validator/v10"
 )
 
-// Helps to create new brand
-func (h *Handlers) CreateBrand(ctx *context.Context) {
+// Helps to create new ram product
+func (h *Handlers) CreateRAM(ctx *context.Context) {
 	ctx.Output.Header("content-Type", "application/json")
-	var brand models.Brand
+	var ram models.Ram
 
-	if err := json.NewDecoder(ctx.Request.Body).Decode(&brand); err != nil {
+	if err := json.NewDecoder(ctx.Request.Body).Decode(&ram); err != nil {
 		logger.ZapLog().Error(err.Error())
 		service.SendResponse(ctx, http.StatusInternalServerError, err.Error(), "Please try again later", "")
 		return
 	}
 
-	brand.BrandID = helper.UniqueID()
+	ram.RamID = helper.UniqueID()
 	validate := validator.New()
-	if err := validate.Struct(brand); err != nil {
+	if err := validate.Struct(ram); err != nil {
 		logger.ZapLog().Error(err.Error())
 		service.SendResponse(ctx, http.StatusBadRequest, err.Error(), "Invalid request", "")
 		return
 	}
 
-	if err := h.CreateNewBrand(brand); err != nil {
+	if err := h.CreateNewRam(ram); err != nil {
 		logger.ZapLog().Error(err.Error())
 		service.SendResponse(ctx, http.StatusBadRequest, err.Error(), "Invalid request", "")
 		return
 	}
 
-	service.SendResponse(ctx, http.StatusOK, "", "Brand Created Successfully", "")
+	service.SendResponse(ctx, http.StatusOK, "", "Ram Created Successfully", "")
 }
 
-// Helps to get all brands in th application
-func (h *Handlers) GetBrands(ctx *context.Context) {
+// Helps to get all RAM's in th application
+func (h *Handlers) GetAllRAMs(ctx *context.Context) {
 	ctx.Output.Header("content-Type", "application/json")
-	var brands []models.Brand
+	var ram []models.Ram
 
-	if err := h.ReadBrands(&brands); err != nil {
+	if err := h.ReadRAMs(&ram); err != nil {
 		logger.ZapLog().Error(err.Error())
 		service.SendResponse(ctx, http.StatusInternalServerError, err.Error(), "Please try again later", "")
 		return
 	}
 
-	service.SendResponse(ctx, http.StatusOK, "", "Fetching all brands", brands)
+	service.SendResponse(ctx, http.StatusOK, "", "Fetching all RAM's", ram)
 }
 
-// Helps to get brand by id
-func (h *Handlers) GetBrandByID(ctx *context.Context) {
+// Helps to get all RAM's in th application
+func (h *Handlers) GetRamByID(ctx *context.Context) {
 	ctx.Output.Header("content-Type", "application/json")
-	var brand models.Brand
+	var ram models.Ram
 
-	if err := h.ReadBrandByID(ctx.Input.Query(":id"), &brand); err != nil {
+	if err := h.ReadRAMByID(ctx.Input.Query(":id"), &ram); err != nil {
 		logger.ZapLog().Error(err.Error())
 		service.SendResponse(ctx, http.StatusInternalServerError, err.Error(), "Please try again later", "")
 		return
 	}
 
-	service.SendResponse(ctx, http.StatusOK, "", "Fetching brand by ID", brand)
+	service.SendResponse(ctx, http.StatusOK, "", "Fetching RAM by ID", ram)
 }
 
-// Helps to update the existing brand
-func (h *Handlers) UpdateBrand(ctx *context.Context) {
+// Helps to update the existing ram
+func (h *Handlers) UpdateRAM(ctx *context.Context) {
 	ctx.Output.Header("content-Type", "application/json")
-	var brand models.Brand
+	var ram models.Ram
 
-	if err := json.NewDecoder(ctx.Request.Body).Decode(&brand); err != nil {
+	if err := json.NewDecoder(ctx.Request.Body).Decode(&ram); err != nil {
 		logger.ZapLog().Error(err.Error())
 		service.SendResponse(ctx, http.StatusInternalServerError, err.Error(), "Please try again later", "")
 		return
 	}
 
-	if err := h.UpdateBrandByID(ctx.Input.Query(":id"), brand); err != nil {
+	if err := h.UpdateRAMByID(ctx.Input.Query(":id"), ram); err != nil {
 		logger.ZapLog().Error(err.Error())
 		service.SendResponse(ctx, http.StatusBadRequest, err.Error(), "Invalid request", "")
 		return
 	}
 
-	if err := h.ReadBrandByID(ctx.Input.Query(":id"), &brand); err != nil {
+	if err := h.ReadRAMByID(ctx.Input.Query(":id"), &ram); err != nil {
 		logger.ZapLog().Error(err.Error())
 		service.SendResponse(ctx, http.StatusBadRequest, err.Error(), "Invalid request", "")
 		return
 	}
 
-	service.SendResponse(ctx, http.StatusOK, "", fmt.Sprintf("Updated %v brand successfully", ctx.Input.Query(":id")), brand)
+	service.SendResponse(ctx, http.StatusOK, "", fmt.Sprintf("Updated %v ram successfully", ctx.Input.Query(":id")), ram)
 }
 
-// Delete the brand by id
-func (h *Handlers) DeleteBrand(ctx *context.Context) {
+// Delete the ram by id
+func (h *Handlers) DeleteRAM(ctx *context.Context) {
 	ctx.Output.Header("content-Type", "application/json")
 
-	var brand models.Brand
-	if err := h.ReadBrandByID(ctx.Input.Query(":id"), &brand); err != nil {
+	var ram models.Ram
+
+	if err := h.ReadRAMByID(ctx.Input.Query(":id"), &ram); err != nil {
 		logger.ZapLog().Error(err.Error())
 		service.SendResponse(ctx, http.StatusBadRequest, err.Error(), "Invalid request", "")
 		return
 	}
 
-	if brand.Status {
-		service.SendResponse(ctx, http.StatusBadRequest, "Can't delete active brand", "Invalid request", "")
+	if ram.Status {
+		service.SendResponse(ctx, http.StatusBadRequest, "Can't delete active Product", "Invalid request", "")
 		return
 	}
 
-	if err := h.DeleteBrandByID(ctx.Input.Query(":id")); err != nil {
+	if err := h.DeleteRAMByID(ctx.Input.Query(":id")); err != nil {
 		logger.ZapLog().Error(err.Error())
 		service.SendResponse(ctx, http.StatusBadRequest, err.Error(), "Invalid request", "")
 		return
 	}
-	service.SendResponse(ctx, http.StatusOK, "", fmt.Sprintf("Deleted %v brand successfully", ctx.Input.Query(":id")), "")
+	service.SendResponse(ctx, http.StatusOK, "", fmt.Sprintf("Deleted %v ram successfully", ctx.Input.Query(":id")), "")
 }

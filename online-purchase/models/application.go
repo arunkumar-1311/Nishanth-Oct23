@@ -37,16 +37,17 @@ type Orders struct {
 	OrderID       string      `gorm:"column:order_id; uniqueIndex;primaryKey; type:varchar" json:"order_id" validate:"required"`
 	FullName      string      `gorm:"column:full_name; type:varchar" json:"full_name" validate:"required"`
 	UserID        string      `gorm:"column:user_id; type:varchar" json:"user_id" validate:"required"`
-	User          Users       `gorm:"references:UserID;" json:"user"`
+	User          Users       `gorm:"references:UserID;" json:"-" validate:"omitempty,uuid4"`
 	PhoneNumber   string      `gorm:"column:phone_number; type:varchar" json:"phone_number" validate:"required"`
+	Address       string      `gorm:"column:address; type:varchar" json:"address" validate:"required"`
 	BrandID       string      `gorm:"column:brand_id; type:varchar" json:"brand_id" validate:"required"`
-	Brand         Brand       `gorm:"references:BrandID;" json:"brand"`
+	Brand         Brand       `gorm:"references:BrandID;" json:"brand" validate:"omitempty,uuid4"`
 	RamID         string      `gorm:"column:ram_id; type:varchar" json:"ram_id" validate:"required"`
-	Ram           Ram         `gorm:"references:RamID;" json:"ram"`
+	Ram           Ram         `gorm:"references:RamID;" json:"ram" validate:"omitempty,uuid4"`
 	DVD           bool        `gorm:"column:dvd_rw; type:boolean;" json:"dvd_rw" validate:"required"`
 	Total         int         `gorm:"column:total; type:int" json:"total" validate:"required"`
 	OrderStatusID string      `gorm:"column:order_status_id; type:varchar" json:"order_status_id" validate:"required"`
-	OrderStatus   OrderStatus `gorm:"references:OrderStatusID;" json:"order_status"`
+	OrderStatus   OrderStatus `gorm:"references:OrderStatusID;" json:"order_status" validate:"omitempty,uuid4"`
 	Active        bool        `gorm:"column:active; type:boolean;" json:"active" validate:"required"`
 }
 

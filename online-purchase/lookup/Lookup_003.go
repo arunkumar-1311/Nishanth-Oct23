@@ -12,6 +12,7 @@ func (*Empty) Lookup_003(db *gorm.DB) error {
 		{OrderStatusID: "S-UP", Status: "Underprocess"},
 		{OrderStatusID: "S-SH", Status: "Shipped"},
 		{OrderStatusID: "S-DD", Status: "Delivered"},
+		{OrderStatusID: "S-NULL", Status: "null"},
 	}
 
 	if err := db.Create(orderStatus).Error; err != nil {

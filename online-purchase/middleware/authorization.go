@@ -25,13 +25,13 @@ func Authorization(ctx *context.Context) {
 
 	if _, err := helper.VerifyToken(token[0][7:]); err != nil {
 		logger.ZapLog().Error(err.Error())
-		service.SendResponse(ctx, http.StatusInternalServerError, err.Error(), "Please try again later", "")
+		service.SendResponse(ctx, http.StatusBadRequest, err.Error(), "Please try again later", "")
 		return
 	}
 
 	if err := helper.AdminAccess(token[0]); strings.Contains(ctx.Request.RequestURI, "admin") && err != nil {
 		logger.ZapLog().Error(err.Error())
-		service.SendResponse(ctx, http.StatusInternalServerError, err.Error(), "Please try again later", "")
+		service.SendResponse(ctx, http.StatusBadRequest, err.Error(), "Please try again later", "")
 		return
 	}
 }
