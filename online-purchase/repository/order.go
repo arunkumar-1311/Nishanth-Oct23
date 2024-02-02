@@ -15,6 +15,7 @@ type Order interface {
 	DeleteOrderByID(string) error
 	CancelOrderByID(string, bool) error
 	ReadAllOrderStatus(*[]models.OrderStatus) error
+	UpdateOrderStatusByID(string, string) error
 }
 
 // Helps to create new order in orders table
@@ -92,6 +93,15 @@ func (d *GORM_Connection) CancelOrderByID(id string, status bool) error {
 func (d *GORM_Connection) ReadAllOrderStatus(orderStatus *[]models.OrderStatus) error {
 
 	if result := d.DB.Find(&orderStatus); result.Error != nil {
+		return result.Error
+	}
+	return nil
+}
+
+// Helps to update the order status by id
+func (d *GORM_Connection) UpdateOrderStatusByID(id string, status string) error {
+
+	if result := d.DB.Model(&models.Orders{}).Where("order_id = ?", id).Update("order_status_id", status); result.Error != nil {
 		return result.Error
 	}
 	return nil

@@ -31,7 +31,9 @@ func Routes(db adaptor.Database) {
 		beego.NSPatch("/ram/:id", handlers.UpdateRAM),
 		beego.NSDelete("/ram/:id", handlers.DeleteRAM),
 		beego.NSGet("/orders", handlers.GetAllOrders),
-		beego.NSGet("/orderstatus", handlers.GetAllOrderStatus))
+		beego.NSGet("/orderstatus", handlers.GetAllOrderStatus),
+		beego.NSPatch("/order/:id", handlers.UpdateStatus),
+		beego.NSDelete("/order/:id", handlers.DeleteOrder))
 
 	order := beego.NewNamespace("/order",
 		beego.NSBefore(middleware.Authorization),

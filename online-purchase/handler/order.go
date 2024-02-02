@@ -98,7 +98,7 @@ func (h *Handlers) GetOrderByID(ctx *context.Context) {
 		return
 	}
 
-	if order.UserID != claims.UsersID || claims.RolesID == "AD1" {
+	if order.UserID != claims.UsersID && claims.RolesID != "AD1" {
 		service.SendResponse(ctx, http.StatusBadRequest, "Unauthorized for this page", "Invalid request", "")
 		return
 	}
@@ -135,7 +135,7 @@ func (h *Handlers) GetAllOrders(ctx *context.Context) {
 	service.SendResponse(ctx, http.StatusOK, "", "Fetching all orders", orderResponse)
 }
 
-// Helps to get all the order status 
+// Helps to get all the order status
 func (h *Handlers) GetAllOrderStatus(ctx *context.Context) {
 	var orderStatus []models.OrderStatus
 	if err := h.ReadAllOrderStatus(&orderStatus); err != nil {
@@ -196,4 +196,88 @@ func (h *Handlers) CancelOrder(ctx *context.Context) {
 	}
 
 	service.SendResponse(ctx, http.StatusOK, "", "Order status changed", fmt.Sprintf("To track your order : http://localhost:8000/order/%v", order.OrderID))
+}
+
+// Helps to update the order
+func (h *Handlers) UpdateStatus(ctx *context.Context) {
+
+	var updateStatus map[string]interface{}
+	var claims models.Claims
+	var order models.Orders
+
+	if err := json.NewDecoder(ctx.Request.Body).Decode(&updateStatus); err != nil {
+		logger.ZapLog().Error(err.Error())
+		service.SendResponse(ctx, http.StatusInternalServerError, err.Error(), "Please try again later", "")
+		return
+	}
+
+	if err := helper.Claims(ctx.Request.Header["Authorization"][0], &claims); err != nil {
+		logger.ZapLog().Error(err.Error())
+		service.SendResponse(ctx, http.StatusBadRequest, err.Error(), "Invalid request", "")
+		return
+	}
+
+	if err := h.ReadOrderByID(ctx.Input.Query(":id"), &order); err != nil {
+		logger.ZapLog().Error(err.Error())
+		service.SendResponse(ctx, http.StatusBadRequest, err.Error(), "Invalid request", "")
+		return
+	}
+
+	if updateStatus["order_status_id"] == nil {
+		service.SendResponse(ctx, http.StatusBadRequest, "Requried \"order_status_id\" field", "Invalid request", "")
+		return
+	}
+
+	status, ok := updateStatus["order_status_id"].(string)
+	if !ok {
+		logger.ZapLog().Error("Invalid datatype expected string")
+		service.SendResponse(ctx, http.StatusBadRequest, "Invalid datatype expected string", "Invalid request", "")
+		return
+	}
+
+	if err := h.UpdateOrderStatusByID(ctx.Input.Query(":id"), status); err != nil {
+		logger.ZapLog().Error(err.Error())
+		service.SendResponse(ctx, http.StatusBadRequest, err.Error(), "Invalid request", "")
+		return
+	}
+
+	if status == "S-DD" {
+		if err := h.CancelOrderByID(ctx.Input.Query(":id"), false); err != nil {
+			logger.ZapLog().Error(err.Error())
+			service.SendResponse(ctx, http.StatusBadRequest, err.Error(), "Invalid request", "")
+			return
+		}
+	}
+
+	if err := h.ReadOrderByID(ctx.Input.Query(":id"), &order); err != nil {
+		logger.ZapLog().Error(err.Error())
+		service.SendResponse(ctx, http.StatusBadRequest, err.Error(), "Invalid request", "")
+		return
+	}
+
+	service.SendResponse(ctx, http.StatusOK, "", "Order status changed", order)
+}
+
+// Helps to delete the order
+func (h *Handlers) DeleteOrder(ctx *context.Context) {
+	var order models.Orders
+
+	if err := h.ReadOrderByID(ctx.Input.Query(":id"), &order); err != nil {
+		logger.ZapLog().Error(err.Error())
+		service.SendResponse(ctx, http.StatusBadRequest, err.Error(), "Invalid request", "")
+		return
+	}
+
+	if order.Active {
+		service.SendResponse(ctx, http.StatusBadRequest, "Can't Delete the active order", "Invalid request", "")
+		return
+	}
+
+	if err := h.DeleteOrderByID(ctx.Input.Query(":id")); err != nil {
+		logger.ZapLog().Error(err.Error())
+		service.SendResponse(ctx, http.StatusBadRequest, err.Error(), "Invalid request", "")
+		return
+	}
+
+	service.SendResponse(ctx, http.StatusOK, "", fmt.Sprintf("Deleted the order %v", ctx.Input.Query(":id")), "")
 }

@@ -126,3 +126,13 @@
 {"level":"error","ts":1706859498.0238788,"caller":"handler/order.go:139","msg":"Needed \"active\" field"}
 {"level":"error","ts":1706859512.104879,"caller":"handler/order.go:146","msg":"Invalid datatype expected boolean"}
 {"level":"error","ts":1706861014.2834024,"caller":"middleware/authorization.go:33","msg":"admin can only access this feature"}
+{"level":"error","ts":1706866428.9118161,"caller":"middleware/authorization.go:33","msg":"admin can only access this feature"}
+{"level":"error","ts":1706866529.5317957,"caller":"handler/order.go:221","msg":"invalid Order id"}
+{"level":"error","ts":1706866582.2202256,"caller":"handler/order.go:209","msg":"EOF"}
+{"level":"error","ts":1706866603.837439,"caller":"handler/order.go:221","msg":"invalid Order id"}
+{"level":"error","ts":1706866641.382107,"caller":"handler/order.go:233","msg":"Invalid datatype expected string"}
+{"level":"error","ts":1706867946.2769802,"caller":"handler/order.go:35","msg":"invalid brand id"}
+{"level":"error","ts":1706867994.3384864,"caller":"handler/order.go:41","msg":"invalid RAM id"}
+{"level":"error","ts":1706868185.783671,"caller":"middleware/authorization.go:33","msg":"admin can only access this feature"}
+{"level":"error","ts":1706868209.1259665,"caller":"middleware/authorization.go:33","msg":"admin can only access this feature"}
+{"level":"error","ts":1706868309.5957966,"caller":"handler/order.go:96","msg":"invalid Order id"}
