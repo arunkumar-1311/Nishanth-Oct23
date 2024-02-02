@@ -105,3 +105,24 @@
 {"level":"error","ts":1706801050.5908244,"caller":"online-purchase/main.go:40","msg":"ERROR: duplicate key value violates unique constraint \"order_status_pkey\" (SQLSTATE 23505)"}
 {"level":"error","ts":1706801054.058907,"caller":"handler/order.go:66","msg":"ERROR: insert or update on table \"orders\" violates foreign key constraint \"fk_orders_order_status\" (SQLSTATE 23503)"}
 {"level":"error","ts":1706802361.5527618,"caller":"handler/order.go:86","msg":"brand: unsupported relations for schema Orders; ram: unsupported relations for schema Orders"}
+{"level":"error","ts":1706851009.9562767,"caller":"handler/ram.go:30","msg":"Key: 'Ram.Status' Error:Field validation for 'Status' failed on the 'required' tag"}
+{"level":"error","ts":1706851057.3473096,"caller":"handler/ram.go:33","msg":"Key: 'Ram.Status' Error:Field validation for 'Status' failed on the 'required' tag"}
+{"level":"error","ts":1706852751.9374595,"caller":"handler/account.go:48","msg":"email id already exist"}
+{"level":"error","ts":1706853227.1639628,"caller":"middleware/authorization.go:33","msg":"admin can only access this feature"}
+{"level":"error","ts":1706853563.794153,"caller":"handler/ram.go:37","msg":"ERROR: column \"ram_id\" does not exist (SQLSTATE 42703)"}
+{"level":"error","ts":1706853611.2398334,"caller":"handler/ram.go:37","msg":"ERROR: column \"ram_id\" does not exist (SQLSTATE 42703)"}
+{"level":"error","ts":1706854054.235808,"caller":"handler/ram.go:79","msg":"invalid character '\"' after object key:value pair"}
+{"level":"error","ts":1706854061.6754763,"caller":"handler/ram.go:79","msg":"invalid character '}' looking for beginning of object key string"}
+{"level":"error","ts":1706854214.3400264,"caller":"handler/ram.go:31","msg":"Key: 'Ram.Status' Error:Field validation for 'Status' failed on the 'required' tag"}
+{"level":"error","ts":1706854458.8929172,"caller":"handler/ram.go:31","msg":"Key: 'Ram.Status' Error:Field validation for 'Status' failed on the 'required' tag"}
+{"level":"error","ts":1706854503.1963067,"caller":"handler/ram.go:31","msg":"Key: 'Ram.Status' Error:Field validation for 'Status' failed on the 'required' tag"}
+{"level":"error","ts":1706855102.1402304,"caller":"handler/ram.go:22","msg":"invalid character '}' looking for beginning of object key string"}
+{"level":"error","ts":1706855261.903707,"caller":"handler/brand.go:78","msg":"invalid character '}' looking for beginning of object key string"}
+{"level":"error","ts":1706856572.7668493,"caller":"handler/brand.go:84","msg":"EOF"}
+{"level":"error","ts":1706857290.0095801,"caller":"online-purchase/main.go:40","msg":"ERROR: duplicate key value violates unique constraint \"roles_pkey\" (SQLSTATE 23505)"}
+{"level":"error","ts":1706857290.010481,"caller":"online-purchase/main.go:40","msg":"ERROR: duplicate key value violates unique constraint \"order_status_pkey\" (SQLSTATE 23505)"}
+{"level":"error","ts":1706857936.12805,"caller":"handler/order.go:35","msg":"invalid brand id"}
+{"level":"error","ts":1706859466.2528327,"caller":"handler/order.go:116","msg":"EOF"}
+{"level":"error","ts":1706859498.0238788,"caller":"handler/order.go:139","msg":"Needed \"active\" field"}
+{"level":"error","ts":1706859512.104879,"caller":"handler/order.go:146","msg":"Invalid datatype expected boolean"}
+{"level":"error","ts":1706861014.2834024,"caller":"middleware/authorization.go:33","msg":"admin can only access this feature"}

@@ -72,7 +72,9 @@ func (h *Handlers) GetBrandByID(ctx *context.Context) {
 // Helps to update the existing brand
 func (h *Handlers) UpdateBrand(ctx *context.Context) {
 	ctx.Output.Header("content-Type", "application/json")
-	var brand models.Brand
+	var brand map[string]interface{}
+	var updateBrand models.Brand
+	var exitingBrand models.Brand
 
 	if err := json.NewDecoder(ctx.Request.Body).Decode(&brand); err != nil {
 		logger.ZapLog().Error(err.Error())
@@ -80,19 +82,42 @@ func (h *Handlers) UpdateBrand(ctx *context.Context) {
 		return
 	}
 
-	if err := h.UpdateBrandByID(ctx.Input.Query(":id"), brand); err != nil {
+	marshalBrand, err := json.Marshal(brand)
+	if err != nil {
+		logger.ZapLog().Error(err.Error())
+		service.SendResponse(ctx, http.StatusInternalServerError, err.Error(), "Please try again later", "")
+		return
+	}
+
+	if err := json.Unmarshal(marshalBrand, &updateBrand); err != nil {
+		logger.ZapLog().Error(err.Error())
+		service.SendResponse(ctx, http.StatusInternalServerError, err.Error(), "Please try again later", "")
+		return
+	}
+
+	if err := h.ReadBrandByID(ctx.Input.Query(":id"), &exitingBrand); err != nil {
 		logger.ZapLog().Error(err.Error())
 		service.SendResponse(ctx, http.StatusBadRequest, err.Error(), "Invalid request", "")
 		return
 	}
 
-	if err := h.ReadBrandByID(ctx.Input.Query(":id"), &brand); err != nil {
+	if brand["status"] == nil {
+		updateBrand.Status = exitingBrand.Status
+	}
+
+	if err := h.UpdateBrandByID(ctx.Input.Query(":id"), updateBrand); err != nil {
 		logger.ZapLog().Error(err.Error())
 		service.SendResponse(ctx, http.StatusBadRequest, err.Error(), "Invalid request", "")
 		return
 	}
 
-	service.SendResponse(ctx, http.StatusOK, "", fmt.Sprintf("Updated %v brand successfully", ctx.Input.Query(":id")), brand)
+	if err := h.ReadBrandByID(ctx.Input.Query(":id"), &updateBrand); err != nil {
+		logger.ZapLog().Error(err.Error())
+		service.SendResponse(ctx, http.StatusBadRequest, err.Error(), "Invalid request", "")
+		return
+	}
+
+	service.SendResponse(ctx, http.StatusOK, "", fmt.Sprintf("Updated %v brand successfully", ctx.Input.Query(":id")), updateBrand)
 }
 
 // Delete the brand by id

@@ -17,8 +17,15 @@ type Brand interface {
 
 // Helps to create new brand in brands table
 func (d *GORM_Connection) CreateNewBrand(brand models.Brand) error {
+
 	if err := d.DB.Create(&brand).Error; err != nil {
 		return err
+	}
+
+	if !brand.Status {
+		if result := d.DB.Model(&models.Brand{}).Where("brand_id = ?", brand.BrandID).Update("status", false); result.Error != nil {
+			return result.Error
+		}
 	}
 	return nil
 }

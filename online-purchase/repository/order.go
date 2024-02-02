@@ -13,6 +13,8 @@ type Order interface {
 	ReadOrderByID(string, *models.Orders) error
 	UpdateOrderByID(string, models.Orders) error
 	DeleteOrderByID(string) error
+	CancelOrderByID(string, bool) error
+	ReadAllOrderStatus(*[]models.OrderStatus) error
 }
 
 // Helps to create new order in orders table
@@ -25,7 +27,7 @@ func (d *GORM_Connection) CreateNewOrder(order models.Orders) error {
 
 // Helps to get all the Order available in the application
 func (d *GORM_Connection) ReadOrders(Orders *[]models.Orders) error {
-	if err := d.DB.Find(&Orders).Error; err != nil {
+	if err := d.DB.Preload("Brand").Preload("Ram").Preload("OrderStatus").Find(&Orders).Error; err != nil {
 		return err
 	}
 	return nil
@@ -73,6 +75,24 @@ func (d *GORM_Connection) DeleteOrderByID(id string) error {
 
 	if result.RowsAffected == 0 {
 		return fmt.Errorf("invalid Order id")
+	}
+	return nil
+}
+
+// Helps to upadate the order active status
+func (d *GORM_Connection) CancelOrderByID(id string, status bool) error {
+
+	if result := d.DB.Model(&models.Orders{}).Where("order_id = ?", id).Update("active", status); result.Error != nil {
+		return result.Error
+	}
+	return nil
+}
+
+// Helps to read all order status
+func (d *GORM_Connection) ReadAllOrderStatus(orderStatus *[]models.OrderStatus) error {
+
+	if result := d.DB.Find(&orderStatus); result.Error != nil {
+		return result.Error
 	}
 	return nil
 }

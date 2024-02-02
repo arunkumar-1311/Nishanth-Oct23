@@ -72,7 +72,9 @@ func (h *Handlers) GetRamByID(ctx *context.Context) {
 // Helps to update the existing ram
 func (h *Handlers) UpdateRAM(ctx *context.Context) {
 	ctx.Output.Header("content-Type", "application/json")
-	var ram models.Ram
+	var ram map[string]interface{}
+	var exitingRAM models.Ram
+	var updateRAM models.Ram
 
 	if err := json.NewDecoder(ctx.Request.Body).Decode(&ram); err != nil {
 		logger.ZapLog().Error(err.Error())
@@ -80,19 +82,42 @@ func (h *Handlers) UpdateRAM(ctx *context.Context) {
 		return
 	}
 
-	if err := h.UpdateRAMByID(ctx.Input.Query(":id"), ram); err != nil {
+	marshalBrand, err := json.Marshal(ram)
+	if err != nil {
+		logger.ZapLog().Error(err.Error())
+		service.SendResponse(ctx, http.StatusInternalServerError, err.Error(), "Please try again later", "")
+		return
+	}
+
+	if err := json.Unmarshal(marshalBrand, &updateRAM); err != nil {
+		logger.ZapLog().Error(err.Error())
+		service.SendResponse(ctx, http.StatusInternalServerError, err.Error(), "Please try again later", "")
+		return
+	}
+
+	if err := h.ReadRAMByID(ctx.Input.Query(":id"), &exitingRAM); err != nil {
 		logger.ZapLog().Error(err.Error())
 		service.SendResponse(ctx, http.StatusBadRequest, err.Error(), "Invalid request", "")
 		return
 	}
 
-	if err := h.ReadRAMByID(ctx.Input.Query(":id"), &ram); err != nil {
+	if ram["status"] == nil {
+		updateRAM.Status = exitingRAM.Status
+	}
+
+	if err := h.UpdateRAMByID(ctx.Input.Query(":id"), updateRAM); err != nil {
 		logger.ZapLog().Error(err.Error())
 		service.SendResponse(ctx, http.StatusBadRequest, err.Error(), "Invalid request", "")
 		return
 	}
 
-	service.SendResponse(ctx, http.StatusOK, "", fmt.Sprintf("Updated %v ram successfully", ctx.Input.Query(":id")), ram)
+	if err := h.ReadRAMByID(ctx.Input.Query(":id"), &updateRAM); err != nil {
+		logger.ZapLog().Error(err.Error())
+		service.SendResponse(ctx, http.StatusBadRequest, err.Error(), "Invalid request", "")
+		return
+	}
+
+	service.SendResponse(ctx, http.StatusOK, "", fmt.Sprintf("Updated %v ram successfully", ctx.Input.Query(":id")), updateRAM)
 }
 
 // Delete the ram by id
@@ -119,3 +144,5 @@ func (h *Handlers) DeleteRAM(ctx *context.Context) {
 	}
 	service.SendResponse(ctx, http.StatusOK, "", fmt.Sprintf("Deleted %v ram successfully", ctx.Input.Query(":id")), "")
 }
+
+

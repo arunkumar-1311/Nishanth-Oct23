@@ -29,12 +29,15 @@ func Routes(db adaptor.Database) {
 		beego.NSDelete("/brand/:id", handlers.DeleteBrand),
 		beego.NSPost("/ram", handlers.CreateRAM),
 		beego.NSPatch("/ram/:id", handlers.UpdateRAM),
-		beego.NSDelete("/ram/:id", handlers.DeleteRAM))
+		beego.NSDelete("/ram/:id", handlers.DeleteRAM),
+		beego.NSGet("/orders", handlers.GetAllOrders),
+		beego.NSGet("/orderstatus", handlers.GetAllOrderStatus))
 
 	order := beego.NewNamespace("/order",
 		beego.NSBefore(middleware.Authorization),
 		beego.NSPost("", handlers.CreateOrder),
-		beego.NSGet("/:id", handlers.GetOrderByID))
+		beego.NSGet("/:id", handlers.GetOrderByID),
+		beego.NSPatch("/:id", handlers.CancelOrder))
 
 	beego.AddNamespace(user, admin, order)
 	fmt.Println("Starting the Server.....")

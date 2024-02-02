@@ -17,8 +17,15 @@ type Ram interface {
 
 // Helps to create new RAM in RAM table
 func (d *GORM_Connection) CreateNewRam(ram models.Ram) error {
+
 	if err := d.DB.Create(&ram).Error; err != nil {
 		return err
+	}
+
+	if !ram.Status {
+		if result := d.DB.Model(&models.Ram{}).Where("ram_id = ?", ram.RamID).Update("status", false); result.Error != nil {
+			return result.Error
+		}
 	}
 	return nil
 }
