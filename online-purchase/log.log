@@ -136,3 +136,12 @@
 {"level":"error","ts":1706868185.783671,"caller":"middleware/authorization.go:33","msg":"admin can only access this feature"}
 {"level":"error","ts":1706868209.1259665,"caller":"middleware/authorization.go:33","msg":"admin can only access this feature"}
 {"level":"error","ts":1706868309.5957966,"caller":"handler/order.go:96","msg":"invalid Order id"}
+{"level":"error","ts":1706881132.341019,"caller":"handler/order.go:96","msg":"invalid Order id"}
+{"level":"error","ts":1706881387.9147034,"caller":"handler/order.go:96","msg":"invalid Order id"}
+{"level":"error","ts":1706881406.9672763,"caller":"handler/order.go:96","msg":"invalid Order id"}
+{"level":"error","ts":1706941214.6784804,"caller":"middleware/authorization.go:27","msg":"Token is expired"}
+{"level":"error","ts":1706941239.8389187,"caller":"middleware/authorization.go:27","msg":"Token is expired"}
+{"level":"error","ts":1706941646.0383677,"caller":"handler/order.go:95","msg":"invalid Order id"}
+{"level":"error","ts":1706941773.2025232,"caller":"handler/account.go:48","msg":"user name already exist"}
+{"level":"error","ts":1706944581.9928367,"caller":"middleware/authorization.go:27","msg":"Token is expired"}
+{"level":"error","ts":1706944607.9641418,"caller":"middleware/authorization.go:27","msg":"Token is expired"}

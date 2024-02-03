@@ -16,8 +16,8 @@ func Authorization(ctx *context.Context) {
 	token := ctx.Request.Header["Authorization"]
 	if token == nil {
 		data := map[string]interface{}{
-			"Regiter": "http://localhost:8000/user/new",
-			"Login":   "http://localhost:8000/user",
+			"Regiter": "http://localhost:8000/user/signup",
+			"Login":   "http://localhost:8000/user/login",
 		}
 		service.SendResponse(ctx, http.StatusBadRequest, "No token found", "Invalid authorization", data)
 		return

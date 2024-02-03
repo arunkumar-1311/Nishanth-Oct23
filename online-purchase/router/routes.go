@@ -13,14 +13,16 @@ func Routes(db adaptor.Database) {
 
 	var handlers handler.Handlers
 	handlers.Database = db
+	beego.ErrorHandler("404", handlers.PageNotFound)
 	beego.Get("/brands", handlers.GetBrands)
 	beego.Get("/rams", handlers.GetAllRAMs)
 	beego.Get("/brand/:id", handlers.GetBrandByID)
 	beego.Get("/ram/:id", handlers.GetRamByID)
+	beego.Get("/orders", handlers.GetAllOrders)
 
 	user := beego.NewNamespace("/user",
-		beego.NSPost("/new", handlers.Register),
-		beego.NSPost("", handlers.Login))
+		beego.NSPost("/signup", handlers.Register),
+		beego.NSPost("/login", handlers.Login))
 
 	admin := beego.NewNamespace("/admin",
 		beego.NSBefore(middleware.Authorization),
@@ -30,16 +32,15 @@ func Routes(db adaptor.Database) {
 		beego.NSPost("/ram", handlers.CreateRAM),
 		beego.NSPatch("/ram/:id", handlers.UpdateRAM),
 		beego.NSDelete("/ram/:id", handlers.DeleteRAM),
-		beego.NSGet("/orders", handlers.GetAllOrders),
+		beego.NSGet("/inactive/orders", handlers.GetInactiveOrders),
 		beego.NSGet("/orderstatus", handlers.GetAllOrderStatus),
-		beego.NSPatch("/order/:id", handlers.UpdateStatus),
-		beego.NSDelete("/order/:id", handlers.DeleteOrder))
+		beego.NSPatch("/order/:id", handlers.UpdateStatus))
 
 	order := beego.NewNamespace("/order",
 		beego.NSBefore(middleware.Authorization),
 		beego.NSPost("", handlers.CreateOrder),
 		beego.NSGet("/:id", handlers.GetOrderByID),
-		beego.NSPatch("/:id", handlers.CancelOrder))
+		beego.NSDelete("/cancel/:id", handlers.CancelOrder))
 
 	beego.AddNamespace(user, admin, order)
 	fmt.Println("Starting the Server.....")

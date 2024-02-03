@@ -11,11 +11,11 @@ type Order interface {
 	CreateNewOrder(models.Orders) error
 	ReadOrders(*[]models.Orders) error
 	ReadOrderByID(string, *models.Orders) error
-	UpdateOrderByID(string, models.Orders) error
+	ReadInactiveOrders(Orders *[]models.Orders) error
 	DeleteOrderByID(string) error
-	CancelOrderByID(string, bool) error
 	ReadAllOrderStatus(*[]models.OrderStatus) error
 	UpdateOrderStatusByID(string, string) error
+	ReadOrdersByUser(string, *[]models.Orders) error
 }
 
 // Helps to create new order in orders table
@@ -28,7 +28,15 @@ func (d *GORM_Connection) CreateNewOrder(order models.Orders) error {
 
 // Helps to get all the Order available in the application
 func (d *GORM_Connection) ReadOrders(Orders *[]models.Orders) error {
-	if err := d.DB.Preload("Brand").Preload("Ram").Preload("OrderStatus").Find(&Orders).Error; err != nil {
+	if err := d.DB.Preload("Brand").Preload("Ram").Preload("OrderStatus").Where("active != ?", false).Find(&Orders).Error; err != nil {
+		return err
+	}
+	return nil
+}
+
+// Helps to fetch orders by user id
+func (d *GORM_Connection) ReadOrdersByUser(id string, Orders *[]models.Orders) error {
+	if err := d.DB.Preload("Brand").Preload("Ram").Preload("OrderStatus").Where("user_id", id).Find(&Orders).Error; err != nil {
 		return err
 	}
 	return nil
@@ -47,45 +55,25 @@ func (d *GORM_Connection) ReadOrderByID(id string, Order *models.Orders) error {
 	return nil
 }
 
-// Helps to Update the Order by id
-func (d *GORM_Connection) UpdateOrderByID(id string, Order models.Orders) error {
-	var result *gorm.DB
-	Order.OrderID = id
-	if result = d.DB.Model(&models.Orders{}).Where("order_id = ?", id).UpdateColumns(Order); result.Error != nil {
-		return result.Error
-	}
-
-	if !Order.Active {
-		if result = d.DB.Model(&models.Orders{}).Where("order_id = ?", id).Update("active", false); result.Error != nil {
-			return result.Error
-		}
-	}
-	if result.RowsAffected == 0 {
-		return fmt.Errorf("invalid Order id")
+// Helps to read all inactive orders
+func (d *GORM_Connection) ReadInactiveOrders(Orders *[]models.Orders) error {
+	if err := d.DB.Preload("Brand").Preload("Ram").Preload("OrderStatus").Unscoped().Where("active = ?", false).Find(&Orders).Error; err != nil {
+		return err
 	}
 	return nil
 }
 
 // Helps to delete the Order
 func (d *GORM_Connection) DeleteOrderByID(id string) error {
-	var result *gorm.DB
 
-	if result = d.DB.Model(&models.Orders{}).Where("order_id = ?", id).Delete(id); result.Error != nil {
+	if result := d.DB.Model(&models.Orders{}).Where("order_id = ?", id).UpdateColumn("active", false); result.Error != nil {
 		return result.Error
 	}
 
-	if result.RowsAffected == 0 {
-		return fmt.Errorf("invalid Order id")
-	}
-	return nil
-}
-
-// Helps to upadate the order active status
-func (d *GORM_Connection) CancelOrderByID(id string, status bool) error {
-
-	if result := d.DB.Model(&models.Orders{}).Where("order_id = ?", id).Update("active", status); result.Error != nil {
+	if result := d.DB.Model(&models.Orders{}).Where("order_id = ?", id).Delete(id); result.Error != nil {
 		return result.Error
 	}
+
 	return nil
 }
 
@@ -100,9 +88,19 @@ func (d *GORM_Connection) ReadAllOrderStatus(orderStatus *[]models.OrderStatus) 
 
 // Helps to update the order status by id
 func (d *GORM_Connection) UpdateOrderStatusByID(id string, status string) error {
-
-	if result := d.DB.Model(&models.Orders{}).Where("order_id = ?", id).Update("order_status_id", status); result.Error != nil {
+	var result *gorm.DB
+	if result = d.DB.Model(&models.Orders{}).Where("order_id = ?", id).Update("order_status_id", status); result.Error != nil {
 		return result.Error
+	}
+
+	if result.RowsAffected == 0 {
+		return fmt.Errorf("no such order available")
+	}
+
+	if id == "S-DD" {
+		if result = d.DB.Model(&models.Orders{}).Where("order_id = ?", id).UpdateColumn("active", false); result.Error != nil {
+			return result.Error
+		}
 	}
 	return nil
 }
