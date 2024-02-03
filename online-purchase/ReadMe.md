@@ -24,11 +24,14 @@ This is the main function of the application. Here we acquire a db connection an
 ### order.go
 --- CreateOrder(ctx *context.Context) - helps to place a new order to our application.<br />
 --- GetOrderByID(ctx *context.Context) - helps to fetch the order by its unique ID. This feature can be accessed by either Admin or a User who placed a order.<br />
---- GetAllOrders(ctx *context.Context) - helps to fetch all the active orders. This API can only hit by Admin.<br />
+--- GetAllOrders(ctx *context.Context) - helps to fetch all the active orders.<br />
 --- GetAllOrderStatus(ctx *context.Context) - helps to fetch all order status. This API can only hit by Admin.<br />
 --- CancelOrder(ctx *context.Context) - helps to cancel the existing order status. This can be done by the user who placed a order.<br />
 --- UpdateStatus(ctx *context.Context) - helps to update the order status of the order. This API can only hit by Admin. If the order status is turned to Delivered then it active status will be turned false.<br />
---- DeleteOrder(ctx *context.Context) - helps to soft delete the in-active order.<br />
+--- GetInactiveOrders(ctx *context.Context) - helps to get all cancelled order. This API can only hit by Admin.<br />
+
+### pageNotFound.go
+--- PageNotFound(w http.ResponseWriter, r *http.Request) - handles page not found error(404).<br />
 
 ### ram.go
 --- CreateRAM(ctx *context.Context) - helps to create the RAM product with its all specification. This API can be only hit by Admin.<br />
@@ -107,8 +110,9 @@ GET : http://localhost:8000/brands <br />
 GET : http://localhost:8000/rams <br />
 GET : http://localhost:8000/brand/:id <br />
 GET : http://localhost:8000/ram/:id <br />
-GET : http://localhost:8000/admin/orders <br />
+GET : http://localhost:8000/orders <br />
 GET : http://localhost:8000/admin/orderstatus <br />
+GET : http://localhost:8000/admin/inactive/orders <br />
 GET : http://localhost:8000/order/:id <br />
 
 POST : http://localhost:8000/user/new <br />
@@ -124,7 +128,7 @@ PATCH : http://localhost:8000/order/:id <br />
 
 DELETE : http://localhost:8000/admin/brand/:id <br />
 DELETE : http://localhost:8000/admin/ram/:id <br />
-DELETE : http://localhost:8000/admin/order/:id <br />
+DELETE : http://localhost:8000/order/cancel/:id <br />
 
 
 ## service
