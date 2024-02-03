@@ -1,5 +1,7 @@
 # Nishanth RTE 
 ## blog-post
-### contains the source code for blog post exercise.
+### Contains source code for blog post exercise.
 
+## online-purchase
+### Contains source code for online purchase exercise.
 
