@@ -22,6 +22,11 @@ func Routes(db adaptor.Database) {
 		beego.NSPost("/signup", handlers.Register),
 		beego.NSPost("/login", handlers.Login))
 
+	profile := beego.NewNamespace("/profile",
+		beego.NSBefore(middleware.Authorization),
+		beego.NSGet("", handlers.GetProfile),
+		beego.NSPatch("", handlers.UpdateProfile))
+
 	admin := beego.NewNamespace("/admin",
 		beego.NSBefore(middleware.Authorization),
 		beego.NSPost("/brand", handlers.CreateBrand),
@@ -41,7 +46,7 @@ func Routes(db adaptor.Database) {
 		beego.NSDelete("/cancel/:id", handlers.CancelOrder),
 		beego.NSGet("", handlers.GetAllOrders))
 
-	beego.AddNamespace(user, admin, order)
+	beego.AddNamespace(user, profile, admin, order)
 	fmt.Println("Starting the Server.....")
 	beego.Run("localhost:8000")
 

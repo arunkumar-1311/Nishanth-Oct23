@@ -156,3 +156,5 @@
 {"level":"error","ts":1707119499.7710485,"caller":"handler/order.go:35","msg":"invalid brand id"}
 {"level":"error","ts":1707125293.7480774,"caller":"middleware/authorization.go:27","msg":"Token is expired"}
 {"level":"error","ts":1707130009.7436712,"caller":"handler/order.go:130","msg":"ERROR: syntax error at or near \"!=\" (SQLSTATE 42601)"}
+{"level":"error","ts":1707134739.6761022,"caller":"handler/account.go:136","msg":"user name already exist"}
+{"level":"error","ts":1707135703.503207,"caller":"handler/account.go:136","msg":"email id already exist"}
