@@ -3,21 +3,15 @@ package handler
 import (
 	"encoding/json"
 	"net/http"
-	"online-purchase/adaptor"
 	"online-purchase/logger"
 	"online-purchase/models"
 	"online-purchase/service"
 	"online-purchase/service/helper"
 
 	"github.com/astaxie/beego/context"
-	"github.com/astaxie/beego"
+
 	"github.com/go-playground/validator/v10"
 )
-
-type Handlers struct {
-	adaptor.Database
-	beego.Controller
-}
 
 // Helps to create the profile to the application
 func (h *Handlers) Register(ctx *context.Context) {
@@ -28,7 +22,7 @@ func (h *Handlers) Register(ctx *context.Context) {
 		service.SendResponse(ctx, http.StatusInternalServerError, err.Error(), "Please try again later", "")
 		return
 	}
-	
+
 	user.UserID = helper.UniqueID()
 
 	validate := validator.New()

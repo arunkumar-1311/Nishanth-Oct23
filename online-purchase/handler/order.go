@@ -8,6 +8,7 @@ import (
 	"online-purchase/models"
 	"online-purchase/service"
 	"online-purchase/service/helper"
+	"time"
 
 	"github.com/astaxie/beego/context"
 	"github.com/go-playground/validator/v10"
@@ -151,36 +152,6 @@ func (h *Handlers) GetAllOrders(ctx *context.Context) {
 	service.SendResponse(ctx, http.StatusOK, "", "Fetching all orders", orderResponse)
 }
 
-// Helps to read all the orders by the admin
-func (h *Handlers) GetInactiveOrders(ctx *context.Context) {
-	ctx.Output.Header("content-Type", "application/json")
-	var orders []models.Orders
-
-	if err := h.ReadInactiveOrders(&orders); err != nil {
-		logger.ZapLog().Error(err.Error())
-		service.SendResponse(ctx, http.StatusInternalServerError, err.Error(), "Please try again later", "")
-		return
-	}
-
-	orderResponse := make([]models.OrderResponse, len(orders))
-	for index, order := range orders {
-		orderMarshal, err := json.Marshal(order)
-		if err != nil {
-			logger.ZapLog().Error(err.Error())
-			service.SendResponse(ctx, http.StatusInternalServerError, err.Error(), "Please try again later", "")
-			return
-		}
-
-		if err := json.Unmarshal(orderMarshal, &orderResponse[index]); err != nil {
-			logger.ZapLog().Error(err.Error())
-			service.SendResponse(ctx, http.StatusInternalServerError, err.Error(), "Please try again later", "")
-			return
-		}
-	}
-
-	service.SendResponse(ctx, http.StatusOK, "", "Fetching all inactive orders", orderResponse)
-}
-
 // Helps to get all the order status
 func (h *Handlers) GetAllOrderStatus(ctx *context.Context) {
 	ctx.Output.Header("content-Type", "application/json")
@@ -194,10 +165,54 @@ func (h *Handlers) GetAllOrderStatus(ctx *context.Context) {
 	service.SendResponse(ctx, http.StatusOK, "", "Fetching all order status", orderStatus)
 }
 
+// Helps to get the order by its status and its time
+func (h *Handlers) GetOrderByStatus(ctx *context.Context) {
+	ctx.Output.Header("content-Type", "application/json")
+	var orders []models.Orders
+
+	startDate := ctx.Input.Query("start")
+	endDate := ctx.Input.Query("end")
+	orderStatusID := ctx.Input.Query("order_status_id")
+	if orderStatusID == "" {
+		service.SendResponse(ctx, http.StatusBadRequest, "Expected order_status_id id", "Please try again later", "")
+		return
+	}
+
+	from := time.Date(0, 0, 0, 0, 0, 0, 0, time.Local)
+	if startDate != "" {
+		var err error
+		from, err = time.Parse("2006-01-02", startDate)
+		if err != nil {
+			logger.ZapLog().Error(err.Error())
+			service.SendResponse(ctx, http.StatusBadRequest, err.Error(), "Please try again later", "")
+			return
+		}
+	}
+
+	to := time.Now()
+	if endDate != "" {
+		var err error
+		to, err = time.Parse("2006-01-02", endDate)
+		if err != nil {
+			logger.ZapLog().Error(err.Error())
+			service.SendResponse(ctx, http.StatusBadRequest, err.Error(), "Please try again later", "")
+			return
+		}
+	}
+
+	if err := h.ReadByStatus(orderStatusID, from, to, &orders); err != nil {
+		logger.ZapLog().Error(err.Error())
+		service.SendResponse(ctx, http.StatusBadRequest, err.Error(), "Please try again later", "")
+		return
+	}
+	service.SendResponse(ctx, http.StatusOK, "", "Fetching all orders by status", orders)
+
+}
+
 // Helps to update the order
 func (h *Handlers) UpdateStatus(ctx *context.Context) {
 	ctx.Output.Header("content-Type", "application/json")
-	var updateStatus map[string]interface{}
+	var updateStatus map[string]string
 	var order models.Orders
 
 	if err := json.NewDecoder(ctx.Request.Body).Decode(&updateStatus); err != nil {
@@ -206,19 +221,17 @@ func (h *Handlers) UpdateStatus(ctx *context.Context) {
 		return
 	}
 
-	if updateStatus["order_status_id"] == nil {
+	if updateStatus["order_status_id"] == "" {
 		service.SendResponse(ctx, http.StatusBadRequest, "Requried \"order_status_id\" field", "Invalid request", "")
 		return
 	}
 
-	status, ok := updateStatus["order_status_id"].(string)
-	if !ok {
-		logger.ZapLog().Error("Invalid datatype expected string")
-		service.SendResponse(ctx, http.StatusBadRequest, "Invalid datatype expected string", "Invalid request", "")
+	if updateStatus["order_status_id"] == "S-CAN" {
+		service.SendResponse(ctx, http.StatusBadRequest, "You can't cancel the user order", "Invalid request", "")
 		return
 	}
 
-	if err := h.UpdateOrderStatusByID(ctx.Input.Query(":id"), status); err != nil {
+	if err := h.UpdateOrderStatusByID(ctx.Input.Query(":id"), updateStatus["order_status_id"]); err != nil {
 		logger.ZapLog().Error(err.Error())
 		service.SendResponse(ctx, http.StatusBadRequest, err.Error(), "Invalid request", "")
 		return
@@ -259,11 +272,11 @@ func (h *Handlers) CancelOrder(ctx *context.Context) {
 		return
 	}
 
-	if err := h.DeleteOrderByID(ctx.Input.Query(":id")); err != nil {
+	if err := h.CancelOrderByID(ctx.Input.Query(":id")); err != nil {
 		logger.ZapLog().Error(err.Error())
 		service.SendResponse(ctx, http.StatusBadRequest, err.Error(), "Invalid request", "")
 		return
 	}
 
-	service.SendResponse(ctx, http.StatusOK, "", fmt.Sprintf("Deleted the order %v", ctx.Input.Query(":id")), "")
+	service.SendResponse(ctx, http.StatusOK, "", fmt.Sprintf("Cancelled the order %v", ctx.Input.Query(":id")), "")
 }

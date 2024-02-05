@@ -145,3 +145,14 @@
 {"level":"error","ts":1706941773.2025232,"caller":"handler/account.go:48","msg":"user name already exist"}
 {"level":"error","ts":1706944581.9928367,"caller":"middleware/authorization.go:27","msg":"Token is expired"}
 {"level":"error","ts":1706944607.9641418,"caller":"middleware/authorization.go:27","msg":"Token is expired"}
+{"level":"error","ts":1707110977.562147,"caller":"handler/order.go:116","msg":"Token is expired"}
+{"level":"error","ts":1707115968.4947286,"caller":"middleware/authorization.go:27","msg":"Token is expired"}
+{"level":"error","ts":1707117504.51344,"caller":"handler/order.go:96","msg":"invalid Order id"}
+{"level":"error","ts":1707117508.4939315,"caller":"handler/order.go:96","msg":"invalid Order id"}
+{"level":"error","ts":1707118820.537563,"caller":"handler/order.go:208","msg":"EOF"}
+{"level":"error","ts":1707118843.5514379,"caller":"handler/order.go:221","msg":"parsing time \"aaa\" as \"2006-01-02\": cannot parse \"aaa\" as \"2006\""}
+{"level":"error","ts":1707119264.8823211,"caller":"handler/account.go:54","msg":"ERROR: insert or update on table \"users\" violates foreign key constraint \"fk_users_roles\" (SQLSTATE 23503)"}
+{"level":"error","ts":1707119399.4226751,"caller":"middleware/authorization.go:27","msg":"Token is expired"}
+{"level":"error","ts":1707119499.7710485,"caller":"handler/order.go:35","msg":"invalid brand id"}
+{"level":"error","ts":1707125293.7480774,"caller":"middleware/authorization.go:27","msg":"Token is expired"}
+{"level":"error","ts":1707130009.7436712,"caller":"handler/order.go:130","msg":"ERROR: syntax error at or near \"!=\" (SQLSTATE 42601)"}

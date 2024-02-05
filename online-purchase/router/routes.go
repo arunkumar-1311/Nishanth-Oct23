@@ -2,11 +2,10 @@ package router
 
 import (
 	"fmt"
+	"github.com/astaxie/beego"
 	"online-purchase/adaptor"
 	"online-purchase/handler"
 	"online-purchase/middleware"
-
-	"github.com/astaxie/beego"
 )
 
 func Routes(db adaptor.Database) {
@@ -18,7 +17,6 @@ func Routes(db adaptor.Database) {
 	beego.Get("/rams", handlers.GetAllRAMs)
 	beego.Get("/brand/:id", handlers.GetBrandByID)
 	beego.Get("/ram/:id", handlers.GetRamByID)
-	beego.Get("/orders", handlers.GetAllOrders)
 
 	user := beego.NewNamespace("/user",
 		beego.NSPost("/signup", handlers.Register),
@@ -32,15 +30,16 @@ func Routes(db adaptor.Database) {
 		beego.NSPost("/ram", handlers.CreateRAM),
 		beego.NSPatch("/ram/:id", handlers.UpdateRAM),
 		beego.NSDelete("/ram/:id", handlers.DeleteRAM),
-		beego.NSGet("/inactive/orders", handlers.GetInactiveOrders),
 		beego.NSGet("/orderstatus", handlers.GetAllOrderStatus),
-		beego.NSPatch("/order/:id", handlers.UpdateStatus))
+		beego.NSPatch("/order/:id", handlers.UpdateStatus),
+		beego.NSGet("/order/status", handlers.GetOrderByStatus))
 
 	order := beego.NewNamespace("/order",
 		beego.NSBefore(middleware.Authorization),
 		beego.NSPost("", handlers.CreateOrder),
 		beego.NSGet("/:id", handlers.GetOrderByID),
-		beego.NSDelete("/cancel/:id", handlers.CancelOrder))
+		beego.NSDelete("/cancel/:id", handlers.CancelOrder),
+		beego.NSGet("", handlers.GetAllOrders))
 
 	beego.AddNamespace(user, admin, order)
 	fmt.Println("Starting the Server.....")

@@ -52,7 +52,7 @@ type Orders struct {
 	Total         int         `gorm:"column:total; type:int" json:"total" validate:"required"`
 	OrderStatusID string      `gorm:"column:order_status_id; type:varchar" json:"order_status_id" validate:"required"`
 	OrderStatus   OrderStatus `gorm:"references:OrderStatusID;" json:"order_status" validate:"omitempty,uuid4"`
-	Active        bool        `gorm:"column:active; type:boolean; default:true;" json:"active"`
+	
 }
 
 type Login struct {
@@ -79,5 +79,5 @@ type OrderResponse struct {
 	DVD         bool `json:"dvd_rw"`
 	Total       int  `json:"total"`
 	OrderStatus `json:"order_status"`
-	Active      bool `json:"active"`
+	
 }
