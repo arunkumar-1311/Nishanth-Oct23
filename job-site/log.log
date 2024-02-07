@@ -1,0 +1,39 @@
+{"[helo ]":"(MISSING)","caller":"go-kit_log.go:40","level":"debug","time":"2024-01-30T05:44:31.980225264Z"}
+{"[debug helo ]":"(MISSING)","caller":"go-kit_log.go:40","level":"debug","time":"2024-01-30T05:45:21.675469024Z"}
+{"Error":"(MISSING)","caller":"main.go:11","level":"debug","time":"2024-01-30T05:49:42.339697272Z"}
+{"caller":"main.go:12","level":"debug","message":null,"time":"2024-01-30T05:52:10.334194779Z"}
+level=debug message=null time=2024-01-30T05:52:40.681996894Z caller=main.go:12
+level=debug message=error time=2024-01-30T05:52:59.949111083Z caller=main.go:12
+{"caller":"main.go:12","level":"debug","message":"error","time":"2024-01-30T05:53:18.698582807Z"}
+{"caller":"main.go:37","level":"debug","message":"invalid field found for struct job-post/models.Post's field Users: define a valid foreign key for relations or implement the Valuer/Scanner interface","time":"2024-02-06T06:40:10.276223738Z"}
+{"caller":"main.go:37","level":"debug","message":"invalid field found for struct job-post/models.Post's field Users: define a valid foreign key for relations or implement the Valuer/Scanner interface","time":"2024-02-06T06:42:39.843335753Z"}
+{"caller":"main.go:37","level":"debug","message":"ERROR: duplicate key value violates unique constraint \"roles_pkey\" (SQLSTATE 23505)","time":"2024-02-06T06:42:39.844800952Z"}
+{"caller":"main.go:37","level":"debug","message":"invalid field found for struct job-post/models.Comment's field Users: define a valid foreign key for relations or implement the Valuer/Scanner interface","time":"2024-02-06T06:45:50.899396709Z"}
+{"caller":"main.go:37","level":"debug","message":"invalid field found for struct job-post/models.Comment's field Users: define a valid foreign key for relations or implement the Valuer/Scanner interface","time":"2024-02-06T06:49:02.310887264Z"}
+{"caller":"main.go:37","level":"debug","message":"invalid field found for struct job-post/models.Comment's field Users: define a valid foreign key for relations or implement the Valuer/Scanner interface","time":"2024-02-06T06:50:35.67981893Z"}
+{"caller":"account.go:54","level":"debug","message":"user name already exist","time":"2024-02-06T11:43:32.254673041Z"}
+{"caller":"account.go:54","level":"debug","message":"user name already exist","time":"2024-02-06T11:48:10.216208919Z"}
+{"caller":"account.go:54","level":"debug","message":"user name already exist","time":"2024-02-06T11:50:47.30628557Z"}
+{"caller":"account.go:112","level":"debug","message":"can't assert the request","time":"2024-02-06T13:24:52.111804498Z"}
+{"caller":"account.go:57","level":"debug","message":"user name already exist","time":"2024-02-06T13:25:23.976782697Z"}
+{"caller":"account.go:112","level":"debug","message":"can't assert the request","time":"2024-02-06T13:26:10.030163764Z"}
+{"caller":"account.go:112","level":"debug","message":"can't assert the request","time":"2024-02-06T13:26:46.760175905Z"}
+{"caller":"account.go:112","level":"debug","message":"can't assert the request","time":"2024-02-06T13:27:32.828230849Z"}
+{"caller":"account.go:112","level":"debug","message":"can't assert the request","time":"2024-02-06T13:27:50.818836496Z"}
+{"caller":"account.go:119","level":"debug","message":"Key: 'Login.Name' Error:Field validation for 'Name' failed on the 'required' tag\nKey: 'Login.Password' Error:Field validation for 'Password' failed on the 'required' tag","time":"2024-02-06T13:28:46.341174151Z"}
+{"caller":"account.go:119","level":"debug","message":"Key: 'Login.Password' Error:Field validation for 'Password' failed on the 'required' tag","time":"2024-02-06T13:31:59.340055922Z"}
+{"caller":"account.go:126","level":"debug","message":"roles: unsupported relations for schema Users","time":"2024-02-06T13:32:12.050071942Z"}
+{"caller":"account.go:126","level":"debug","message":"roles: unsupported relations for schema Users","time":"2024-02-06T13:33:17.307837823Z"}
+{"caller":"account.go:126","level":"debug","message":"roles: unsupported relations for schema Users","time":"2024-02-06T13:33:48.04321584Z"}
+{"caller":"account.go:61","level":"debug","message":"user name already exist","time":"2024-02-07T04:58:06.390185995Z"}
+{"caller":"account.go:91","level":"debug","message":"can't assert the request","time":"2024-02-07T07:21:58.875851215Z"}
+{"caller":"account.go:161","level":"debug","message":"can't assert the request","time":"2024-02-07T07:31:59.949770733Z"}
+{"caller":"account.go:161","level":"debug","message":"can't assert the request","time":"2024-02-07T07:32:59.207197826Z"}
+{"caller":"account.go:161","level":"debug","message":"can't assert the request","time":"2024-02-07T07:33:47.372939606Z"}
+{"caller":"account.go:174","level":"debug","message":"can't assert the request","time":"2024-02-07T07:41:23.266587198Z"}
+{"caller":"account.go:209","level":"debug","message":"no such user exist","time":"2024-02-07T07:56:42.408389483Z"}
+{"caller":"account.go:60","level":"debug","message":"email id already exist","time":"2024-02-07T07:56:49.12436989Z"}
+{"caller":"account.go:97","level":"debug","message":"can't assert the request","time":"2024-02-07T07:57:50.0537675Z"}
+{"caller":"account.go:62","level":"debug","message":"user name already exist","time":"2024-02-07T08:02:13.529151666Z"}
+{"caller":"jobs.go:27","level":"debug","message":"can't assert the request","time":"2024-02-07T08:30:08.458511498Z"}
+{"caller":"jobs.go:27","level":"debug","message":"can't assert the request","time":"2024-02-07T08:30:13.805268271Z"}
