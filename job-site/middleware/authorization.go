@@ -26,11 +26,11 @@ func (svc Middleware) Authorization(decode kithttp.DecodeRequestFunc) kithttp.De
 		}
 
 		if _, err = svc.VerifyToken(token[7:]); err != nil {
-			return err, nil
+			return err.Error(), nil
 		}
 
 		if err := svc.AdminAccess(token); strings.Contains(r.URL.Path, "admin") && err != nil {
-			return err, nil
+			return err.Error(), nil
 		}
 		return decode(ctx, r)
 	}

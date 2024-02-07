@@ -54,9 +54,9 @@ func (d *GORM_Connection) UpdateUser(user *models.Users) error {
 }
 
 // Helps to read the profile
-func (d *GORM_Connection) ReadProfile(name string, user *models.Users) error {
+func (d *GORM_Connection) ReadProfile(id string, user *models.Users) error {
 	var result *gorm.DB
-	if result = d.DB.Model(models.Users{}).Omit("password").Where("name = ?", name).Find(&user); result.Error != nil {
+	if result = d.DB.Model(models.Users{}).Omit("users.password").Where("user_id = ?", id).Find(&user); result.Error != nil {
 		return result.Error
 	}
 

@@ -74,15 +74,15 @@ var (
 
 
 	// Helps to create a user profile for job-site application
-func (e Endpoints) register(svc service.Service) endpoint.Endpoint {
-	return func(ctx context.Context, request interface{}) (response interface{}, err error) {
-
+	func (e Endpoints) GetAllJobType(svc service.Service) endpoint.Endpoint {
+		return func(ctx context.Context, request interface{}) (response interface{}, err error) {
+			return
+		}
 	}
-}
-
-func (e Endpoints)DecodeRegisterRequest(_ context.Context, r *http.Request) (request interface{}, err error) {
-
-}
+	
+	func (e Endpoints) DecodeGetAllJobType(_ context.Context, r *http.Request) (request interface{}, err error) {
+		return
+	}
 
 func (e Endpoints) EncodeRegisterResponse(ctx context.Context, w http.ResponseWriter, response interface{}) error {
 	if err := helper.SendResponse(ctx, w, response); err!=nil{

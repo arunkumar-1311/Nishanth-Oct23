@@ -37,3 +37,25 @@ level=debug message=error time=2024-01-30T05:52:59.949111083Z caller=main.go:12
 {"caller":"account.go:62","level":"debug","message":"user name already exist","time":"2024-02-07T08:02:13.529151666Z"}
 {"caller":"jobs.go:27","level":"debug","message":"can't assert the request","time":"2024-02-07T08:30:08.458511498Z"}
 {"caller":"jobs.go:27","level":"debug","message":"can't assert the request","time":"2024-02-07T08:30:13.805268271Z"}
+{"caller":"account.go:146","level":"debug","message":"no such user exist","time":"2024-02-07T09:48:00.761764339Z"}
+{"caller":"account.go:146","level":"debug","message":"no such user exist","time":"2024-02-07T09:48:07.180926265Z"}
+{"caller":"account.go:141","level":"debug","message":"no such user exist","time":"2024-02-07T09:49:17.499909145Z"}
+{"caller":"account.go:136","level":"debug","message":"user name already exist","time":"2024-02-07T09:54:02.454612215Z"}
+{"caller":"account.go:136","level":"debug","message":"user name already exist","time":"2024-02-07T09:54:12.005070903Z"}
+{"caller":"account.go:136","level":"debug","message":"user name already exist","time":"2024-02-07T09:54:18.454511646Z"}
+{"caller":"account.go:136","level":"debug","message":"user name already exist","time":"2024-02-07T09:54:19.510721606Z"}
+{"caller":"account.go:136","level":"debug","message":"email id already exist","time":"2024-02-07T09:55:07.956707822Z"}
+{"caller":"account.go:98","level":"debug","message":"no such user exist","time":"2024-02-07T10:47:18.077141623Z"}
+{"caller":"account.go:98","level":"debug","message":"no such user exist","time":"2024-02-07T10:47:19.763737673Z"}
+{"caller":"account.go:98","level":"debug","message":"no such user exist","time":"2024-02-07T10:48:08.632851095Z"}
+{"caller":"account.go:98","level":"debug","message":"no such user exist","time":"2024-02-07T10:49:44.93563063Z"}
+{"caller":"account.go:98","level":"debug","message":"no such user exist","time":"2024-02-07T10:50:04.567039822Z"}
+{"caller":"jobs.go:27","level":"debug","message":"can't assert the request","time":"2024-02-07T10:55:25.545458806Z"}
+{"caller":"jobs.go:27","level":"debug","message":"can't assert the request","time":"2024-02-07T10:55:31.418446644Z"}
+{"caller":"jobs.go:27","level":"debug","message":"can't assert the request","time":"2024-02-07T10:57:36.106927991Z"}
+{"caller":"jobs.go:27","level":"debug","message":"can't assert the request","time":"2024-02-07T10:59:23.947425072Z"}
+{"caller":"jobs.go:34","level":"debug","message":"Key: 'Post.PostID' Error:Field validation for 'PostID' failed on the 'required' tag\nKey: 'Post.CompanyName' Error:Field validation for 'CompanyName' failed on the 'required' tag\nKey: 'Post.JobTitle' Error:Field validation for 'JobTitle' failed on the 'required' tag\nKey: 'Post.Website' Error:Field validation for 'Website' failed on the 'required' tag\nKey: 'Post.JobTypeID' Error:Field validation for 'JobTypeID' failed on the 'required' tag\nKey: 'Post.CountryID' Error:Field validation for 'CountryID' failed on the 'required' tag\nKey: 'Post.Email' Error:Field validation for 'Email' failed on the 'required' tag\nKey: 'Post.Description' Error:Field validation for 'Description' failed on the 'required' tag","time":"2024-02-07T10:59:44.442746159Z"}
+{"caller":"jobs.go:35","level":"debug","message":"Key: 'Post.Website' Error:Field validation for 'Website' failed on the 'required' tag\nKey: 'Post.JobTypeID' Error:Field validation for 'JobTypeID' failed on the 'required' tag\nKey: 'Post.CountryID' Error:Field validation for 'CountryID' failed on the 'required' tag\nKey: 'Post.Email' Error:Field validation for 'Email' failed on the 'required' tag\nKey: 'Post.Description' Error:Field validation for 'Description' failed on the 'required' tag","time":"2024-02-07T11:02:07.301686765Z"}
+{"caller":"jobs.go:35","level":"debug","message":"Key: 'Post.JobTypeID' Error:Field validation for 'JobTypeID' failed on the 'required' tag\nKey: 'Post.Email' Error:Field validation for 'Email' failed on the 'required' tag","time":"2024-02-07T11:05:10.677299069Z"}
+{"caller":"jobs.go:73","level":"debug","message":"can't assert the request","time":"2024-02-07T11:32:54.748625366Z"}
+{"caller":"jobs.go:221","level":"debug","message":"invalid job id","time":"2024-02-07T13:07:42.746471507Z"}

@@ -19,18 +19,18 @@ import (
 type Account interface {
 	Register(svc service.Service) endpoint.Endpoint
 	DecodeRegisterRequest(context.Context, *http.Request) (interface{}, error)
-	
+
 	GetProfile(svc service.Service) endpoint.Endpoint
 	DecodeGetProfileRequest(context.Context, *http.Request) (interface{}, error)
-	
+
 	UpdateProfile(svc service.Service) endpoint.Endpoint
 	DecodeUpdateProfileRequest(context.Context, *http.Request) (interface{}, error)
-	
+
 	Login(svc service.Service) endpoint.Endpoint
 	DecodeLoginRequest(context.Context, *http.Request) (interface{}, error)
 
-	EncodeResponse(ctx context.Context, w http.ResponseWriter, response interface{}) error
-	
+	EncodeResponse(context.Context, http.ResponseWriter, interface{}) error
+	DecodeRequest(context.Context, *http.Request) (interface{}, error)
 }
 
 // Helps to create a user profile for job-site application
@@ -83,8 +83,6 @@ func (e Endpoints) DecodeRegisterRequest(_ context.Context, r *http.Request) (re
 	return user, nil
 }
 
-
-
 // Helps get the profile of the user
 func (e Endpoints) GetProfile(svc service.Service) endpoint.Endpoint {
 	return func(ctx context.Context, request interface{}) (response interface{}, err error) {
@@ -96,9 +94,9 @@ func (e Endpoints) GetProfile(svc service.Service) endpoint.Endpoint {
 		}
 
 		var user models.Users
-		if err := e.DB.ReadProfile(claims.Name, &user); err != nil {
+		if err := e.DB.ReadProfile(claims.UsersID, &user); err != nil {
 			level.Debug(logger.GokitLogger(err)).Log()
-			response = models.ResponseMessage{Data: err, Error: "Invalid Request", Code: http.StatusBadRequest, Message: ""}
+			response = models.ResponseMessage{Data: "", Error: err.Error(), Code: http.StatusBadRequest, Message: "Invalid Request"}
 			return response, nil
 		}
 
@@ -115,8 +113,6 @@ func (e Endpoints) DecodeGetProfileRequest(ctx context.Context, r *http.Request)
 	}
 	return claims, nil
 }
-
-
 
 // Helps to update the user profile
 func (e Endpoints) UpdateProfile(svc service.Service) endpoint.Endpoint {
@@ -136,17 +132,26 @@ func (e Endpoints) UpdateProfile(svc service.Service) endpoint.Endpoint {
 			}
 		}
 
+		if user.UserName != "" || user.Email != "" {
+			if err = svc.EmailAndNameValidation(user, e.DB); err != nil {
+				level.Debug(logger.GokitLogger(err)).Log()
+				response = models.ResponseMessage{Data: "", Error: err.Error(), Code: http.StatusBadRequest, Message: "Invalid request"}
+				return response, nil
+			}
+		}
 		if err = e.DB.UpdateUser(&user); err != nil {
 			level.Debug(logger.GokitLogger(err)).Log()
 			response = models.ResponseMessage{Data: "", Error: err.Error(), Code: http.StatusBadRequest, Message: "Invalid Request"}
 			return response, nil
 		}
 
-		if err = e.DB.ReadProfile(user.UserName, &user); err != nil {
+		if err = e.DB.ReadProfile(user.UserID, &user); err != nil {
 			level.Debug(logger.GokitLogger(err)).Log()
 			response = models.ResponseMessage{Data: "", Error: err.Error(), Code: http.StatusBadRequest, Message: "Invalid Request"}
 			return response, nil
 		}
+		user.Password = ""
+		response = models.ResponseMessage{Data: user, Error: "", Code: http.StatusBadRequest, Message: "Profile after updation"}
 		return
 	}
 }
@@ -164,9 +169,9 @@ func (e Endpoints) DecodeUpdateProfileRequest(ctx context.Context, r *http.Reque
 		return err.Error(), nil
 	}
 	user.UserID = claims.UsersID
+
 	return user, nil
 }
-
 
 // Helps to login to the existing account
 func (e Endpoints) Login(svc service.Service) endpoint.Endpoint {
@@ -216,11 +221,12 @@ func (e Endpoints) DecodeLoginRequest(ctx context.Context, r *http.Request) (req
 	if err = json.NewDecoder(r.Body).Decode(&credentials); err != nil {
 		return err.Error(), nil
 	}
- 
+
 	return credentials, nil
 
 }
 
+// helps to encode all response and send a json response
 func (e Endpoints) EncodeResponse(ctx context.Context, w http.ResponseWriter, response interface{}) error {
 
 	if err := helper.SendResponse(ctx, w, response); err != nil {
@@ -228,4 +234,9 @@ func (e Endpoints) EncodeResponse(ctx context.Context, w http.ResponseWriter, re
 		return err
 	}
 	return nil
+}
+
+// Helps to decode the plain request
+func (e Endpoints) DecodeRequest(_ context.Context, r *http.Request) (request interface{}, err error) {
+	return
 }

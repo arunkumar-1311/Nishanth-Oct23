@@ -1,6 +1,8 @@
 package models
 
 import (
+	"time"
+
 	"gorm.io/gorm"
 )
 
@@ -32,14 +34,14 @@ type Post struct {
 	gorm.Model
 	PostID      string  `gorm:"column:post_id; uniqueIndex; primaryKey; type:varchar;" json:"post_id" validate:"required"`
 	UsersID     string  `gorm:"column:user_id; type:varchar;" json:"user_id" validate:"required"`
-	Users       Users   `gorm:"foriegnKey:UserID;references:user_id" validate:"omitempty,uuid4"`
+	Users       Users   `gorm:"foriegnKey:UserID;references:user_id" validate:"omitempty,uuid4" json:"user"`
 	CompanyName string  `gorm:"column:company_name; type:varchar;" json:"company_name" validate:"required"`
 	JobTitle    string  `gorm:"column:job_title; type:varchar;" json:"job_title" validate:"required"`
 	Website     string  `gorm:"column:website; type:varchar;" json:"website" validate:"required"`
 	JobTypeID   string  `gorm:"column:job_type; type:varchar;" json:"job_type" validate:"required"`
-	JobType     JobType `gorm:"references:job_type_id" validate:"omitempty,uuid4"`
+	JobType     JobType `gorm:"references:job_type_id" validate:"omitempty,uuid4" json:"jobtype"`
 	CountryID   string  `gorm:"column:country_id; type:varchar;" json:"country_id" validate:"required"`
-	Country     Country `gorm:"references:country_id" validate:"omitempty,uuid4"`
+	Country     Country `gorm:"references:country_id" validate:"omitempty,uuid4" json:"country"`
 	Email       string  `gorm:"column:contact_mail; type:varchar;" json:"contact_mail" validate:"required"`
 	Description string  `gorm:"column:description; type:varchar;" json:"description" validate:"required"`
 }
@@ -65,4 +67,17 @@ type Claims struct {
 	UsersID string `json:"user_id"`
 	Role    string `json:"role"`
 	RoleID  string `json:"role_id"`
+}
+
+type PostResponse struct {
+	Published   time.Time `json:"CreatedAt" gorm:"column:created_at"`
+	PostID      string    `json:"post_id" gorm:"column:post_id;"`
+	UserID      string    `json:"user_id" gorm:"column:user_id;"`
+	CompanyName string    `json:"company_name" gorm:"column:company_name;"`
+	JobTitle    string    `json:"job_title" gorm:"column:job_title;"`
+	Website     string    `json:"website" gorm:"column:website;"`
+	JobType     JobType   `json:"jobtype" gorm:"column:job_type"`
+	Country     Country   `json:"country" gorm:"column:country"`
+	Email       string    `json:"contact_mail" gorm:"column:contact_mail"`
+	Description string    `json:"description" gorm:"column:description"`
 }

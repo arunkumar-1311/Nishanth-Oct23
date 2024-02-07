@@ -14,6 +14,8 @@ import (
 type Database interface {
 	repository.Account
 	repository.Post
+	repository.Country
+	repository.JobType
 }
 
 // Helps to occur the new connection
