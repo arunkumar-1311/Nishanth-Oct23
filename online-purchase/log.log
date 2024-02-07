@@ -1,0 +1,160 @@
+{"level":"error","ts":1706703122.348674,"caller":"online-purchase/main.go:17","msg":"err"}
+{"level":"error","ts":1706764040.4250562,"caller":"online-purchase/main.go:17","msg":"err"}
+{"level":"error","ts":1706764070.7122073,"caller":"online-purchase/main.go:18","msg":"err"}
+{"level":"error","ts":1706764103.4113986,"caller":"online-purchase/main.go:18","msg":"err"}
+{"level":"error","ts":1706765396.1454678,"caller":"online-purchase/main.go:18","msg":"err"}
+{"level":"error","ts":1706765466.8496377,"caller":"online-purchase/main.go:18","msg":"err"}
+{"level":"error","ts":1706765831.413847,"caller":"online-purchase/main.go:18","msg":"err"}
+{"level":"error","ts":1706765863.654693,"caller":"online-purchase/main.go:18","msg":"err"}
+{"level":"error","ts":1706765926.7288468,"caller":"online-purchase/main.go:18","msg":"err"}
+{"level":"error","ts":1706766094.4455,"caller":"online-purchase/main.go:18","msg":"err"}
+{"level":"error","ts":1706766540.6663811,"caller":"online-purchase/main.go:18","msg":"err"}
+{"level":"error","ts":1706766828.7858527,"caller":"online-purchase/main.go:18","msg":"err"}
+{"level":"error","ts":1706766970.7419271,"caller":"online-purchase/main.go:18","msg":"err"}
+{"level":"error","ts":1706767033.0225334,"caller":"online-purchase/main.go:18","msg":"err"}
+{"level":"error","ts":1706767094.4316967,"caller":"online-purchase/main.go:18","msg":"err"}
+{"level":"error","ts":1706767108.7873762,"caller":"online-purchase/main.go:18","msg":"err"}
+{"level":"error","ts":1706767238.677731,"caller":"online-purchase/main.go:18","msg":"err"}
+{"level":"error","ts":1706767388.5354936,"caller":"online-purchase/main.go:18","msg":"err"}
+{"level":"error","ts":1706780416.8628614,"caller":"handler/account.go:61","msg":"EOF"}
+{"level":"error","ts":1706780492.9564903,"caller":"handler/account.go:23","msg":"EOF"}
+{"level":"error","ts":1706781351.729983,"caller":"handler/account.go:37","msg":"Key: 'Users.UserName' Error:Field validation for 'UserName' failed on the 'required' tag"}
+{"level":"error","ts":1706781449.2948747,"caller":"handler/account.go:38","msg":"Key: 'Users.UserName' Error:Field validation for 'UserName' failed on the 'required' tag"}
+{"level":"error","ts":1706781462.295069,"caller":"handler/account.go:44","msg":"user name already exist"}
+{"level":"error","ts":1706781472.991399,"caller":"handler/account.go:44","msg":"email id already exist"}
+{"level":"error","ts":1706781560.9252367,"caller":"handler/account.go:33","msg":"Key: 'Users.Password' Error:Field validation for 'Password' failed on the 'required' tag"}
+{"level":"error","ts":1706781567.3634524,"caller":"handler/account.go:45","msg":"user name already exist"}
+{"level":"error","ts":1706781578.7252066,"caller":"handler/account.go:51","msg":"ERROR: insert or update on table \"users\" violates foreign key constraint \"fk_users_roles\" (SQLSTATE 23503)"}
+{"level":"error","ts":1706781596.850785,"caller":"handler/account.go:85","msg":"Invalid password"}
+{"level":"error","ts":1706781611.3288743,"caller":"handler/account.go:72","msg":"Key: 'Login.Password' Error:Field validation for 'Password' failed on the 'required' tag"}
+{"level":"error","ts":1706784039.895487,"caller":"handler/brand.go:21","msg":"EOF"}
+{"level":"error","ts":1706784125.7334864,"caller":"handler/brand.go:21","msg":"invalid character '}' looking for beginning of object key string"}
+{"level":"error","ts":1706784129.323697,"caller":"handler/brand.go:29","msg":"Key: 'Brand.Status' Error:Field validation for 'Status' failed on the 'required' tag"}
+{"level":"error","ts":1706784144.3483756,"caller":"handler/brand.go:29","msg":"Key: 'Brand.Price' Error:Field validation for 'Price' failed on the 'required' tag"}
+{"level":"error","ts":1706784148.0735412,"caller":"handler/brand.go:29","msg":"Key: 'Brand.Name' Error:Field validation for 'Name' failed on the 'required' tag"}
+{"level":"error","ts":1706786426.4925559,"caller":"handler/brand.go:69","msg":"invalid brand id"}
+{"level":"error","ts":1706786465.956926,"caller":"handler/brand.go:70","msg":"invalid brand id"}
+{"level":"error","ts":1706786489.274772,"caller":"handler/brand.go:70","msg":"invalid brand id"}
+{"level":"error","ts":1706786490.356493,"caller":"handler/brand.go:70","msg":"invalid brand id"}
+{"level":"error","ts":1706786505.6867075,"caller":"handler/brand.go:70","msg":"invalid brand id"}
+{"level":"error","ts":1706786579.736113,"caller":"handler/brand.go:70","msg":"invalid brand id"}
+{"level":"error","ts":1706786698.0527117,"caller":"handler/brand.go:70","msg":"invalid brand id"}
+{"level":"error","ts":1706787150.8186119,"caller":"handler/brand.go:72","msg":"invalid brand id"}
+{"level":"error","ts":1706787189.4175339,"caller":"handler/brand.go:72","msg":"invalid brand id"}
+{"level":"error","ts":1706787211.1327693,"caller":"handler/brand.go:72","msg":"invalid brand id"}
+{"level":"error","ts":1706787404.8196652,"caller":"handler/brand.go:70","msg":"invalid brand id"}
+{"level":"error","ts":1706787431.879985,"caller":"handler/brand.go:70","msg":"invalid brand id"}
+{"level":"error","ts":1706787460.507494,"caller":"handler/brand.go:70","msg":"invalid brand id"}
+{"level":"error","ts":1706787479.3132663,"caller":"handler/brand.go:70","msg":"invalid brand id"}
+{"level":"error","ts":1706787480.5522285,"caller":"handler/brand.go:70","msg":"invalid brand id"}
+{"level":"error","ts":1706787505.154821,"caller":"handler/brand.go:70","msg":"invalid brand id"}
+{"level":"error","ts":1706787518.724447,"caller":"handler/brand.go:70","msg":"invalid brand id"}
+{"level":"error","ts":1706789206.3033895,"caller":"handler/brand.go:70","msg":"invalid brand id"}
+{"level":"error","ts":1706789266.9508193,"caller":"handler/brand.go:70","msg":"invalid brand id"}
+{"level":"error","ts":1706789315.9168155,"caller":"handler/brand.go:70","msg":"invalid brand id"}
+{"level":"error","ts":1706789341.6702428,"caller":"handler/brand.go:70","msg":"invalid brand id"}
+{"level":"error","ts":1706789367.2279396,"caller":"handler/brand.go:70","msg":"invalid brand id"}
+{"level":"error","ts":1706789446.9675517,"caller":"handler/brand.go:70","msg":"invalid brand id"}
+{"level":"error","ts":1706789477.8919168,"caller":"handler/brand.go:70","msg":"invalid brand id"}
+{"level":"error","ts":1706789492.915473,"caller":"handler/brand.go:70","msg":"invalid brand id"}
+{"level":"error","ts":1706790278.1331964,"caller":"handler/brand.go:70","msg":"invalid brand id"}
+{"level":"error","ts":1706790327.3325171,"caller":"handler/brand.go:70","msg":"invalid brand id"}
+{"level":"error","ts":1706790330.3962612,"caller":"handler/brand.go:70","msg":"invalid brand id"}
+{"level":"error","ts":1706790348.0541422,"caller":"handler/brand.go:70","msg":"invalid brand id"}
+{"level":"error","ts":1706790349.0063658,"caller":"handler/brand.go:70","msg":"invalid brand id"}
+{"level":"error","ts":1706792632.7638383,"caller":"handler/brand.go:70","msg":"invalid brand id"}
+{"level":"error","ts":1706792641.736249,"caller":"handler/brand.go:70","msg":"invalid brand id"}
+{"level":"error","ts":1706792650.7225065,"caller":"handler/brand.go:70","msg":"invalid brand id"}
+{"level":"error","ts":1706792743.3757362,"caller":"handler/brand.go:70","msg":"ERROR: duplicate key value violates unique constraint \"brand_pkey\" (SQLSTATE 23505)"}
+{"level":"error","ts":1706792785.6831381,"caller":"handler/brand.go:70","msg":"ERROR: duplicate key value violates unique constraint \"brand_pkey\" (SQLSTATE 23505)"}
+{"level":"error","ts":1706792786.8594694,"caller":"handler/brand.go:70","msg":"ERROR: duplicate key value violates unique constraint \"brand_pkey\" (SQLSTATE 23505)"}
+{"level":"error","ts":1706792873.3037665,"caller":"handler/brand.go:70","msg":"ERROR: duplicate key value violates unique constraint \"brand_pkey\" (SQLSTATE 23505)"}
+{"level":"error","ts":1706792885.4734054,"caller":"handler/brand.go:70","msg":"ERROR: duplicate key value violates unique constraint \"brand_pkey\" (SQLSTATE 23505)"}
+{"level":"error","ts":1706792897.76094,"caller":"handler/brand.go:70","msg":"ERROR: duplicate key value violates unique constraint \"brand_pkey\" (SQLSTATE 23505)"}
+{"level":"error","ts":1706793013.2082112,"caller":"handler/brand.go:70","msg":"invalid brand id"}
+{"level":"error","ts":1706793014.7525678,"caller":"handler/brand.go:70","msg":"invalid brand id"}
+{"level":"error","ts":1706793035.5273082,"caller":"handler/brand.go:70","msg":"invalid brand id"}
+{"level":"error","ts":1706793181.6533754,"caller":"handler/brand.go:63","msg":"invalid character '}' looking for beginning of object key string"}
+{"level":"error","ts":1706793441.3285418,"caller":"handler/brand.go:63","msg":"json: cannot unmarshal string into Go struct field Brand.status of type bool"}
+{"level":"error","ts":1706793710.4087305,"caller":"handler/brand.go:70","msg":"invalid brand id"}
+{"level":"error","ts":1706793739.963928,"caller":"handler/brand.go:101","msg":"unsupported data type: 6276de15-e578-4f8c-add7-292564801738: Table not set, please set it like: db.Model(&user) or db.Table(\"users\")"}
+{"level":"error","ts":1706793826.7141933,"caller":"handler/brand.go:90","msg":"invalid brand id"}
+{"level":"error","ts":1706794578.0792675,"caller":"handler/brand.go:71","msg":"invalid brand id"}
+{"level":"error","ts":1706794597.8591142,"caller":"handler/brand.go:71","msg":"invalid brand id"}
+{"level":"error","ts":1706794935.1251845,"caller":"middleware/authorization.go:33","msg":"admin can only access this feature"}
+{"level":"error","ts":1706794959.3683958,"caller":"handler/brand.go:71","msg":"invalid brand id"}
+{"level":"error","ts":1706794962.9361854,"caller":"handler/brand.go:71","msg":"invalid brand id"}
+
+{"level":"error","ts":1706796007.9573042,"caller":"handler/ram.go:21","msg":"EOF"}
+{"level":"error","ts":1706797293.0437012,"caller":"handler/ram.go:30","msg":"Key: 'Ram.Price' Error:Field validation for 'Price' failed on the 'required' tag"}
+{"level":"error","ts":1706797297.4028049,"caller":"handler/ram.go:30","msg":"Key: 'Ram.Size' Error:Field validation for 'Size' failed on the 'required' tag"}
+{"level":"error","ts":1706797302.218214,"caller":"handler/ram.go:22","msg":"invalid character '}' looking for beginning of object key string"}
+{"level":"error","ts":1706797306.2729912,"caller":"handler/ram.go:30","msg":"Key: 'Ram.Status' Error:Field validation for 'Status' failed on the 'required' tag"}
+{"level":"error","ts":1706797331.2426937,"caller":"middleware/authorization.go:27","msg":"signature is invalid"}
+{"level":"error","ts":1706797578.2731583,"caller":"middleware/authorization.go:33","msg":"admin can only access this feature"}
+{"level":"error","ts":1706797612.1412983,"caller":"middleware/authorization.go:33","msg":"admin can only access this feature"}
+{"level":"error","ts":1706797633.322692,"caller":"middleware/authorization.go:33","msg":"admin can only access this feature"}
+{"level":"error","ts":1706799715.9258485,"caller":"handler/order.go:20","msg":"EOF"}
+{"level":"error","ts":1706800053.540911,"caller":"online-purchase/main.go:40","msg":"ERROR: duplicate key value violates unique constraint \"roles_pkey\" (SQLSTATE 23505)"}
+{"level":"error","ts":1706800053.542132,"caller":"online-purchase/main.go:40","msg":"ERROR: duplicate key value violates unique constraint \"order_status_pkey\" (SQLSTATE 23505)"}
+{"level":"error","ts":1706800077.4055629,"caller":"handler/order.go:32","msg":"invalid brand id"}
+{"level":"error","ts":1706800118.6412377,"caller":"handler/order.go:57","msg":"Key: 'Orders.User.UserID' Error:Field validation for 'UserID' failed on the 'required' tag\nKey: 'Orders.User.UserName' Error:Field validation for 'UserName' failed on the 'required' tag\nKey: 'Orders.User.Email' Error:Field validation for 'Email' failed on the 'email' tag\nKey: 'Orders.User.Password' Error:Field validation for 'Password' failed on the 'required' tag\nKey: 'Orders.Brand.BrandID' Error:Field validation for 'BrandID' failed on the 'required' tag\nKey: 'Orders.Brand.Name' Error:Field validation for 'Name' failed on the 'required' tag\nKey: 'Orders.Brand.Price' Error:Field validation for 'Price' failed on the 'required' tag\nKey: 'Orders.Brand.Status' Error:Field validation for 'Status' failed on the 'required' tag\nKey: 'Orders.Ram.RamID' Error:Field validation for 'RamID' failed on the 'required' tag\nKey: 'Orders.Ram.Size' Error:Field validation for 'Size' failed on the 'required' tag\nKey: 'Orders.Ram.Price' Error:Field validation for 'Price' failed on the 'required' tag\nKey: 'Orders.Ram.Status' Error:Field validation for 'Status' failed on the 'required' tag\nKey: 'Orders.OrderStatusID' Error:Field validation for 'OrderStatusID' failed on the 'required' tag"}
+{"level":"error","ts":1706800174.2034853,"caller":"handler/order.go:59","msg":"Key: 'Orders.User.UserID' Error:Field validation for 'UserID' failed on the 'required' tag\nKey: 'Orders.User.UserName' Error:Field validation for 'UserName' failed on the 'required' tag\nKey: 'Orders.User.Email' Error:Field validation for 'Email' failed on the 'email' tag\nKey: 'Orders.User.Password' Error:Field validation for 'Password' failed on the 'required' tag\nKey: 'Orders.Brand.BrandID' Error:Field validation for 'BrandID' failed on the 'required' tag\nKey: 'Orders.Brand.Name' Error:Field validation for 'Name' failed on the 'required' tag\nKey: 'Orders.Brand.Price' Error:Field validation for 'Price' failed on the 'required' tag\nKey: 'Orders.Brand.Status' Error:Field validation for 'Status' failed on the 'required' tag\nKey: 'Orders.Ram.RamID' Error:Field validation for 'RamID' failed on the 'required' tag\nKey: 'Orders.Ram.Size' Error:Field validation for 'Size' failed on the 'required' tag\nKey: 'Orders.Ram.Price' Error:Field validation for 'Price' failed on the 'required' tag\nKey: 'Orders.Ram.Status' Error:Field validation for 'Status' failed on the 'required' tag\nKey: 'Orders.OrderStatusID' Error:Field validation for 'OrderStatusID' failed on the 'required' tag"}
+{"level":"error","ts":1706800236.0391157,"caller":"handler/order.go:59","msg":"Key: 'Orders.OrderStatusID' Error:Field validation for 'OrderStatusID' failed on the 'required' tag"}
+{"level":"error","ts":1706801050.589577,"caller":"online-purchase/main.go:40","msg":"ERROR: duplicate key value violates unique constraint \"roles_pkey\" (SQLSTATE 23505)"}
+{"level":"error","ts":1706801050.5908244,"caller":"online-purchase/main.go:40","msg":"ERROR: duplicate key value violates unique constraint \"order_status_pkey\" (SQLSTATE 23505)"}
+{"level":"error","ts":1706801054.058907,"caller":"handler/order.go:66","msg":"ERROR: insert or update on table \"orders\" violates foreign key constraint \"fk_orders_order_status\" (SQLSTATE 23503)"}
+{"level":"error","ts":1706802361.5527618,"caller":"handler/order.go:86","msg":"brand: unsupported relations for schema Orders; ram: unsupported relations for schema Orders"}
+{"level":"error","ts":1706851009.9562767,"caller":"handler/ram.go:30","msg":"Key: 'Ram.Status' Error:Field validation for 'Status' failed on the 'required' tag"}
+{"level":"error","ts":1706851057.3473096,"caller":"handler/ram.go:33","msg":"Key: 'Ram.Status' Error:Field validation for 'Status' failed on the 'required' tag"}
+{"level":"error","ts":1706852751.9374595,"caller":"handler/account.go:48","msg":"email id already exist"}
+{"level":"error","ts":1706853227.1639628,"caller":"middleware/authorization.go:33","msg":"admin can only access this feature"}
+{"level":"error","ts":1706853563.794153,"caller":"handler/ram.go:37","msg":"ERROR: column \"ram_id\" does not exist (SQLSTATE 42703)"}
+{"level":"error","ts":1706853611.2398334,"caller":"handler/ram.go:37","msg":"ERROR: column \"ram_id\" does not exist (SQLSTATE 42703)"}
+{"level":"error","ts":1706854054.235808,"caller":"handler/ram.go:79","msg":"invalid character '\"' after object key:value pair"}
+{"level":"error","ts":1706854061.6754763,"caller":"handler/ram.go:79","msg":"invalid character '}' looking for beginning of object key string"}
+{"level":"error","ts":1706854214.3400264,"caller":"handler/ram.go:31","msg":"Key: 'Ram.Status' Error:Field validation for 'Status' failed on the 'required' tag"}
+{"level":"error","ts":1706854458.8929172,"caller":"handler/ram.go:31","msg":"Key: 'Ram.Status' Error:Field validation for 'Status' failed on the 'required' tag"}
+{"level":"error","ts":1706854503.1963067,"caller":"handler/ram.go:31","msg":"Key: 'Ram.Status' Error:Field validation for 'Status' failed on the 'required' tag"}
+{"level":"error","ts":1706855102.1402304,"caller":"handler/ram.go:22","msg":"invalid character '}' looking for beginning of object key string"}
+{"level":"error","ts":1706855261.903707,"caller":"handler/brand.go:78","msg":"invalid character '}' looking for beginning of object key string"}
+{"level":"error","ts":1706856572.7668493,"caller":"handler/brand.go:84","msg":"EOF"}
+{"level":"error","ts":1706857290.0095801,"caller":"online-purchase/main.go:40","msg":"ERROR: duplicate key value violates unique constraint \"roles_pkey\" (SQLSTATE 23505)"}
+{"level":"error","ts":1706857290.010481,"caller":"online-purchase/main.go:40","msg":"ERROR: duplicate key value violates unique constraint \"order_status_pkey\" (SQLSTATE 23505)"}
+{"level":"error","ts":1706857936.12805,"caller":"handler/order.go:35","msg":"invalid brand id"}
+{"level":"error","ts":1706859466.2528327,"caller":"handler/order.go:116","msg":"EOF"}
+{"level":"error","ts":1706859498.0238788,"caller":"handler/order.go:139","msg":"Needed \"active\" field"}
+{"level":"error","ts":1706859512.104879,"caller":"handler/order.go:146","msg":"Invalid datatype expected boolean"}
+{"level":"error","ts":1706861014.2834024,"caller":"middleware/authorization.go:33","msg":"admin can only access this feature"}
+{"level":"error","ts":1706866428.9118161,"caller":"middleware/authorization.go:33","msg":"admin can only access this feature"}
+{"level":"error","ts":1706866529.5317957,"caller":"handler/order.go:221","msg":"invalid Order id"}
+{"level":"error","ts":1706866582.2202256,"caller":"handler/order.go:209","msg":"EOF"}
+{"level":"error","ts":1706866603.837439,"caller":"handler/order.go:221","msg":"invalid Order id"}
+{"level":"error","ts":1706866641.382107,"caller":"handler/order.go:233","msg":"Invalid datatype expected string"}
+{"level":"error","ts":1706867946.2769802,"caller":"handler/order.go:35","msg":"invalid brand id"}
+{"level":"error","ts":1706867994.3384864,"caller":"handler/order.go:41","msg":"invalid RAM id"}
+{"level":"error","ts":1706868185.783671,"caller":"middleware/authorization.go:33","msg":"admin can only access this feature"}
+{"level":"error","ts":1706868209.1259665,"caller":"middleware/authorization.go:33","msg":"admin can only access this feature"}
+{"level":"error","ts":1706868309.5957966,"caller":"handler/order.go:96","msg":"invalid Order id"}
+{"level":"error","ts":1706881132.341019,"caller":"handler/order.go:96","msg":"invalid Order id"}
+{"level":"error","ts":1706881387.9147034,"caller":"handler/order.go:96","msg":"invalid Order id"}
+{"level":"error","ts":1706881406.9672763,"caller":"handler/order.go:96","msg":"invalid Order id"}
+{"level":"error","ts":1706941214.6784804,"caller":"middleware/authorization.go:27","msg":"Token is expired"}
+{"level":"error","ts":1706941239.8389187,"caller":"middleware/authorization.go:27","msg":"Token is expired"}
+{"level":"error","ts":1706941646.0383677,"caller":"handler/order.go:95","msg":"invalid Order id"}
+{"level":"error","ts":1706941773.2025232,"caller":"handler/account.go:48","msg":"user name already exist"}
+{"level":"error","ts":1706944581.9928367,"caller":"middleware/authorization.go:27","msg":"Token is expired"}
+{"level":"error","ts":1706944607.9641418,"caller":"middleware/authorization.go:27","msg":"Token is expired"}
+{"level":"error","ts":1707110977.562147,"caller":"handler/order.go:116","msg":"Token is expired"}
+{"level":"error","ts":1707115968.4947286,"caller":"middleware/authorization.go:27","msg":"Token is expired"}
+{"level":"error","ts":1707117504.51344,"caller":"handler/order.go:96","msg":"invalid Order id"}
+{"level":"error","ts":1707117508.4939315,"caller":"handler/order.go:96","msg":"invalid Order id"}
+{"level":"error","ts":1707118820.537563,"caller":"handler/order.go:208","msg":"EOF"}
+{"level":"error","ts":1707118843.5514379,"caller":"handler/order.go:221","msg":"parsing time \"aaa\" as \"2006-01-02\": cannot parse \"aaa\" as \"2006\""}
+{"level":"error","ts":1707119264.8823211,"caller":"handler/account.go:54","msg":"ERROR: insert or update on table \"users\" violates foreign key constraint \"fk_users_roles\" (SQLSTATE 23503)"}
+{"level":"error","ts":1707119399.4226751,"caller":"middleware/authorization.go:27","msg":"Token is expired"}
+{"level":"error","ts":1707119499.7710485,"caller":"handler/order.go:35","msg":"invalid brand id"}
+{"level":"error","ts":1707125293.7480774,"caller":"middleware/authorization.go:27","msg":"Token is expired"}
+{"level":"error","ts":1707130009.7436712,"caller":"handler/order.go:130","msg":"ERROR: syntax error at or near \"!=\" (SQLSTATE 42601)"}
+{"level":"error","ts":1707134739.6761022,"caller":"handler/account.go:136","msg":"user name already exist"}
+{"level":"error","ts":1707135703.503207,"caller":"handler/account.go:136","msg":"email id already exist"}
