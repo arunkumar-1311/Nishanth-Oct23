@@ -29,7 +29,7 @@ type Jobs interface {
 	DecodeDeleteJobRequest(context.Context, *http.Request) (interface{}, error)
 
 	GetJob(service.Service) endpoint.Endpoint
-	DecodeGetJobRequest(context.Context, *http.Request) (interface{}, error)
+	DecodeGetID(context.Context, *http.Request) (interface{}, error)
 }
 
 // Helps to post new job
@@ -37,20 +37,20 @@ func (e Endpoints) PostJob(svc service.Service) endpoint.Endpoint {
 	return func(ctx context.Context, request interface{}) (response interface{}, err error) {
 		post, ok := request.(models.Post)
 		if !ok {
-			level.Debug(logger.GokitLogger(fmt.Errorf("can't assert the request"))).Log()
+			level.Error(logger.GokitLogger(fmt.Errorf("can't assert the request"))).Log()
 			response = models.ResponseMessage{Data: request, Error: "Invalid Request", Code: http.StatusBadRequest, Message: ""}
 			return response, nil
 		}
 		post.PostID = helper.UniqueID()
 		validate := validator.New()
 		if err := validate.Struct(post); err != nil {
-			level.Debug(logger.GokitLogger(err)).Log()
+			level.Error(logger.GokitLogger(err)).Log()
 			response = models.ResponseMessage{Data: "", Error: err.Error(), Code: http.StatusBadRequest, Message: "Invalid request"}
 			return response, nil
 		}
 
 		if err := e.DB.CreateJob(post); err != nil {
-			level.Debug(logger.GokitLogger(err)).Log()
+			level.Error(logger.GokitLogger(err)).Log()
 			response = models.ResponseMessage{Data: "", Error: err.Error(), Code: http.StatusBadRequest, Message: "Invalid request"}
 			return response, nil
 		}
@@ -80,7 +80,7 @@ func (e Endpoints) GetAllJobs(svc service.Service) endpoint.Endpoint {
 	return func(ctx context.Context, request interface{}) (response interface{}, err error) {
 		var jobs []models.Post
 		if err = e.DB.ReadJobs(&jobs); err != nil {
-			level.Debug(logger.GokitLogger(fmt.Errorf("can't assert the request"))).Log()
+			level.Error(logger.GokitLogger(fmt.Errorf("can't assert the request"))).Log()
 			response = models.ResponseMessage{Data: "", Error: "Server Error", Code: http.StatusInternalServerError, Message: "Try again later"}
 			return response, nil
 		}
@@ -89,13 +89,13 @@ func (e Endpoints) GetAllJobs(svc service.Service) endpoint.Endpoint {
 		for index, value := range jobs {
 			marshalJob, err := json.Marshal(value)
 			if err != nil {
-				level.Debug(logger.GokitLogger(err)).Log()
+				level.Error(logger.GokitLogger(err)).Log()
 				response = models.ResponseMessage{Data: "", Error: err.Error(), Code: http.StatusInternalServerError, Message: "Try again later"}
 				return response, nil
 			}
 
 			if err = json.Unmarshal(marshalJob, &jobResponse[index]); err != nil {
-				level.Debug(logger.GokitLogger(err)).Log()
+				level.Error(logger.GokitLogger(err)).Log()
 				response = models.ResponseMessage{Data: "", Error: err.Error(), Code: http.StatusInternalServerError, Message: "Try again later"}
 				return response, nil
 			}
@@ -110,14 +110,14 @@ func (e Endpoints) UpdateJob(svc service.Service) endpoint.Endpoint {
 	return func(ctx context.Context, request interface{}) (response interface{}, err error) {
 		post, ok := request.(models.Post)
 		if !ok {
-			level.Debug(logger.GokitLogger(fmt.Errorf("can't assert the request"))).Log()
+			level.Error(logger.GokitLogger(fmt.Errorf("can't assert the request"))).Log()
 			response = models.ResponseMessage{Data: request, Error: "Invalid Request", Code: http.StatusBadRequest, Message: ""}
 			return response, nil
 		}
 
 		var existingPost models.Post
 		if err = e.DB.ReadJob(post.PostID, &existingPost); err != nil {
-			level.Debug(logger.GokitLogger(err)).Log()
+			level.Error(logger.GokitLogger(err)).Log()
 			response = models.ResponseMessage{Data: "", Error: err.Error(), Code: http.StatusInternalServerError, Message: "Try again later"}
 			return response, nil
 		}
@@ -128,13 +128,13 @@ func (e Endpoints) UpdateJob(svc service.Service) endpoint.Endpoint {
 		}
 
 		if err := e.DB.UpdateJob(post.PostID, post); err != nil {
-			level.Debug(logger.GokitLogger(err)).Log()
+			level.Error(logger.GokitLogger(err)).Log()
 			response = models.ResponseMessage{Data: "", Error: err.Error(), Code: http.StatusBadRequest, Message: "Invalid request"}
 			return response, nil
 		}
 
 		if err := e.DB.ReadJob(post.PostID, &post); err != nil {
-			level.Debug(logger.GokitLogger(err)).Log()
+			level.Error(logger.GokitLogger(err)).Log()
 			response = models.ResponseMessage{Data: "", Error: "Server Error", Code: http.StatusInternalServerError, Message: "Try again later"}
 			return response, nil
 		}
@@ -158,7 +158,7 @@ func (e Endpoints) DecodeUpdateJobRequest(_ context.Context, r *http.Request) (r
 
 	jobs.UsersID = claims.UsersID
 	jobs.PostID = mux.Vars(r)["id"]
-	return
+	return jobs, nil
 }
 
 // Helps to delete the existing job
@@ -166,13 +166,13 @@ func (e Endpoints) DeleteJob(svc service.Service) endpoint.Endpoint {
 	return func(ctx context.Context, request interface{}) (response interface{}, err error) {
 		data, ok := request.(map[string]string)
 		if !ok {
-			level.Debug(logger.GokitLogger(fmt.Errorf("can't assert the request"))).Log()
+			level.Error(logger.GokitLogger(fmt.Errorf("can't assert the request"))).Log()
 			response = models.ResponseMessage{Data: request, Error: "Invalid Request", Code: http.StatusBadRequest, Message: ""}
 			return response, nil
 		}
 		var post models.Post
 		if err = e.DB.ReadJob(data["post_id"], &post); err != nil {
-			level.Debug(logger.GokitLogger(err)).Log()
+			level.Error(logger.GokitLogger(err)).Log()
 			response = models.ResponseMessage{Data: "", Error: err.Error(), Code: http.StatusBadRequest, Message: "Invalid request"}
 			return response, nil
 		}
@@ -183,11 +183,11 @@ func (e Endpoints) DeleteJob(svc service.Service) endpoint.Endpoint {
 		}
 
 		if err = e.DB.DeleteJobByID(post); err != nil {
-			level.Debug(logger.GokitLogger(err)).Log()
+			level.Error(logger.GokitLogger(err)).Log()
 			response = models.ResponseMessage{Data: "", Error: err.Error(), Code: http.StatusBadRequest, Message: "Invalid request"}
 			return response, nil
 		}
-		response = models.ResponseMessage{Data: post, Error: "", Code: http.StatusOK, Message: "Deleted Successfully"}
+		response = models.ResponseMessage{Data: "", Error: "", Code: http.StatusOK, Message: "Deleted Successfully"}
 		return
 	}
 }
@@ -212,13 +212,13 @@ func (e Endpoints) GetJob(svc service.Service) endpoint.Endpoint {
 	return func(ctx context.Context, request interface{}) (response interface{}, err error) {
 		id, ok := request.(string)
 		if !ok {
-			level.Debug(logger.GokitLogger(fmt.Errorf("can't assert the request"))).Log()
+			level.Error(logger.GokitLogger(fmt.Errorf("can't assert the request"))).Log()
 			response = models.ResponseMessage{Data: request, Error: "Invalid Request", Code: http.StatusBadRequest, Message: ""}
 			return response, nil
 		}
 		var post models.Post
 		if err := e.DB.ReadJob(id, &post); err != nil {
-			level.Debug(logger.GokitLogger(err)).Log()
+			level.Error(logger.GokitLogger(err)).Log()
 			response = models.ResponseMessage{Data: "", Error: err.Error(), Code: http.StatusBadRequest, Message: "Invalid request"}
 			return response, nil
 		}
@@ -228,7 +228,7 @@ func (e Endpoints) GetJob(svc service.Service) endpoint.Endpoint {
 	}
 }
 
-func (e Endpoints) DecodeGetJobRequest(_ context.Context, r *http.Request) (request interface{}, err error) {
+func (e Endpoints) DecodeGetID(_ context.Context, r *http.Request) (request interface{}, err error) {
 	postID := mux.Vars(r)["id"]
 	return postID, nil
 }

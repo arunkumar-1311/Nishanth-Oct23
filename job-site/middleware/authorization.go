@@ -14,6 +14,7 @@ type Authorization interface {
 }
 
 
+// Helps to check verify the token and authorize the admin
 func (svc Middleware) Authorization(decode kithttp.DecodeRequestFunc) kithttp.DecodeRequestFunc {
 	return func(ctx context.Context, r *http.Request) (request interface{}, err error) {
 		token := r.Header.Get("Authorization")
@@ -29,7 +30,7 @@ func (svc Middleware) Authorization(decode kithttp.DecodeRequestFunc) kithttp.De
 			return err.Error(), nil
 		}
 
-		if err := svc.AdminAccess(token); strings.Contains(r.URL.Path, "admin") && err != nil {
+		if err := svc.AdminAccess(token); strings.Contains(r.URL.Path, "/admin/") && err != nil {
 			return err.Error(), nil
 		}
 		return decode(ctx, r)

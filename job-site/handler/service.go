@@ -9,5 +9,3 @@ type Endpoints struct {
 	DB            adaptor.Database
 	Authorization middleware.Authorization
 }
-
-

@@ -59,3 +59,41 @@ level=debug message=error time=2024-01-30T05:52:59.949111083Z caller=main.go:12
 {"caller":"jobs.go:35","level":"debug","message":"Key: 'Post.JobTypeID' Error:Field validation for 'JobTypeID' failed on the 'required' tag\nKey: 'Post.Email' Error:Field validation for 'Email' failed on the 'required' tag","time":"2024-02-07T11:05:10.677299069Z"}
 {"caller":"jobs.go:73","level":"debug","message":"can't assert the request","time":"2024-02-07T11:32:54.748625366Z"}
 {"caller":"jobs.go:221","level":"debug","message":"invalid job id","time":"2024-02-07T13:07:42.746471507Z"}
+{"caller":"jobs.go:113","level":"debug","message":"can't assert the request","time":"2024-02-08T04:58:13.259185922Z"}
+{"caller":"jobs.go:113","level":"debug","message":"can't assert the request","time":"2024-02-08T04:59:10.775105235Z"}
+{"caller":"jobs.go:113","level":"debug","message":"can't assert the request","time":"2024-02-08T04:59:40.259194262Z"}
+{"caller":"jobs.go:113","level":"debug","message":"can't assert the request","time":"2024-02-08T05:00:59.738487348Z"}
+{"caller":"jobs.go:113","level":"debug","message":"can't assert the request","time":"2024-02-08T05:01:25.066867292Z"}
+{"caller":"jobs.go:113","level":"debug","message":"can't assert the request","time":"2024-02-08T05:06:45.108523171Z"}
+{"caller":"jobs.go:113","level":"debug","message":"can't assert the request","time":"2024-02-08T05:08:32.701405335Z"}
+{"caller":"jobs.go:113","level":"debug","message":"can't assert the request","time":"2024-02-08T05:08:52.346761145Z"}
+{"caller":"jobs.go:113","level":"debug","message":"can't assert the request","time":"2024-02-08T05:09:27.684013903Z"}
+{"caller":"jobs.go:113","level":"debug","message":"can't assert the request","time":"2024-02-08T05:10:01.03415004Z"}
+{"caller":"jobs.go:113","level":"debug","message":"can't assert the request","time":"2024-02-08T05:11:25.870667991Z"}
+{"caller":"jobs.go:113","level":"debug","message":"can't assert the request","time":"2024-02-08T05:12:32.150689875Z"}
+{"caller":"jobs.go:113","level":"debug","message":"can't assert the request","time":"2024-02-08T05:17:58.70497497Z"}
+{"caller":"jobs.go:113","level":"debug","message":"can't assert the request","time":"2024-02-08T05:21:39.073831935Z"}
+{"caller":"jobs.go:113","level":"debug","message":"can't assert the request","time":"2024-02-08T05:21:43.150268276Z"}
+{"caller":"jobs.go:113","level":"debug","message":"can't assert the request","time":"2024-02-08T05:25:41.786282127Z"}
+{"caller":"jobs.go:169","level":"debug","message":"can't assert the request","time":"2024-02-08T05:26:23.665523995Z"}
+{"caller":"jobs.go:186","level":"debug","message":"invalid value, should be pointer to struct or slice","time":"2024-02-08T05:26:59.231177139Z"}
+{"caller":"jobs.go:186","level":"debug","message":"invalid value, should be pointer to struct or slice","time":"2024-02-08T05:27:04.820342678Z"}
+{"caller":"jobs.go:175","level":"debug","message":"invalid job id","time":"2024-02-08T05:27:48.684139941Z"}
+{"caller":"comments.go:28","level":"debug","message":"can't assert the request","time":"2024-02-08T05:45:04.734207602Z"}
+{"caller":"comments.go:28","level":"debug","message":"can't assert the request","time":"2024-02-08T05:45:20.680725565Z"}
+{"caller":"comments.go:36","level":"debug","message":"Key: 'Comment.Content' Error:Field validation for 'Content' failed on the 'required' tag","time":"2024-02-08T05:45:30.499474247Z"}
+{"caller":"comments.go:36","level":"debug","message":"Key: 'Comment.Content' Error:Field validation for 'Content' failed on the 'required' tag","time":"2024-02-08T05:45:46.479093248Z"}
+{"caller":"jobs.go:40","level":"debug","message":"can't assert the request","time":"2024-02-08T05:56:12.108555437Z"}
+{"caller":"comments.go:125","level":"debug","message":"can't assert the request","time":"2024-02-08T06:40:51.132214678Z"}
+{"caller":"comments.go:125","level":"debug","message":"can't assert the request","time":"2024-02-08T06:41:06.931240886Z"}
+{"caller":"comments.go:176","level":"debug","message":"can't assert the request","time":"2024-02-08T07:11:41.470907759Z"}
+{"caller":"comments.go:183","level":"debug","message":"Roles: unsupported relations for schema Comment","time":"2024-02-08T07:12:35.281857432Z"}
+{"caller":"comments.go:189","level":"debug","message":null,"time":"2024-02-08T07:13:42.808394561Z"}
+{"caller":"comments.go:189","level":"debug","message":null,"time":"2024-02-08T07:14:10.161251639Z"}
+{"caller":"comments.go:189","level":"debug","message":null,"time":"2024-02-08T07:14:31.170778523Z"}
+{"caller":"comments.go:189","level":"debug","message":null,"time":"2024-02-08T07:14:47.754325519Z"}
+{"caller":"comments.go:189","level":"debug","message":null,"time":"2024-02-08T07:16:08.466893423Z"}
+{"caller":"comments.go:189","level":"debug","message":null,"time":"2024-02-08T07:16:36.555516232Z"}
+{"caller":"comments.go:189","level":"debug","message":null,"time":"2024-02-08T07:16:57.654939486Z"}
+{"caller":"comments.go:189","level":"debug","message":null,"time":"2024-02-08T07:18:56.858900695Z"}
+{"caller":"comments.go:189","level":"debug","message":null,"time":"2024-02-08T07:19:00.533409416Z"}

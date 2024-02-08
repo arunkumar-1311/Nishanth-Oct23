@@ -20,7 +20,7 @@ func (e Endpoints) GetAllCountries(svc service.Service) endpoint.Endpoint {
 	return func(ctx context.Context, request interface{}) (response interface{}, err error) {
 		var countries []models.Country
 		if err := e.DB.ReadCountries(&countries); err != nil {
-			level.Debug(logger.GokitLogger(err)).Log()
+			level.Error(logger.GokitLogger(err)).Log()
 			response = models.ResponseMessage{Data: "", Error: err.Error(), Code: http.StatusBadRequest, Message: "Invalid request"}
 			return response, nil
 		}

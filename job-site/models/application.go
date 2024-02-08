@@ -34,7 +34,7 @@ type Post struct {
 	gorm.Model
 	PostID      string  `gorm:"column:post_id; uniqueIndex; primaryKey; type:varchar;" json:"post_id" validate:"required"`
 	UsersID     string  `gorm:"column:user_id; type:varchar;" json:"user_id" validate:"required"`
-	Users       Users   `gorm:"foriegnKey:UserID;references:user_id" validate:"omitempty,uuid4" json:"user"`
+	Users       Users   `gorm:"foriegnKey:UserID;references:user_id" validate:"omitempty,uuid4" json:"-"`
 	CompanyName string  `gorm:"column:company_name; type:varchar;" json:"company_name" validate:"required"`
 	JobTitle    string  `gorm:"column:job_title; type:varchar;" json:"job_title" validate:"required"`
 	Website     string  `gorm:"column:website; type:varchar;" json:"website" validate:"required"`
@@ -50,9 +50,9 @@ type Comment struct {
 	gorm.Model
 	CommentID string `gorm:"comment_id; uniqueIndex; primaryKey; type:varchar;" json:"comment_id" validate:"required"`
 	PostID    string `gorm:"post_id; type:varchar;" json:"post_id" validate:"required"`
-	Post      Post   `gorm:"references:post_id" validate:"omitempty,uuid4"`
+	Post      Post   `gorm:"references:post_id" validate:"omitempty,uuid4" json:"-"`
 	UsersID   string `gorm:"user_id; type:varchar;" json:"user_id" validate:"required"`
-	Users     Users  `gorm:"references:user_id" validate:"omitempty,uuid4"`
+	Users     Users  `gorm:"references:user_id" validate:"omitempty,uuid4" json:"-"`
 	Content   string `gorm:"column:comment; type:varchar;" json:"comment" validate:"required"`
 }
 

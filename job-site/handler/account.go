@@ -39,33 +39,33 @@ func (e Endpoints) Register(svc service.Service) endpoint.Endpoint {
 
 		user, ok := request.(models.Users)
 		if !ok {
-			level.Debug(logger.GokitLogger(fmt.Errorf("can't assert the request"))).Log()
+			level.Error(logger.GokitLogger(fmt.Errorf("can't assert the request"))).Log()
 			response = models.ResponseMessage{Data: request, Error: "Invalid Request", Code: http.StatusBadRequest, Message: ""}
 			return response, nil
 		}
 		user.UserID = helper.UniqueID()
 
 		if err = svc.GenerateHash(&user.Password); err != nil {
-			level.Debug(logger.GokitLogger(err)).Log()
+			level.Error(logger.GokitLogger(err)).Log()
 			response = models.ResponseMessage{Data: "", Error: err.Error(), Code: http.StatusBadRequest, Message: "Invalid request"}
 			return response, nil
 		}
 
 		validate := validator.New()
 		if err = validate.Struct(user); err != nil {
-			level.Debug(logger.GokitLogger(err)).Log()
+			level.Error(logger.GokitLogger(err)).Log()
 			response = models.ResponseMessage{Data: "", Error: err.Error(), Code: http.StatusBadRequest, Message: "Invalid request"}
 			return response, nil
 		}
 
 		if err = svc.EmailAndNameValidation(user, e.DB); err != nil {
-			level.Debug(logger.GokitLogger(err)).Log()
+			level.Error(logger.GokitLogger(err)).Log()
 			response = models.ResponseMessage{Data: "", Error: err.Error(), Code: http.StatusBadRequest, Message: "Invalid request"}
 			return response, nil
 		}
 
 		if err = e.DB.CreateUser(user); err != nil {
-			level.Debug(logger.GokitLogger(err)).Log()
+			level.Error(logger.GokitLogger(err)).Log()
 			response = models.ResponseMessage{Data: "", Error: err.Error(), Code: http.StatusBadRequest, Message: "Invalid request"}
 			return response, nil
 		}
@@ -88,14 +88,14 @@ func (e Endpoints) GetProfile(svc service.Service) endpoint.Endpoint {
 	return func(ctx context.Context, request interface{}) (response interface{}, err error) {
 		claims, ok := request.(models.Claims)
 		if !ok {
-			level.Debug(logger.GokitLogger(fmt.Errorf("can't assert the request"))).Log()
+			level.Error(logger.GokitLogger(fmt.Errorf("can't assert the request"))).Log()
 			response = models.ResponseMessage{Data: request, Error: "Invalid Request", Code: http.StatusBadRequest, Message: ""}
 			return response, nil
 		}
 
 		var user models.Users
 		if err := e.DB.ReadProfile(claims.UsersID, &user); err != nil {
-			level.Debug(logger.GokitLogger(err)).Log()
+			level.Error(logger.GokitLogger(err)).Log()
 			response = models.ResponseMessage{Data: "", Error: err.Error(), Code: http.StatusBadRequest, Message: "Invalid Request"}
 			return response, nil
 		}
@@ -119,14 +119,14 @@ func (e Endpoints) UpdateProfile(svc service.Service) endpoint.Endpoint {
 	return func(ctx context.Context, request interface{}) (response interface{}, err error) {
 		user, ok := request.(models.Users)
 		if !ok {
-			level.Debug(logger.GokitLogger(fmt.Errorf("can't assert the request"))).Log()
+			level.Error(logger.GokitLogger(fmt.Errorf("can't assert the request"))).Log()
 			response = models.ResponseMessage{Data: request, Error: "Invalid Request", Code: http.StatusBadRequest, Message: ""}
 			return response, nil
 		}
 
 		if user.Password != "" {
 			if err := svc.GenerateHash(&user.Password); err != nil {
-				level.Debug(logger.GokitLogger(err)).Log()
+				level.Error(logger.GokitLogger(err)).Log()
 				response = models.ResponseMessage{Data: "", Error: err.Error(), Code: http.StatusBadRequest, Message: "Invalid Request"}
 				return response, nil
 			}
@@ -134,19 +134,19 @@ func (e Endpoints) UpdateProfile(svc service.Service) endpoint.Endpoint {
 
 		if user.UserName != "" || user.Email != "" {
 			if err = svc.EmailAndNameValidation(user, e.DB); err != nil {
-				level.Debug(logger.GokitLogger(err)).Log()
+				level.Error(logger.GokitLogger(err)).Log()
 				response = models.ResponseMessage{Data: "", Error: err.Error(), Code: http.StatusBadRequest, Message: "Invalid request"}
 				return response, nil
 			}
 		}
 		if err = e.DB.UpdateUser(&user); err != nil {
-			level.Debug(logger.GokitLogger(err)).Log()
+			level.Error(logger.GokitLogger(err)).Log()
 			response = models.ResponseMessage{Data: "", Error: err.Error(), Code: http.StatusBadRequest, Message: "Invalid Request"}
 			return response, nil
 		}
 
 		if err = e.DB.ReadProfile(user.UserID, &user); err != nil {
-			level.Debug(logger.GokitLogger(err)).Log()
+			level.Error(logger.GokitLogger(err)).Log()
 			response = models.ResponseMessage{Data: "", Error: err.Error(), Code: http.StatusBadRequest, Message: "Invalid Request"}
 			return response, nil
 		}
@@ -179,21 +179,21 @@ func (e Endpoints) Login(svc service.Service) endpoint.Endpoint {
 
 		credentials, ok := request.(models.Login)
 		if !ok {
-			level.Debug(logger.GokitLogger(fmt.Errorf("can't assert the request"))).Log()
+			level.Error(logger.GokitLogger(fmt.Errorf("can't assert the request"))).Log()
 			response = models.ResponseMessage{Data: request, Error: "Invalid Request", Code: http.StatusBadRequest, Message: "Please try again later"}
 			return response, nil
 		}
 
 		validate := validator.New()
 		if err = validate.Struct(credentials); err != nil {
-			level.Debug(logger.GokitLogger(err)).Log()
+			level.Error(logger.GokitLogger(err)).Log()
 			response = models.ResponseMessage{Data: "", Error: err.Error(), Code: http.StatusBadRequest, Message: "Invalid request"}
 			return response, nil
 		}
 
 		var profile models.Users
 		if err = e.DB.ReadUser(credentials.Name, &profile); err != nil {
-			level.Debug(logger.GokitLogger(err)).Log()
+			level.Error(logger.GokitLogger(err)).Log()
 			response = models.ResponseMessage{Data: "", Error: err.Error(), Code: http.StatusBadRequest, Message: "Invalid request"}
 			return response, nil
 		}
@@ -205,7 +205,7 @@ func (e Endpoints) Login(svc service.Service) endpoint.Endpoint {
 
 		token, err := svc.CreateToken(profile.UserName, profile.Email, profile.Roles.Role, profile.RolesID, profile.UserID)
 		if err != nil {
-			level.Debug(logger.GokitLogger(err)).Log()
+			level.Error(logger.GokitLogger(err)).Log()
 			response = models.ResponseMessage{Data: "", Error: err.Error(), Code: http.StatusBadRequest, Message: "Invalid request"}
 			return response, nil
 		}
@@ -230,7 +230,7 @@ func (e Endpoints) DecodeLoginRequest(ctx context.Context, r *http.Request) (req
 func (e Endpoints) EncodeResponse(ctx context.Context, w http.ResponseWriter, response interface{}) error {
 
 	if err := helper.SendResponse(ctx, w, response); err != nil {
-		level.Debug(logger.GokitLogger(err)).Log()
+		level.Error(logger.GokitLogger(err)).Log()
 		return err
 	}
 	return nil

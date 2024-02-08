@@ -22,7 +22,7 @@ func (e Endpoints) GetAllJobType(svc service.Service) endpoint.Endpoint {
 		var jobType []models.JobType
 
 		if err = e.DB.ReadAllJobTypes(&jobType); err != nil {
-			level.Debug(logger.GokitLogger(err)).Log()
+			level.Error(logger.GokitLogger(err)).Log()
 			response = models.ResponseMessage{Data: "", Error: err.Error(), Code: http.StatusBadRequest, Message: "Invalid request"}
 			return response, nil
 		}

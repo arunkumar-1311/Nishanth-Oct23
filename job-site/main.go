@@ -22,7 +22,7 @@ func main() {
 	// Helps to load the lookup
 	file, err := os.ReadDir("./lookup")
 	if err != nil {
-		level.Debug(logger.GokitLogger(err)).Log()
+		level.Error(logger.GokitLogger(err)).Log()
 		return
 	}
 
@@ -35,7 +35,7 @@ func main() {
 
 				method := reflect.ValueOf(&emp).MethodByName(fileName).Interface().(func(*gorm.DB) error)
 				if err := method(db); err != nil {
-					level.Debug(logger.GokitLogger(err)).Log()
+					level.Error(logger.GokitLogger(err)).Log()
 				}
 
 				lookupVersion := lookup.Lookup{
@@ -44,7 +44,7 @@ func main() {
 				}
 
 				if err := db.Create(lookupVersion).Error; err != nil {
-					level.Debug(logger.GokitLogger(err)).Log()
+					level.Error(logger.GokitLogger(err)).Log()
 					return
 				}
 			}
@@ -55,5 +55,5 @@ func main() {
 		fmt.Print("Can't connect to the server ", err)
 		return
 	}
-	// level.Debug(logger.GokitLogger(fmt.Errorf("error"))).Log()
+	
 }

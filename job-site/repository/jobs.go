@@ -46,16 +46,27 @@ func (d *GORM_Connection) ReadJob(id string, dest *models.Post) error {
 
 // Helps to update the existing post
 func (d *GORM_Connection) UpdateJob(id string, dest models.Post) error {
-	if err := d.DB.Model(models.Post{}).Where("post_id = ?", id).UpdateColumns(dest).Error; err != nil {
-		return err
+	var result *gorm.DB
+	if result = d.DB.Model(models.Post{}).Where("post_id = ?", id).UpdateColumns(dest); result.Error != nil {
+		return result.Error
+	}
+
+	if result.RowsAffected == 0 {
+		return fmt.Errorf("no such job post exist")
 	}
 	return nil
 }
 
 // Helps to delete the job post
 func (d *GORM_Connection) DeleteJobByID(post models.Post) error {
-	if err := d.DB.Delete(post).Error; err != nil {
-		return err
+	var result *gorm.DB
+	
+	if result = d.DB.Delete(&post); result.Error != nil {
+		return result.Error
+	}
+
+	if result.RowsAffected == 0 {
+		return fmt.Errorf("no such job post exist")
 	}
 	return nil
 }

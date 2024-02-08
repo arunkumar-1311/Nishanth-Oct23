@@ -16,6 +16,7 @@ type Database interface {
 	repository.Post
 	repository.Country
 	repository.JobType
+	repository.Comments
 }
 
 // Helps to occur the new connection
