@@ -11,13 +11,7 @@ import (
 	"os"
 )
 
-type Database interface {
-	repository.Account
-	repository.Post
-	repository.Country
-	repository.JobType
-	repository.Comments
-}
+
 
 // Helps to occur the new connection
 func NewConnection() *gorm.DB {

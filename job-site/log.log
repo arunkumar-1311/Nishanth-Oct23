@@ -97,3 +97,17 @@ level=debug message=error time=2024-01-30T05:52:59.949111083Z caller=main.go:12
 {"caller":"comments.go:189","level":"debug","message":null,"time":"2024-02-08T07:16:57.654939486Z"}
 {"caller":"comments.go:189","level":"debug","message":null,"time":"2024-02-08T07:18:56.858900695Z"}
 {"caller":"comments.go:189","level":"debug","message":null,"time":"2024-02-08T07:19:00.533409416Z"}
+{"caller":"comments.go:91","level":"error","message":"no such comment exist","time":"2024-02-08T10:26:04.520094886Z"}
+{"caller":"jobs.go:84","level":"error","message":"can't assert the request","time":"2024-02-08T10:35:12.662111139Z"}
+{"caller":"jobs.go:84","level":"error","message":"can't assert the request","time":"2024-02-08T10:36:06.214197003Z"}
+{"caller":"jobs.go:91","level":"error","message":"ERROR: syntax error at or near \")\" (SQLSTATE 42601)","time":"2024-02-08T10:36:37.634200055Z"}
+{"caller":"jobs.go:91","level":"error","message":"ERROR: argument of OR must be type boolean, not type text[] (SQLSTATE 42804)","time":"2024-02-08T10:38:50.178076353Z"}
+{"caller":"jobs.go:91","level":"error","message":"ERROR: argument of OR must be type boolean, not type text[] (SQLSTATE 42804)","time":"2024-02-08T10:39:52.927344358Z"}
+{"caller":"jobs.go:91","level":"error","message":"ERROR: argument of AND must be type boolean, not type text[] (SQLSTATE 42804)","time":"2024-02-08T10:41:06.230828034Z"}
+{"caller":"jobs.go:91","level":"error","message":"ERROR: column \"job_type_id\" does not exist (SQLSTATE 42703)","time":"2024-02-08T10:41:44.433896729Z"}
+{"caller":"jobs.go:91","level":"error","message":"ERROR: missing FROM-clause entry for table \"country\" (SQLSTATE 42P01)","time":"2024-02-08T10:42:50.843528336Z"}
+{"caller":"jobs.go:91","level":"error","message":"ERROR: missing FROM-clause entry for table \"country\" (SQLSTATE 42P01)","time":"2024-02-08T10:45:19.48779529Z"}
+{"caller":"jobs.go:91","level":"error","message":"ERROR: missing FROM-clause entry for table \"country\" (SQLSTATE 42P01)","time":"2024-02-08T10:45:30.646111184Z"}
+{"caller":"jobs.go:41","level":"error","message":"can't assert the request","time":"2024-02-08T11:06:15.949652514Z"}
+{"caller":"account.go:62","level":"error","message":"user name already exist","time":"2024-02-08T11:08:12.348590863Z"}
+{"caller":"account.go:137","level":"error","message":"email id already exist","time":"2024-02-08T11:08:54.966541993Z"}

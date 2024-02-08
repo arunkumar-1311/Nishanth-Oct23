@@ -21,6 +21,7 @@ type Jobs interface {
 	DecodePostJobRequest(context.Context, *http.Request) (interface{}, error)
 
 	GetAllJobs(service.Service) endpoint.Endpoint
+	DecodeGetAllJobsRequest(context.Context, *http.Request) (interface{}, error)
 
 	UpdateJob(service.Service) endpoint.Endpoint
 	DecodeUpdateJobRequest(context.Context, *http.Request) (interface{}, error)
@@ -78,9 +79,16 @@ func (e Endpoints) DecodePostJobRequest(_ context.Context, r *http.Request) (req
 // Helps to read all the jobs from the portal
 func (e Endpoints) GetAllJobs(svc service.Service) endpoint.Endpoint {
 	return func(ctx context.Context, request interface{}) (response interface{}, err error) {
-		var jobs []models.Post
-		if err = e.DB.ReadJobs(&jobs); err != nil {
+		params, ok := request.(map[string]string)
+		if !ok {
 			level.Error(logger.GokitLogger(fmt.Errorf("can't assert the request"))).Log()
+			response = models.ResponseMessage{Data: request, Error: "Invalid Request", Code: http.StatusBadRequest, Message: ""}
+			return response, nil
+		}
+
+		var jobs []models.Post
+		if err = e.DB.ReadJobs(params["keyword"], params["country"], params["jobtype"], &jobs); err != nil {
+			level.Error(logger.GokitLogger(err)).Log()
 			response = models.ResponseMessage{Data: "", Error: "Server Error", Code: http.StatusInternalServerError, Message: "Try again later"}
 			return response, nil
 		}
@@ -103,6 +111,14 @@ func (e Endpoints) GetAllJobs(svc service.Service) endpoint.Endpoint {
 		response = models.ResponseMessage{Data: jobResponse, Error: "", Code: http.StatusOK, Message: "All Posts in the portal"}
 		return
 	}
+}
+
+func (e Endpoints) DecodeGetAllJobsRequest(_ context.Context, r *http.Request) (request interface{}, err error) {
+	params := make(map[string]string)
+	params["keyword"] = r.URL.Query().Get("keyword")
+	params["country"] = r.URL.Query().Get("country")
+	params["jobtype"] = r.URL.Query().Get("jobtype")
+	return params, nil
 }
 
 // Helps to update the existing job

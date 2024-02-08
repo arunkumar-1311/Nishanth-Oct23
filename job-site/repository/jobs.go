@@ -9,7 +9,7 @@ import (
 
 type Post interface {
 	CreateJob(models.Post) error
-	ReadJobs(*[]models.Post) error
+	ReadJobs(string, string, string, *[]models.Post) error
 	ReadJob(string, *models.Post) error
 	UpdateJob(string, models.Post) error
 	DeleteJobByID(models.Post) error
@@ -24,9 +24,16 @@ func (d *GORM_Connection) CreateJob(post models.Post) error {
 }
 
 // Helps to read all the jobs in the portal
-func (d *GORM_Connection) ReadJobs(dest *[]models.Post) error {
-	if err := d.DB.Model(models.Post{}).Preload("JobType").Preload("Country").Order("id DESC").Find(&dest).Error; err != nil {
+func (d *GORM_Connection) ReadJobs(keyword, country, jobType string, dest *[]models.Post) error {
+	if err := d.DB.Model(models.Post{}).Preload("JobType").Preload("Country").Where("country_id = ?", country).Or("job_type = ?", jobType).Or("job_title LIKE ?", "%"+keyword+"%").Or("company_name LIKE ?", "%"+keyword+"%").Order("id DESC").Find(&dest).Error; err != nil {
 		return err
+	}
+
+	if keyword == "" && country == "" && jobType == "" {
+		if err := d.DB.Model(models.Post{}).Preload("JobType").Preload("Country").Order("id DESC").Find(&dest).Error; err != nil {
+			return err
+		}
+
 	}
 	return nil
 }
@@ -60,7 +67,7 @@ func (d *GORM_Connection) UpdateJob(id string, dest models.Post) error {
 // Helps to delete the job post
 func (d *GORM_Connection) DeleteJobByID(post models.Post) error {
 	var result *gorm.DB
-	
+
 	if result = d.DB.Delete(&post); result.Error != nil {
 		return result.Error
 	}

@@ -12,7 +12,7 @@ import (
 )
 
 type Country interface {
-	GetAllCountries(service.Service) (interface{}, error)
+	GetAllCountries(service.Service) endpoint.Endpoint
 }
 
 // Helps to fetch all the countries in the application

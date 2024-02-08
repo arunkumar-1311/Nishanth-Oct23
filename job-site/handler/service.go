@@ -9,3 +9,17 @@ type Endpoints struct {
 	DB            adaptor.Database
 	Authorization middleware.Authorization
 }
+
+type API interface {
+	Account
+	Comments
+	Country
+	Jobs
+	JobType
+	Summary
+}
+
+// Helps to set the struct to interface
+func AcqurieAPI(endpoint Endpoints) API {
+	return &endpoint
+}

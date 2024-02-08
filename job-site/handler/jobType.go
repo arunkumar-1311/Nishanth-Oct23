@@ -13,7 +13,6 @@ import (
 
 type JobType interface {
 	GetAllJobType(service.Service) endpoint.Endpoint
-	DecodeGetAllJobType(context.Context, *http.Request) (interface{}, error)
 }
 
 // Helps to get all the Job Type available in the application

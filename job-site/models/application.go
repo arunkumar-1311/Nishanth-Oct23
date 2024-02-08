@@ -81,3 +81,14 @@ type PostResponse struct {
 	Email       string    `json:"contact_mail" gorm:"column:contact_mail"`
 	Description string    `json:"description" gorm:"column:description"`
 }
+
+type jobs struct {
+	Name  string `gorm:"column:job" json:"title"`
+	Total int `gorm:"column:total" json:"total"`
+}
+
+type Summary struct {
+	Jobs      []jobs `json:"jobs"`
+	TotalJobs int64  `json:"number_of_jobs"`
+	Countries int `json:"total_countries"`
+}
