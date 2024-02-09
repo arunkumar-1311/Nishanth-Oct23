@@ -22,12 +22,13 @@ type JobType struct {
 }
 
 type Users struct {
-	UserID   string `gorm:"column:user_id; uniqueIndex; primaryKey; type:varchar;" json:"user_id" validate:"required"`
-	UserName string `gorm:"column:name; type:varchar;" json:"user_name" validate:"required"`
-	Email    string `gorm:"column:email; type:varchar;" json:"email" validate:"email,required"`
-	Password string `gorm:"column:password; type:varchar;" json:"password,omitempty" validate:"required"`
-	RolesID  string `gorm:"column:role_id; type:varchar;" json:"role_id" validate:"required"`
-	Roles    Roles  `gorm:"references:role_id" validate:"omitempty,uuid4" json:"-"`
+	UserID      string `gorm:"column:user_id; uniqueIndex; primaryKey; type:varchar;" json:"user_id" validate:"required"`
+	UserName    string `gorm:"column:name; type:varchar;" json:"user_name" validate:"required"`
+	Email       string `gorm:"column:email; type:varchar;" json:"email" validate:"email,required"`
+	Password    string `gorm:"column:password; type:varchar;" json:"password,omitempty" validate:"required"`
+	OldPassword string `gorm:"-" json:"old_password,omitempty"`
+	RolesID     string `gorm:"column:role_id; type:varchar;" json:"role_id" validate:"required"`
+	Roles       Roles  `gorm:"references:role_id" validate:"omitempty,uuid4" json:"-"`
 }
 
 type Post struct {
@@ -52,7 +53,7 @@ type Comment struct {
 	PostID    string `gorm:"post_id; type:varchar;" json:"post_id" validate:"required"`
 	Post      Post   `gorm:"references:post_id" validate:"omitempty,uuid4" json:"-"`
 	UsersID   string `gorm:"user_id; type:varchar;" json:"user_id" validate:"required"`
-	Users     Users  `gorm:"references:user_id" validate:"omitempty,uuid4" json:"-"`
+	Users     Users  `gorm:"references:user_id" validate:"omitempty,uuid4" json:"user"`
 	Content   string `gorm:"column:comment; type:varchar;" json:"comment" validate:"required"`
 }
 
@@ -82,13 +83,37 @@ type PostResponse struct {
 	Description string    `json:"description" gorm:"column:description"`
 }
 
-type jobs struct {
+type Jobs struct {
 	Name  string `gorm:"column:job" json:"title"`
-	Total int `gorm:"column:total" json:"total"`
+	Total int    `gorm:"column:total" json:"total"`
 }
 
 type Summary struct {
-	Jobs      []jobs `json:"jobs"`
-	TotalJobs int64  `json:"number_of_jobs"`
-	Countries int `json:"total_countries"`
+	Jobs      []Jobs `json:"jobs"`
+	TotalJobs int    `json:"number_of_jobs"`
+	Countries int    `json:"total_countries"`
+}
+
+type PostSearch struct {
+	Post    []PostResponse
+	Summary `json:"summary" gorm:"-"`
+}
+
+type PostComments struct {
+	Post     Post              `json:"post"`
+	Comments []CommentResponse `json:"comments"`
+}
+
+type CommentResponse struct {
+	CommentID string       `json:"comment_id"`
+	PostID    string       `json:"post_id"`
+	Users     UserResponse `json:"user"`
+	Content   string       `json:"comment"`
+}
+
+type UserResponse struct {
+	UserID   string `json:"user_id"`
+	UserName string `json:"user_name"`
+	Email    string `json:"email"`
+	RolesID  string ` json:"role_id"`
 }

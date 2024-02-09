@@ -16,9 +16,9 @@ type API interface {
 	Country
 	Jobs
 	JobType
-	Summary
 }
 
+type PageNotFound struct{}
 // Helps to set the struct to interface
 func AcqurieAPI(endpoint Endpoints) API {
 	return &endpoint

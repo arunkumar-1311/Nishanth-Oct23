@@ -17,8 +17,13 @@ type Comments interface {
 
 // Helps to create the new comment the post
 func (d *GORM_Connection) CreateComment(comment models.Comment) error {
-	if err := d.DB.Create(&comment).Error; err != nil {
-		return err
+	var result *gorm.DB
+	if result = d.DB.Create(&comment); result.Error != nil {
+		return result.Error
+	}
+
+	if result.RowsAffected == 0 {
+		return fmt.Errorf("can't create the account try again later")
 	}
 	return nil
 }
@@ -39,7 +44,7 @@ func (d *GORM_Connection) ReadComment(id string, comment *models.Comment) error 
 // Read comments by post
 func (d *GORM_Connection) ReadCommentsByPost(id string, comment *[]models.Comment) error {
 	var result *gorm.DB
-	if result = d.DB.Where("post_id = ?", id).Find(&comment); result != nil {
+	if result = d.DB.Model(models.Comment{}).Preload("Users").Where("post_id = ?", id).Find(&comment); result != nil {
 		return result.Error
 	}
 

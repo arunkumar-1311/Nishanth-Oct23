@@ -25,16 +25,47 @@ func (d *GORM_Connection) CreateJob(post models.Post) error {
 
 // Helps to read all the jobs in the portal
 func (d *GORM_Connection) ReadJobs(keyword, country, jobType string, dest *[]models.Post) error {
-	if err := d.DB.Model(models.Post{}).Preload("JobType").Preload("Country").Where("country_id = ?", country).Or("job_type = ?", jobType).Or("job_title LIKE ?", "%"+keyword+"%").Or("company_name LIKE ?", "%"+keyword+"%").Order("id DESC").Find(&dest).Error; err != nil {
-		return err
-	}
 
-	if keyword == "" && country == "" && jobType == "" {
+	switch {
+	case keyword == "" && country == "" && jobType == "":
 		if err := d.DB.Model(models.Post{}).Preload("JobType").Preload("Country").Order("id DESC").Find(&dest).Error; err != nil {
 			return err
 		}
+	case keyword == "" && country == "":
+		if err := d.DB.Model(models.Post{}).Preload("JobType").Preload("Country").Where("job_type = ? ", jobType).Order("id DESC").Find(&dest).Error; err != nil {
+			return err
+		}
 
+	case keyword == "" && jobType == "":
+		if err := d.DB.Model(models.Post{}).Preload("JobType").Preload("Country").Where("country_id = ? ", country).Order("id DESC").Find(&dest).Error; err != nil {
+			return err
+		}
+
+	case country == "" && jobType == "":
+		if err := d.DB.Model(models.Post{}).Preload("JobType").Preload("Country").Where("job_title LIKE ?", "%"+keyword+"%").Or("company_name LIKE ?", "%"+keyword+"%").Order("id DESC").Find(&dest).Error; err != nil {
+			return err
+		}
+	case keyword == "":
+		if err := d.DB.Model(models.Post{}).Preload("JobType").Preload("Country").Where("country_id = ? AND job_type = ? ", country, jobType).Order("id DESC").Find(&dest).Error; err != nil {
+			return err
+		}
+
+	case country == "":
+		if err := d.DB.Model(models.Post{}).Preload("JobType").Preload("Country").Where("job_type = ? AND job_title LIKE ?", jobType, "%"+keyword+"%").Or("job_type = ? AND company_name LIKE ?", jobType, "%"+keyword+"%").Order("id DESC").Find(&dest).Error; err != nil {
+			return err
+		}
+
+	case jobType == "":
+		if err := d.DB.Model(models.Post{}).Preload("JobType").Preload("Country").Where("country_id = ? AND job_title LIKE ?", country, "%"+keyword+"%").Or("country_id = ? AND company_name LIKE ?", country, "%"+keyword+"%").Order("id DESC").Find(&dest).Error; err != nil {
+			return err
+		}
+
+	default:
+		if err := d.DB.Model(models.Post{}).Preload("JobType").Preload("Country").Where("country_id = ? AND job_type = ? AND job_title LIKE ?", country, jobType, "%"+keyword+"%").Or("country_id = ? AND job_type = ? AND company_name LIKE ?", country, jobType, "%"+keyword+"%").Order("id DESC").Find(&dest).Error; err != nil {
+			return err
+		}
 	}
+
 	return nil
 }
 

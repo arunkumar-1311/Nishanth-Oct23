@@ -8,5 +8,4 @@ type Database interface {
 	repository.Country
 	repository.JobType
 	repository.Comments
-	repository.Summary
 }

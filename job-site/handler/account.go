@@ -9,6 +9,7 @@ import (
 	"job-post/service"
 	"job-post/service/helper"
 	"net/http"
+	"strings"
 
 	"github.com/go-kit/kit/endpoint"
 	"github.com/go-kit/log/level"
@@ -21,10 +22,12 @@ type Account interface {
 	DecodeRegisterRequest(context.Context, *http.Request) (interface{}, error)
 
 	GetProfile(svc service.Service) endpoint.Endpoint
-	DecodeGetProfileRequest(context.Context, *http.Request) (interface{}, error)
+	DecodeClaims(context.Context, *http.Request) (interface{}, error)
 
 	UpdateProfile(svc service.Service) endpoint.Endpoint
 	DecodeUpdateProfileRequest(context.Context, *http.Request) (interface{}, error)
+
+	DeleteProfile(service.Service) endpoint.Endpoint
 
 	Login(svc service.Service) endpoint.Endpoint
 	DecodeLoginRequest(context.Context, *http.Request) (interface{}, error)
@@ -80,6 +83,10 @@ func (e Endpoints) DecodeRegisterRequest(_ context.Context, r *http.Request) (re
 	if err := json.NewDecoder(r.Body).Decode(&user); err != nil {
 		return err.Error(), nil
 	}
+	user.RolesID = "USER1"
+	if strings.Contains(r.URL.Path, "/admin/") {
+		user.RolesID = "AD1"
+	}
 	return user, nil
 }
 
@@ -100,18 +107,46 @@ func (e Endpoints) GetProfile(svc service.Service) endpoint.Endpoint {
 			return response, nil
 		}
 
-		response = models.ResponseMessage{Data: user, Error: "", Code: http.StatusBadRequest, Message: "User Profile"}
+		response = models.ResponseMessage{Data: user, Error: "", Code: http.StatusOK, Message: "User Profile"}
 		return
 	}
 }
 
-func (e Endpoints) DecodeGetProfileRequest(ctx context.Context, r *http.Request) (request interface{}, err error) {
+func (e Endpoints) DecodeClaims(ctx context.Context, r *http.Request) (request interface{}, err error) {
 	var claims models.Claims
 	var service service.Service
 	if err := service.Claims(r.Header.Get("Authorization"), &claims); err != nil {
 		return err.Error(), nil
 	}
 	return claims, nil
+}
+
+// Helps to delete the user profile
+func (e Endpoints) DeleteProfile(svc service.Service) endpoint.Endpoint {
+	return func(ctx context.Context, request interface{}) (response interface{}, err error) {
+		claims, ok := request.(models.Claims)
+		if !ok {
+			level.Error(logger.GokitLogger(fmt.Errorf("can't assert the request"))).Log()
+			response = models.ResponseMessage{Data: request, Error: "Invalid Request", Code: http.StatusBadRequest, Message: ""}
+			return response, nil
+		}
+
+		var user models.Users
+		if err := e.DB.ReadProfile(claims.UsersID, &user); err != nil {
+			level.Error(logger.GokitLogger(err)).Log()
+			response = models.ResponseMessage{Data: "", Error: err.Error(), Code: http.StatusBadRequest, Message: "Invalid Request"}
+			return response, nil
+		}
+
+		if err = e.DB.DeleteProfile(&user); err != nil {
+			level.Error(logger.GokitLogger(err)).Log()
+			response = models.ResponseMessage{Data: "", Error: err.Error(), Code: http.StatusBadRequest, Message: "Invalid Request"}
+			return response, nil
+		}
+
+		response = models.ResponseMessage{Data: "", Error: "", Code: http.StatusOK, Message: "Profile Deleted successfully"}
+		return
+	}
 }
 
 // Helps to update the user profile
@@ -124,7 +159,19 @@ func (e Endpoints) UpdateProfile(svc service.Service) endpoint.Endpoint {
 			return response, nil
 		}
 
+		var userProfile models.Users
+		if err := e.DB.ReadUserByID(user.UserID, &userProfile); err != nil {
+			level.Error(logger.GokitLogger(err)).Log()
+			response = models.ResponseMessage{Data: "", Error: err.Error(), Code: http.StatusBadRequest, Message: "Invalid Request"}
+			return response, nil
+		}
 		if user.Password != "" {
+
+			if !svc.CompareHashPassword(user.OldPassword, userProfile.Password) {
+				level.Error(logger.GokitLogger(err)).Log()
+				response = models.ResponseMessage{Data: "", Error: "enter valid password in \"old_password\"", Code: http.StatusBadRequest, Message: "Old Password is invalid"}
+				return response, nil
+			}
 			if err := svc.GenerateHash(&user.Password); err != nil {
 				level.Error(logger.GokitLogger(err)).Log()
 				response = models.ResponseMessage{Data: "", Error: err.Error(), Code: http.StatusBadRequest, Message: "Invalid Request"}
@@ -150,7 +197,7 @@ func (e Endpoints) UpdateProfile(svc service.Service) endpoint.Endpoint {
 			response = models.ResponseMessage{Data: "", Error: err.Error(), Code: http.StatusBadRequest, Message: "Invalid Request"}
 			return response, nil
 		}
-		user.Password = ""
+
 		response = models.ResponseMessage{Data: user, Error: "", Code: http.StatusBadRequest, Message: "Profile after updation"}
 		return
 	}
@@ -169,7 +216,7 @@ func (e Endpoints) DecodeUpdateProfileRequest(ctx context.Context, r *http.Reque
 		return err.Error(), nil
 	}
 	user.UserID = claims.UsersID
-
+	
 	return user, nil
 }
 

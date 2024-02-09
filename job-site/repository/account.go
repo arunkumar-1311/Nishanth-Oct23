@@ -12,7 +12,9 @@ type Account interface {
 	FindUserAndEmail(string, string) (models.Users, error)
 	ReadUser(string, *models.Users) error
 	ReadProfile(name string, user *models.Users) error
-	UpdateUser(user *models.Users) error
+	ReadUserByID(string, *models.Users) error
+	UpdateUser(*models.Users) error
+	DeleteProfile(*models.Users) error
 }
 
 // Helps to create the user profile
@@ -35,7 +37,7 @@ func (d *GORM_Connection) FindUserAndEmail(email, name string) (user models.User
 // Helps to read the user account
 func (d *GORM_Connection) ReadUser(name string, user *models.Users) error {
 	var result *gorm.DB
-	if result = d.DB.Preload("Roles").Where("name = ?", name).Find(&user); result.Error != nil {
+	if result = d.DB.Preload("Roles").Where("name = ?", name).Find(&name); result.Error != nil {
 		return result.Error
 	}
 
@@ -56,12 +58,34 @@ func (d *GORM_Connection) UpdateUser(user *models.Users) error {
 // Helps to read the profile
 func (d *GORM_Connection) ReadProfile(id string, user *models.Users) error {
 	var result *gorm.DB
-	if result = d.DB.Model(models.Users{}).Omit("users.password").Where("user_id = ?", id).Find(&user); result.Error != nil {
+	if result = d.DB.Model(models.Users{}).Omit("Password").Where("user_id = ?", id).Find(&user); result.Error != nil {
 		return result.Error
 	}
 
 	if result.RowsAffected == 0 {
 		return fmt.Errorf("no such user exist")
+	}
+	return nil
+}
+
+// Helps to read user by ID
+func (d *GORM_Connection) ReadUserByID(id string, user *models.Users) error {
+	var result *gorm.DB
+	if result = d.DB.Model(models.Users{}).Where("user_id = ?", id).Find(&user); result.Error != nil {
+		return result.Error
+	}
+
+	if result.RowsAffected == 0 {
+		return fmt.Errorf("no such user exist")
+	}
+	return nil
+}
+
+// Helps to delete the profile
+func (d *GORM_Connection) DeleteProfile(user *models.Users) error {
+
+	if err := d.DB.Delete(user).Error; err != nil {
+		return err
 	}
 	return nil
 }

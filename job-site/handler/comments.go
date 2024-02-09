@@ -107,15 +107,37 @@ func (e Endpoints) ReadCommentByPost(svc service.Service) endpoint.Endpoint {
 			response = models.ResponseMessage{Data: request, Error: "Invalid Request", Code: http.StatusBadRequest, Message: ""}
 			return response, nil
 		}
+		var comments []models.Comment
+		var commentResponse models.PostComments
 
-		var comment []models.Comment
-		if err := e.DB.ReadCommentsByPost(id, &comment); err != nil {
+		if err := e.DB.ReadCommentsByPost(id, &comments); err != nil {
 			level.Error(logger.GokitLogger(err)).Log()
 			response = models.ResponseMessage{Data: "", Error: err.Error(), Code: http.StatusBadRequest, Message: "Invalid request"}
 			return response, nil
 		}
 
-		response = models.ResponseMessage{Data: comment, Error: "", Code: http.StatusOK, Message: "Comments by Post"}
+		if err := e.DB.ReadJob(id, &commentResponse.Post); err != nil {
+			level.Error(logger.GokitLogger(err)).Log()
+			response = models.ResponseMessage{Data: "", Error: err.Error(), Code: http.StatusBadRequest, Message: "Invalid request"}
+			return response, nil
+		}
+		commentResponse.Comments = make([]models.CommentResponse, len(comments))
+		for index, value := range comments {
+			marshalComment, err := json.Marshal(value)
+			if err != nil {
+				level.Error(logger.GokitLogger(err)).Log()
+				response = models.ResponseMessage{Data: "", Error: err.Error(), Code: http.StatusInternalServerError, Message: "Try Again Later"}
+				return response, nil
+			}
+
+			if err := json.Unmarshal(marshalComment, &commentResponse.Comments[index]); err != nil {
+				level.Error(logger.GokitLogger(err)).Log()
+				response = models.ResponseMessage{Data: "", Error: err.Error(), Code: http.StatusInternalServerError, Message: "Try Again Later"}
+				return response, nil
+			}
+
+		}
+		response = models.ResponseMessage{Data: commentResponse, Error: "", Code: http.StatusOK, Message: "Comments by Post"}
 		return
 	}
 }

@@ -20,18 +20,20 @@ func Router(db adaptor.Database) error {
 	api := handler.AcqurieAPI(handlers)
 
 	var service service.Service
-	router := mux.NewRouter().StrictSlash(true)
-	router.Methods(http.MethodPost).Path("/signup").Handler(kithttp.NewServer(api.Register(service), api.DecodeRegisterRequest, api.EncodeResponse))
+	router := mux.NewRouter().StrictSlash(true) 
+
+	router.NotFoundHandler = handler.PageNotFound{}
+	router.Methods(http.MethodPost).Path("/{role:(?:admin|user)}/signup").Handler(kithttp.NewServer(api.Register(service), api.DecodeRegisterRequest, api.EncodeResponse))
 	router.Methods(http.MethodPost).Path("/login").Handler(kithttp.NewServer(api.Login(service), api.DecodeLoginRequest, api.EncodeResponse))
 	router.Methods(http.MethodGet).Path("/countries").Handler(kithttp.NewServer(api.GetAllCountries(service), api.DecodeRequest, api.EncodeResponse))
 	router.Methods(http.MethodGet).Path("/jobtype").Handler(kithttp.NewServer(api.GetAllJobType(service), api.DecodeRequest, api.EncodeResponse))
 	router.Methods(http.MethodGet).Path("/jobs").Handler(kithttp.NewServer(api.GetAllJobs(service), api.DecodeGetAllJobsRequest, api.EncodeResponse))
 	router.Methods(http.MethodGet).Path("/job/{id}").Handler(kithttp.NewServer(api.GetJob(service), api.DecodeGetID, api.EncodeResponse))
-	router.Methods(http.MethodGet).Path("/summary").Handler(kithttp.NewServer(api.GetSummary(service), api.DecodeGetID, api.EncodeResponse))
 
 	profile := router.PathPrefix("/profile").Subrouter()
-	profile.Methods(http.MethodGet).Handler(kithttp.NewServer(api.GetProfile(service), handlers.Authorization.Authorization(api.DecodeGetProfileRequest), api.EncodeResponse))
+	profile.Methods(http.MethodGet).Handler(kithttp.NewServer(api.GetProfile(service), handlers.Authorization.Authorization(api.DecodeClaims), api.EncodeResponse))
 	profile.Methods(http.MethodPatch).Handler(kithttp.NewServer(api.UpdateProfile(service), handlers.Authorization.Authorization(api.DecodeUpdateProfileRequest), api.EncodeResponse))
+	profile.Methods(http.MethodDelete).Handler(kithttp.NewServer(api.DeleteProfile(service), handlers.Authorization.Authorization(api.DecodeClaims), api.EncodeResponse))
 
 	admin := router.PathPrefix("/admin/job").Subrouter()
 	admin.Methods(http.MethodPost).Handler(kithttp.NewServer(api.PostJob(service), handlers.Authorization.Authorization(api.DecodePostJobRequest), api.EncodeResponse))

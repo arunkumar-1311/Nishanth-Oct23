@@ -93,7 +93,9 @@ func (e Endpoints) GetAllJobs(svc service.Service) endpoint.Endpoint {
 			return response, nil
 		}
 
-		jobResponse := make([]models.PostResponse, len(jobs))
+		var jobResponse models.PostSearch
+		jobResponse.Post = make([]models.PostResponse, len(jobs))
+		
 		for index, value := range jobs {
 			marshalJob, err := json.Marshal(value)
 			if err != nil {
@@ -102,11 +104,17 @@ func (e Endpoints) GetAllJobs(svc service.Service) endpoint.Endpoint {
 				return response, nil
 			}
 
-			if err = json.Unmarshal(marshalJob, &jobResponse[index]); err != nil {
+			if err = json.Unmarshal(marshalJob, &jobResponse.Post[index]); err != nil {
 				level.Error(logger.GokitLogger(err)).Log()
 				response = models.ResponseMessage{Data: "", Error: err.Error(), Code: http.StatusInternalServerError, Message: "Try again later"}
 				return response, nil
 			}
+		}
+
+		if err := svc.Summary(jobResponse.Post, &jobResponse.Summary); err != nil {
+			level.Error(logger.GokitLogger(err)).Log()
+			response = models.ResponseMessage{Data: "", Error: "Server Error", Code: http.StatusInternalServerError, Message: "Try again later"}
+			return response, nil
 		}
 		response = models.ResponseMessage{Data: jobResponse, Error: "", Code: http.StatusOK, Message: "All Posts in the portal"}
 		return
