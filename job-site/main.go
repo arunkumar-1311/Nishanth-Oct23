@@ -19,6 +19,12 @@ func main() {
 	// helps to get new connection
 	db := adaptor.NewConnection()
 
+	redis, err := adaptor.RedisConnection()
+	if err != nil {
+		level.Error(logger.GokitLogger(err)).Log()
+		return
+	}
+	
 	// Helps to load the lookup
 	file, err := os.ReadDir("./lookup")
 	if err != nil {
@@ -51,9 +57,9 @@ func main() {
 		}
 	}
 
-	if err := router.Router(adaptor.AcquireConnection(db)); err != nil {
+	if err := router.Router(adaptor.AcquireConnection(db, redis)); err != nil {
 		fmt.Print("Can't connect to the server ", err)
 		return
 	}
-	
+
 }

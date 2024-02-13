@@ -32,6 +32,8 @@ type Account interface {
 	Login(svc service.Service) endpoint.Endpoint
 	DecodeLoginRequest(context.Context, *http.Request) (interface{}, error)
 
+	LogOut(svc service.Service) endpoint.Endpoint
+
 	EncodeResponse(context.Context, http.ResponseWriter, interface{}) error
 	DecodeRequest(context.Context, *http.Request) (interface{}, error)
 }
@@ -144,6 +146,19 @@ func (e Endpoints) DeleteProfile(svc service.Service) endpoint.Endpoint {
 			return response, nil
 		}
 
+		UUID, err := e.DB.GetRedisCache(user.UserName)
+		if err != nil {
+			level.Error(logger.GokitLogger(err)).Log()
+			response = models.ResponseMessage{Data: "", Error: err.Error(), Code: http.StatusInternalServerError, Message: "Try again later"}
+			return response, nil
+		}
+
+		if err := e.DB.DeleteCache(UUID, user.UserName); err != nil {
+			level.Error(logger.GokitLogger(err)).Log()
+			response = models.ResponseMessage{Data: "", Error: err.Error(), Code: http.StatusInternalServerError, Message: "Try again later"}
+			return response, nil
+		}
+
 		response = models.ResponseMessage{Data: "", Error: "", Code: http.StatusOK, Message: "Profile Deleted successfully"}
 		return
 	}
@@ -172,6 +187,12 @@ func (e Endpoints) UpdateProfile(svc service.Service) endpoint.Endpoint {
 				response = models.ResponseMessage{Data: "", Error: "enter valid password in \"old_password\"", Code: http.StatusBadRequest, Message: "Old Password is invalid"}
 				return response, nil
 			}
+
+			if svc.CompareHashPassword(user.Password, userProfile.Password) {
+				level.Error(logger.GokitLogger(err)).Log()
+				response = models.ResponseMessage{Data: "", Error: "This is your last password try new", Code: http.StatusBadRequest, Message: "Can't keep old password"}
+				return response, nil
+			}
 			if err := svc.GenerateHash(&user.Password); err != nil {
 				level.Error(logger.GokitLogger(err)).Log()
 				response = models.ResponseMessage{Data: "", Error: err.Error(), Code: http.StatusBadRequest, Message: "Invalid Request"}
@@ -192,13 +213,27 @@ func (e Endpoints) UpdateProfile(svc service.Service) endpoint.Endpoint {
 			return response, nil
 		}
 
-		if err = e.DB.ReadProfile(user.UserID, &user); err != nil {
+		UUID, err := e.DB.GetRedisCache(userProfile.UserName)
+		if err != nil {
+			level.Error(logger.GokitLogger(err)).Log()
+			response = models.ResponseMessage{Data: "", Error: err.Error(), Code: http.StatusInternalServerError, Message: "Try again later"}
+			return response, nil
+		}
+
+		if err := e.DB.DeleteCache(UUID, user.UserName); err != nil {
+			level.Error(logger.GokitLogger(err)).Log()
+			response = models.ResponseMessage{Data: "", Error: err.Error(), Code: http.StatusInternalServerError, Message: "Try again later"}
+			return response, nil
+		}
+
+		var updatedProfile models.Users
+		if err = e.DB.ReadProfile(user.UserID, &updatedProfile); err != nil {
 			level.Error(logger.GokitLogger(err)).Log()
 			response = models.ResponseMessage{Data: "", Error: err.Error(), Code: http.StatusBadRequest, Message: "Invalid Request"}
 			return response, nil
 		}
 
-		response = models.ResponseMessage{Data: user, Error: "", Code: http.StatusBadRequest, Message: "Profile after updation"}
+		response = models.ResponseMessage{Data: updatedProfile, Error: "", Code: http.StatusOK, Message: "Profile after updation"}
 		return
 	}
 }
@@ -257,7 +292,20 @@ func (e Endpoints) Login(svc service.Service) endpoint.Endpoint {
 			return response, nil
 		}
 
-		response = models.ResponseMessage{Data: "", Error: "", Code: http.StatusOK, Message: "Logged in successfully", Token: token}
+		tokenID, err := service.CreateTokenWithoutClaims(helper.UniqueID())
+		if err != nil {
+			level.Error(logger.GokitLogger(err)).Log()
+			response = models.ResponseMessage{Data: request, Error: err.Error(), Code: http.StatusInternalServerError, Message: "Please try again later"}
+			return response, nil
+		}
+
+		if err := e.DB.SetRedisCache(tokenID, "Bearer "+token, profile.UserName); err != nil {
+			level.Error(logger.GokitLogger(err)).Log()
+			response = models.ResponseMessage{Data: request, Error: err.Error(), Code: http.StatusInternalServerError, Message: "Please try again later"}
+			return response, nil
+		}
+
+		response = models.ResponseMessage{Data: "", Error: "", Code: http.StatusOK, Message: "Logged in successfully", Token: tokenID}
 		return response, nil
 	}
 }
@@ -271,6 +319,32 @@ func (e Endpoints) DecodeLoginRequest(ctx context.Context, r *http.Request) (req
 
 	return credentials, nil
 
+}
+
+func (e Endpoints) LogOut(svc service.Service) endpoint.Endpoint {
+	return func(ctx context.Context, request interface{}) (response interface{}, err error) {
+		claims, ok := request.(models.Claims)
+		if !ok {
+			level.Error(logger.GokitLogger(fmt.Errorf("can't assert the request"))).Log()
+			response = models.ResponseMessage{Data: request, Error: "Invalid Request", Code: http.StatusBadRequest, Message: ""}
+			return response, nil
+		}
+
+		UUID, err := e.DB.GetRedisCache(claims.Name)
+		if err != nil {
+			level.Error(logger.GokitLogger(err)).Log()
+			response = models.ResponseMessage{Data: "", Error: err.Error(), Code: http.StatusInternalServerError, Message: "Try again later"}
+			return response, nil
+		}
+
+		if err := e.DB.DeleteCache(UUID, claims.Name); err != nil {
+			level.Error(logger.GokitLogger(err)).Log()
+			response = models.ResponseMessage{Data: "", Error: err.Error(), Code: http.StatusInternalServerError, Message: "Try again later"}
+			return response, nil
+		}
+		response = models.ResponseMessage{Data: "", Error: "", Code: http.StatusOK, Message: "Logged out successfully"}
+		return
+	}
 }
 
 // helps to encode all response and send a json response

@@ -22,6 +22,7 @@ type JobType struct {
 }
 
 type Users struct {
+	gorm.Model
 	UserID      string `gorm:"column:user_id; uniqueIndex; primaryKey; type:varchar;" json:"user_id" validate:"required"`
 	UserName    string `gorm:"column:name; type:varchar;" json:"user_name" validate:"required"`
 	Email       string `gorm:"column:email; type:varchar;" json:"email" validate:"email,required"`

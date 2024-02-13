@@ -12,7 +12,7 @@ var secretKey = []byte("0123456789")
 
 // Helps to create a token
 func (Service) CreateToken(username, email, role, roleID, userID string) (string, error) {
-	
+
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256,
 		jwt.MapClaims{
 			"username": username,
@@ -47,4 +47,20 @@ func (Service) VerifyToken(tokenString string) (tokenData []byte, err error) {
 
 	tokenData, err = json.Marshal(token.Claims)
 	return
+}
+
+// Helps to create token without claims
+func CreateTokenWithoutClaims(id string) (string, error) {
+
+	token := jwt.NewWithClaims(jwt.SigningMethodHS256,
+		jwt.MapClaims{
+			"exp": time.Now().Add(time.Hour * 24).Unix(),
+		})
+
+	tokenString, err := token.SignedString(secretKey)
+	if err != nil {
+		return "", err
+	}
+
+	return tokenString, nil
 }

@@ -7,7 +7,7 @@ type JobType interface {
 }
 
 // Helps to read all the job types in the application
-func (d *GORM_Connection) ReadAllJobTypes(dest *[]models.JobType) error {
+func (d *DB_Connection) ReadAllJobTypes(dest *[]models.JobType) error {
 	if err := d.DB.Find(&dest).Error; err != nil {
 		return err
 	}

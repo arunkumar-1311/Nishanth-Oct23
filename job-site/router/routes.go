@@ -4,7 +4,6 @@ import (
 	"fmt"
 	"job-post/adaptor"
 	"job-post/handler"
-	"job-post/middleware"
 	"job-post/service"
 	"net/http"
 
@@ -15,12 +14,11 @@ import (
 func Router(db adaptor.Database) error {
 
 	var handlers handler.Endpoints
-	handlers.DB = db
-	handlers.Authorization = middleware.AcquireMiddleware()
+	handlers.DB, handlers.MW.DB = db, db
 	api := handler.AcqurieAPI(handlers)
 
 	var service service.Service
-	router := mux.NewRouter().StrictSlash(true) 
+	router := mux.NewRouter().StrictSlash(true)
 
 	router.NotFoundHandler = handler.PageNotFound{}
 	router.Methods(http.MethodPost).Path("/{role:(?:admin|user)}/signup").Handler(kithttp.NewServer(api.Register(service), api.DecodeRegisterRequest, api.EncodeResponse))
@@ -31,21 +29,22 @@ func Router(db adaptor.Database) error {
 	router.Methods(http.MethodGet).Path("/job/{id}").Handler(kithttp.NewServer(api.GetJob(service), api.DecodeGetID, api.EncodeResponse))
 
 	profile := router.PathPrefix("/profile").Subrouter()
-	profile.Methods(http.MethodGet).Handler(kithttp.NewServer(api.GetProfile(service), handlers.Authorization.Authorization(api.DecodeClaims), api.EncodeResponse))
-	profile.Methods(http.MethodPatch).Handler(kithttp.NewServer(api.UpdateProfile(service), handlers.Authorization.Authorization(api.DecodeUpdateProfileRequest), api.EncodeResponse))
-	profile.Methods(http.MethodDelete).Handler(kithttp.NewServer(api.DeleteProfile(service), handlers.Authorization.Authorization(api.DecodeClaims), api.EncodeResponse))
+	profile.Methods(http.MethodPatch).Handler(kithttp.NewServer(api.UpdateProfile(service), handlers.MW.Authorization(api.DecodeUpdateProfileRequest), api.EncodeResponse))
+	profile.Methods(http.MethodDelete).Handler(kithttp.NewServer(api.DeleteProfile(service), handlers.MW.Authorization(api.DecodeClaims), api.EncodeResponse))
+	profile.Methods(http.MethodGet).Path("/logout").Handler(kithttp.NewServer(api.LogOut(service), handlers.MW.Authorization(api.DecodeClaims), api.EncodeResponse))
+	profile.Methods(http.MethodGet).Handler(kithttp.NewServer(api.GetProfile(service), handlers.MW.Authorization(api.DecodeClaims), api.EncodeResponse))
 
 	admin := router.PathPrefix("/admin/job").Subrouter()
-	admin.Methods(http.MethodPost).Handler(kithttp.NewServer(api.PostJob(service), handlers.Authorization.Authorization(api.DecodePostJobRequest), api.EncodeResponse))
-	admin.Methods(http.MethodPatch).Path("/{id}").Handler(kithttp.NewServer(api.UpdateJob(service), handlers.Authorization.Authorization(api.DecodeUpdateJobRequest), api.EncodeResponse))
-	admin.Methods(http.MethodDelete).Path("/{id}").Handler(kithttp.NewServer(api.DeleteJob(service), handlers.Authorization.Authorization(api.DecodeDeleteJobRequest), api.EncodeResponse))
+	admin.Methods(http.MethodPost).Handler(kithttp.NewServer(api.PostJob(service), handlers.MW.Authorization(api.DecodePostJobRequest), api.EncodeResponse))
+	admin.Methods(http.MethodPatch).Path("/{id}").Handler(kithttp.NewServer(api.UpdateJob(service), handlers.MW.Authorization(api.DecodeUpdateJobRequest), api.EncodeResponse))
+	admin.Methods(http.MethodDelete).Path("/{id}").Handler(kithttp.NewServer(api.DeleteJob(service), handlers.MW.Authorization(api.DecodeDeleteJobRequest), api.EncodeResponse))
 
 	comments := router.PathPrefix("/comment").Subrouter()
-	comments.Methods(http.MethodPost).Path("/{id}").Handler(kithttp.NewServer(api.PostComments(service), handlers.Authorization.Authorization(api.DecodePostCommentsRequest), api.EncodeResponse))
+	comments.Methods(http.MethodPost).Path("/{id}").Handler(kithttp.NewServer(api.PostComments(service), handlers.MW.Authorization(api.DecodePostCommentsRequest), api.EncodeResponse))
 	comments.Methods(http.MethodGet).Path("/{id}").Handler(kithttp.NewServer(api.ReadCommentByID(service), api.DecodeGetID, api.EncodeResponse))
 	comments.Methods(http.MethodGet).Path("/post/{id}").Handler(kithttp.NewServer(api.ReadCommentByPost(service), api.DecodeGetID, api.EncodeResponse))
-	comments.Methods(http.MethodPatch).Path("/{id}").Handler(kithttp.NewServer(api.UpdateCommentByID(service), handlers.Authorization.Authorization(api.DecodeUpdateCommentByIDRequest), api.EncodeResponse))
-	comments.Methods(http.MethodDelete).Path("/{id}").Handler(kithttp.NewServer(api.DeleteComment(service), handlers.Authorization.Authorization(api.DecodeDeleteCommentRequest), api.EncodeResponse))
+	comments.Methods(http.MethodPatch).Path("/{id}").Handler(kithttp.NewServer(api.UpdateCommentByID(service), handlers.MW.Authorization(api.DecodeUpdateCommentByIDRequest), api.EncodeResponse))
+	comments.Methods(http.MethodDelete).Path("/{id}").Handler(kithttp.NewServer(api.DeleteComment(service), handlers.MW.Authorization(api.DecodeDeleteCommentRequest), api.EncodeResponse))
 
 	fmt.Println("Starting the server......")
 	if err := http.ListenAndServe(":8000", router); err != nil {

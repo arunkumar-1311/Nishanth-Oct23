@@ -6,8 +6,8 @@ import (
 )
 
 type Endpoints struct {
-	DB            adaptor.Database
-	Authorization middleware.Authorization
+	DB adaptor.Database
+	MW middleware.Middleware
 }
 
 type API interface {
@@ -19,6 +19,7 @@ type API interface {
 }
 
 type PageNotFound struct{}
+
 // Helps to set the struct to interface
 func AcqurieAPI(endpoint Endpoints) API {
 	return &endpoint

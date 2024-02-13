@@ -137,3 +137,13 @@ level=debug message=error time=2024-01-30T05:52:59.949111083Z caller=main.go:12
 {"caller":"account.go:171","level":"error","message":null,"time":"2024-02-09T09:41:57.212692975Z"}
 {"caller":"account.go:171","level":"error","message":null,"time":"2024-02-09T09:42:19.08762505Z"}
 {"caller":"account.go:184","level":"error","message":"user name already exist","time":"2024-02-09T09:42:24.683189784Z"}
+{"caller":"account.go:192","level":"error","message":null,"time":"2024-02-13T07:15:48.894850567Z"}
+{"caller":"jobs.go:91","level":"error","message":"ERROR: syntax error at or near \"OR\" (SQLSTATE 42601)","time":"2024-02-13T07:25:00.858284898Z"}
+{"caller":"jobs.go:91","level":"error","message":"ERROR: syntax error at or near \"job_title\" (SQLSTATE 42601)","time":"2024-02-13T07:44:46.174082354Z"}
+{"caller":"jobs.go:91","level":"error","message":"ERROR: syntax error at or near \")\" (SQLSTATE 42601)","time":"2024-02-13T07:49:05.318839217Z"}
+{"caller":"jobs.go:91","level":"error","message":"ERROR: syntax error at or near \")\" (SQLSTATE 42601)","time":"2024-02-13T07:51:33.75306876Z"}
+{"caller":"jobs.go:91","level":"error","message":"ERROR: syntax error at or near \"job_title\" (SQLSTATE 42601)","time":"2024-02-13T07:52:47.052145835Z"}
+{"caller":"jobs.go:91","level":"error","message":"ERROR: syntax error at or near \"job_type\" (SQLSTATE 42601)","time":"2024-02-13T07:55:07.88122433Z"}
+{"caller":"jobs.go:91","level":"error","message":"ERROR: syntax error at or near \"job_title\" (SQLSTATE 42601)","time":"2024-02-13T08:01:37.258051783Z"}
+{"caller":"jobs.go:91","level":"error","message":"ERROR: syntax error at or near \"job_title\" (SQLSTATE 42601)","time":"2024-02-13T08:01:57.559039776Z"}
+{"caller":"jobs.go:91","level":"error","message":"ERROR: syntax error at or near \"country_id\" (SQLSTATE 42601)","time":"2024-02-13T08:09:08.718098146Z"}

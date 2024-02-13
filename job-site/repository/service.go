@@ -1,9 +1,11 @@
 package repository
 
-import "gorm.io/gorm"
+import (
+	"github.com/go-redis/redis/v8"
+	"gorm.io/gorm"
+)
 
-
-
-type GORM_Connection struct{
-	DB *gorm.DB
+type DB_Connection struct {
+	DB    *gorm.DB
+	Redis *redis.Client
 }

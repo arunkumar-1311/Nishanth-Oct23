@@ -7,7 +7,7 @@ type Country interface {
 }
 
 // Helps to read all the countries and its ID
-func (d *GORM_Connection) ReadCountries(dest *[]models.Country) error {
+func (d *DB_Connection) ReadCountries(dest *[]models.Country) error {
 	if err := d.DB.Find(&dest).Error; err != nil {
 		return err
 	}

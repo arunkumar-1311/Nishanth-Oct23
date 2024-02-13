@@ -1,11 +1,11 @@
 package middleware
 
-import "job-post/service"
+import (
+	"job-post/adaptor"
+	"job-post/service"
+)
 
 type Middleware struct {
 	service.Service
-}
-
-func AcquireMiddleware() Middleware {
-	return Middleware{}
+	DB adaptor.Database
 }

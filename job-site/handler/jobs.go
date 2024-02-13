@@ -79,7 +79,7 @@ func (e Endpoints) DecodePostJobRequest(_ context.Context, r *http.Request) (req
 // Helps to read all the jobs from the portal
 func (e Endpoints) GetAllJobs(svc service.Service) endpoint.Endpoint {
 	return func(ctx context.Context, request interface{}) (response interface{}, err error) {
-		params, ok := request.(map[string]string)
+		params, ok := request.(string)
 		if !ok {
 			level.Error(logger.GokitLogger(fmt.Errorf("can't assert the request"))).Log()
 			response = models.ResponseMessage{Data: request, Error: "Invalid Request", Code: http.StatusBadRequest, Message: ""}
@@ -87,15 +87,15 @@ func (e Endpoints) GetAllJobs(svc service.Service) endpoint.Endpoint {
 		}
 
 		var jobs []models.Post
-		if err = e.DB.ReadJobs(params["keyword"], params["country"], params["jobtype"], &jobs); err != nil {
+		if err = e.DB.ReadJobs(params, &jobs); err != nil {
 			level.Error(logger.GokitLogger(err)).Log()
-			response = models.ResponseMessage{Data: "", Error: "Server Error", Code: http.StatusInternalServerError, Message: "Try again later"}
+			response = models.ResponseMessage{Data: "", Error: err.Error(), Code: http.StatusInternalServerError, Message: "Try again later"}
 			return response, nil
 		}
 
 		var jobResponse models.PostSearch
 		jobResponse.Post = make([]models.PostResponse, len(jobs))
-		
+
 		for index, value := range jobs {
 			marshalJob, err := json.Marshal(value)
 			if err != nil {
@@ -122,11 +122,49 @@ func (e Endpoints) GetAllJobs(svc service.Service) endpoint.Endpoint {
 }
 
 func (e Endpoints) DecodeGetAllJobsRequest(_ context.Context, r *http.Request) (request interface{}, err error) {
-	params := make(map[string]string)
-	params["keyword"] = r.URL.Query().Get("keyword")
-	params["country"] = r.URL.Query().Get("country")
-	params["jobtype"] = r.URL.Query().Get("jobtype")
-	return params, nil
+	params := r.URL.Query()
+	var paramString, cond1, cond2 string
+	var flag int
+	// for k, v := range params {
+
+	// 	if k == "job_title" {
+	// 		cond1 += "job_title" + " LIKE " + "'%" + v[0] + "%'"
+	// 		cond2 += "company_name" + " LIKE " + "'%" + v[0] + "%'"
+	// 		flag++
+	// 		continue
+	// 	}
+	// 	if flag == len(params)-1 && len(params) != 2{
+	// 		paramString += k + "=" + "'" + v[0] + "'"
+	// 		break
+	// 	}
+	// 	paramString += k + "=" + "'" + v[0] + "'" + " AND "
+	// 	flag++
+
+	// }
+	// if cond1 != "" {
+	// 	paramString = paramString + cond1 + " OR " + paramString + cond2
+
+	// }
+	// return paramString, nil
+
+	// SELECT * FROM "post" WHERE (country_id='44bfe6bd-ae76-4cf2-a478-6512b23369ee' AND job_type='JT-CON' AND job_title LIKE '%Go%' OR country_id='44bfe6bd-ae76-4cf2-a478-6512b23369ee' AND job_type='JT-CON' AND company_name LIKE '%Go%') AND "post"."deleted_at" IS NULL ORDER BY id DESC
+	for k, v := range params {
+		if k == "job_title" {
+				cond1 += "job_title" + " LIKE " + "'%" + v[0] + "%' OR "
+				cond2 += "company_name" + " LIKE " + "'%" + v[0] + "%'"
+				flag++
+				continue
+			}
+		if flag != len(params)-1 || params["job_title"] != nil{
+			
+			paramString += k + "=" + "'" + v[0] + "'" + " AND "
+			flag++
+			continue
+		}
+		paramString += k + "=" + "'" + v[0] + "'"
+	}
+	paramString = paramString + cond1 + cond2
+	return paramString, nil
 }
 
 // Helps to update the existing job

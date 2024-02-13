@@ -2,6 +2,7 @@ package adaptor
 
 import (
 	"fmt"
+	"github.com/go-redis/redis/v8"
 	"github.com/joho/godotenv"
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
@@ -10,8 +11,6 @@ import (
 	"job-post/repository"
 	"os"
 )
-
-
 
 // Helps to occur the new connection
 func NewConnection() *gorm.DB {
@@ -33,6 +32,6 @@ func NewConnection() *gorm.DB {
 }
 
 // Helps to acquire the connection
-func AcquireConnection(db *gorm.DB) Database {
-	return &repository.GORM_Connection{DB: db}
+func AcquireConnection(db *gorm.DB, redis *redis.Client) Database {
+	return &repository.DB_Connection{DB: db, Redis: redis}
 }

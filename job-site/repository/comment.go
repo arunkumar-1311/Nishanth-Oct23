@@ -16,7 +16,7 @@ type Comments interface {
 }
 
 // Helps to create the new comment the post
-func (d *GORM_Connection) CreateComment(comment models.Comment) error {
+func (d *DB_Connection) CreateComment(comment models.Comment) error {
 	var result *gorm.DB
 	if result = d.DB.Create(&comment); result.Error != nil {
 		return result.Error
@@ -29,7 +29,7 @@ func (d *GORM_Connection) CreateComment(comment models.Comment) error {
 }
 
 // Read comment by id
-func (d *GORM_Connection) ReadComment(id string, comment *models.Comment) error {
+func (d *DB_Connection) ReadComment(id string, comment *models.Comment) error {
 	var result *gorm.DB
 	if result = d.DB.Model(models.Comment{}).Preload("Users").Where("comment_id = ?", id).Find(&comment); result.Error != nil {
 		return result.Error
@@ -42,7 +42,7 @@ func (d *GORM_Connection) ReadComment(id string, comment *models.Comment) error 
 }
 
 // Read comments by post
-func (d *GORM_Connection) ReadCommentsByPost(id string, comment *[]models.Comment) error {
+func (d *DB_Connection) ReadCommentsByPost(id string, comment *[]models.Comment) error {
 	var result *gorm.DB
 	if result = d.DB.Model(models.Comment{}).Preload("Users").Where("post_id = ?", id).Find(&comment); result != nil {
 		return result.Error
@@ -55,7 +55,7 @@ func (d *GORM_Connection) ReadCommentsByPost(id string, comment *[]models.Commen
 }
 
 // helps to update the comment
-func (d *GORM_Connection) UpdateComment(comment models.Comment) error {
+func (d *DB_Connection) UpdateComment(comment models.Comment) error {
 	if err := d.DB.Model(models.Comment{}).Where("comment_id = ?", comment.CommentID).UpdateColumns(comment).Error; err != nil {
 		return err
 	}
@@ -63,7 +63,7 @@ func (d *GORM_Connection) UpdateComment(comment models.Comment) error {
 }
 
 // Helps to delete the comment
-func (d *GORM_Connection) DeleteCommentByID(comment models.Comment) error {
+func (d *DB_Connection) DeleteCommentByID(comment models.Comment) error {
 	if err := d.DB.Delete(&comment).Error; err != nil {
 		return err
 	}
