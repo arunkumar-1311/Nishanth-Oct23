@@ -147,3 +147,9 @@ level=debug message=error time=2024-01-30T05:52:59.949111083Z caller=main.go:12
 {"caller":"jobs.go:91","level":"error","message":"ERROR: syntax error at or near \"job_title\" (SQLSTATE 42601)","time":"2024-02-13T08:01:37.258051783Z"}
 {"caller":"jobs.go:91","level":"error","message":"ERROR: syntax error at or near \"job_title\" (SQLSTATE 42601)","time":"2024-02-13T08:01:57.559039776Z"}
 {"caller":"jobs.go:91","level":"error","message":"ERROR: syntax error at or near \"country_id\" (SQLSTATE 42601)","time":"2024-02-13T08:09:08.718098146Z"}
+{"caller":"account.go:328","level":"error","message":"can't assert the request","time":"2024-02-13T15:01:42.793259626Z"}
+{"caller":"account.go:335","level":"error","message":"please do login/register","time":"2024-02-13T15:02:03.015927086Z"}
+{"caller":"account.go:335","level":"error","message":"please do login/register","time":"2024-02-13T15:02:16.929600193Z"}
+{"caller":"account.go:100","level":"error","message":"can't assert the request","time":"2024-02-14T05:01:35.97398576Z"}
+{"caller":"jobs.go:41","level":"error","message":"can't assert the request","time":"2024-02-14T09:52:31.302229052Z"}
+{"caller":"jobs.go:41","level":"error","message":"can't assert the request","time":"2024-02-14T09:52:38.615343838Z"}

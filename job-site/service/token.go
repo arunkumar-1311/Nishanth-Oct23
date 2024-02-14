@@ -54,6 +54,7 @@ func CreateTokenWithoutClaims(id string) (string, error) {
 
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256,
 		jwt.MapClaims{
+			"id":  id,
 			"exp": time.Now().Add(time.Hour * 24).Unix(),
 		})
 

@@ -12,6 +12,7 @@ import (
 func SendResponse(ctx context.Context, writer http.ResponseWriter, response interface{}) error {
 
 	writer.Header().Add("content-Type", "application/json")
+	writer.Header().Set("Access-Control-Allow-Origin", "*")
 	resp, ok := response.(models.ResponseMessage)
 
 	if !ok {
