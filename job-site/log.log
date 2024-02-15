@@ -1,0 +1,155 @@
+{"[helo ]":"(MISSING)","caller":"go-kit_log.go:40","level":"debug","time":"2024-01-30T05:44:31.980225264Z"}
+{"[debug helo ]":"(MISSING)","caller":"go-kit_log.go:40","level":"debug","time":"2024-01-30T05:45:21.675469024Z"}
+{"Error":"(MISSING)","caller":"main.go:11","level":"debug","time":"2024-01-30T05:49:42.339697272Z"}
+{"caller":"main.go:12","level":"debug","message":null,"time":"2024-01-30T05:52:10.334194779Z"}
+level=debug message=null time=2024-01-30T05:52:40.681996894Z caller=main.go:12
+level=debug message=error time=2024-01-30T05:52:59.949111083Z caller=main.go:12
+{"caller":"main.go:12","level":"debug","message":"error","time":"2024-01-30T05:53:18.698582807Z"}
+{"caller":"main.go:37","level":"debug","message":"invalid field found for struct job-post/models.Post's field Users: define a valid foreign key for relations or implement the Valuer/Scanner interface","time":"2024-02-06T06:40:10.276223738Z"}
+{"caller":"main.go:37","level":"debug","message":"invalid field found for struct job-post/models.Post's field Users: define a valid foreign key for relations or implement the Valuer/Scanner interface","time":"2024-02-06T06:42:39.843335753Z"}
+{"caller":"main.go:37","level":"debug","message":"ERROR: duplicate key value violates unique constraint \"roles_pkey\" (SQLSTATE 23505)","time":"2024-02-06T06:42:39.844800952Z"}
+{"caller":"main.go:37","level":"debug","message":"invalid field found for struct job-post/models.Comment's field Users: define a valid foreign key for relations or implement the Valuer/Scanner interface","time":"2024-02-06T06:45:50.899396709Z"}
+{"caller":"main.go:37","level":"debug","message":"invalid field found for struct job-post/models.Comment's field Users: define a valid foreign key for relations or implement the Valuer/Scanner interface","time":"2024-02-06T06:49:02.310887264Z"}
+{"caller":"main.go:37","level":"debug","message":"invalid field found for struct job-post/models.Comment's field Users: define a valid foreign key for relations or implement the Valuer/Scanner interface","time":"2024-02-06T06:50:35.67981893Z"}
+{"caller":"account.go:54","level":"debug","message":"user name already exist","time":"2024-02-06T11:43:32.254673041Z"}
+{"caller":"account.go:54","level":"debug","message":"user name already exist","time":"2024-02-06T11:48:10.216208919Z"}
+{"caller":"account.go:54","level":"debug","message":"user name already exist","time":"2024-02-06T11:50:47.30628557Z"}
+{"caller":"account.go:112","level":"debug","message":"can't assert the request","time":"2024-02-06T13:24:52.111804498Z"}
+{"caller":"account.go:57","level":"debug","message":"user name already exist","time":"2024-02-06T13:25:23.976782697Z"}
+{"caller":"account.go:112","level":"debug","message":"can't assert the request","time":"2024-02-06T13:26:10.030163764Z"}
+{"caller":"account.go:112","level":"debug","message":"can't assert the request","time":"2024-02-06T13:26:46.760175905Z"}
+{"caller":"account.go:112","level":"debug","message":"can't assert the request","time":"2024-02-06T13:27:32.828230849Z"}
+{"caller":"account.go:112","level":"debug","message":"can't assert the request","time":"2024-02-06T13:27:50.818836496Z"}
+{"caller":"account.go:119","level":"debug","message":"Key: 'Login.Name' Error:Field validation for 'Name' failed on the 'required' tag\nKey: 'Login.Password' Error:Field validation for 'Password' failed on the 'required' tag","time":"2024-02-06T13:28:46.341174151Z"}
+{"caller":"account.go:119","level":"debug","message":"Key: 'Login.Password' Error:Field validation for 'Password' failed on the 'required' tag","time":"2024-02-06T13:31:59.340055922Z"}
+{"caller":"account.go:126","level":"debug","message":"roles: unsupported relations for schema Users","time":"2024-02-06T13:32:12.050071942Z"}
+{"caller":"account.go:126","level":"debug","message":"roles: unsupported relations for schema Users","time":"2024-02-06T13:33:17.307837823Z"}
+{"caller":"account.go:126","level":"debug","message":"roles: unsupported relations for schema Users","time":"2024-02-06T13:33:48.04321584Z"}
+{"caller":"account.go:61","level":"debug","message":"user name already exist","time":"2024-02-07T04:58:06.390185995Z"}
+{"caller":"account.go:91","level":"debug","message":"can't assert the request","time":"2024-02-07T07:21:58.875851215Z"}
+{"caller":"account.go:161","level":"debug","message":"can't assert the request","time":"2024-02-07T07:31:59.949770733Z"}
+{"caller":"account.go:161","level":"debug","message":"can't assert the request","time":"2024-02-07T07:32:59.207197826Z"}
+{"caller":"account.go:161","level":"debug","message":"can't assert the request","time":"2024-02-07T07:33:47.372939606Z"}
+{"caller":"account.go:174","level":"debug","message":"can't assert the request","time":"2024-02-07T07:41:23.266587198Z"}
+{"caller":"account.go:209","level":"debug","message":"no such user exist","time":"2024-02-07T07:56:42.408389483Z"}
+{"caller":"account.go:60","level":"debug","message":"email id already exist","time":"2024-02-07T07:56:49.12436989Z"}
+{"caller":"account.go:97","level":"debug","message":"can't assert the request","time":"2024-02-07T07:57:50.0537675Z"}
+{"caller":"account.go:62","level":"debug","message":"user name already exist","time":"2024-02-07T08:02:13.529151666Z"}
+{"caller":"jobs.go:27","level":"debug","message":"can't assert the request","time":"2024-02-07T08:30:08.458511498Z"}
+{"caller":"jobs.go:27","level":"debug","message":"can't assert the request","time":"2024-02-07T08:30:13.805268271Z"}
+{"caller":"account.go:146","level":"debug","message":"no such user exist","time":"2024-02-07T09:48:00.761764339Z"}
+{"caller":"account.go:146","level":"debug","message":"no such user exist","time":"2024-02-07T09:48:07.180926265Z"}
+{"caller":"account.go:141","level":"debug","message":"no such user exist","time":"2024-02-07T09:49:17.499909145Z"}
+{"caller":"account.go:136","level":"debug","message":"user name already exist","time":"2024-02-07T09:54:02.454612215Z"}
+{"caller":"account.go:136","level":"debug","message":"user name already exist","time":"2024-02-07T09:54:12.005070903Z"}
+{"caller":"account.go:136","level":"debug","message":"user name already exist","time":"2024-02-07T09:54:18.454511646Z"}
+{"caller":"account.go:136","level":"debug","message":"user name already exist","time":"2024-02-07T09:54:19.510721606Z"}
+{"caller":"account.go:136","level":"debug","message":"email id already exist","time":"2024-02-07T09:55:07.956707822Z"}
+{"caller":"account.go:98","level":"debug","message":"no such user exist","time":"2024-02-07T10:47:18.077141623Z"}
+{"caller":"account.go:98","level":"debug","message":"no such user exist","time":"2024-02-07T10:47:19.763737673Z"}
+{"caller":"account.go:98","level":"debug","message":"no such user exist","time":"2024-02-07T10:48:08.632851095Z"}
+{"caller":"account.go:98","level":"debug","message":"no such user exist","time":"2024-02-07T10:49:44.93563063Z"}
+{"caller":"account.go:98","level":"debug","message":"no such user exist","time":"2024-02-07T10:50:04.567039822Z"}
+{"caller":"jobs.go:27","level":"debug","message":"can't assert the request","time":"2024-02-07T10:55:25.545458806Z"}
+{"caller":"jobs.go:27","level":"debug","message":"can't assert the request","time":"2024-02-07T10:55:31.418446644Z"}
+{"caller":"jobs.go:27","level":"debug","message":"can't assert the request","time":"2024-02-07T10:57:36.106927991Z"}
+{"caller":"jobs.go:27","level":"debug","message":"can't assert the request","time":"2024-02-07T10:59:23.947425072Z"}
+{"caller":"jobs.go:34","level":"debug","message":"Key: 'Post.PostID' Error:Field validation for 'PostID' failed on the 'required' tag\nKey: 'Post.CompanyName' Error:Field validation for 'CompanyName' failed on the 'required' tag\nKey: 'Post.JobTitle' Error:Field validation for 'JobTitle' failed on the 'required' tag\nKey: 'Post.Website' Error:Field validation for 'Website' failed on the 'required' tag\nKey: 'Post.JobTypeID' Error:Field validation for 'JobTypeID' failed on the 'required' tag\nKey: 'Post.CountryID' Error:Field validation for 'CountryID' failed on the 'required' tag\nKey: 'Post.Email' Error:Field validation for 'Email' failed on the 'required' tag\nKey: 'Post.Description' Error:Field validation for 'Description' failed on the 'required' tag","time":"2024-02-07T10:59:44.442746159Z"}
+{"caller":"jobs.go:35","level":"debug","message":"Key: 'Post.Website' Error:Field validation for 'Website' failed on the 'required' tag\nKey: 'Post.JobTypeID' Error:Field validation for 'JobTypeID' failed on the 'required' tag\nKey: 'Post.CountryID' Error:Field validation for 'CountryID' failed on the 'required' tag\nKey: 'Post.Email' Error:Field validation for 'Email' failed on the 'required' tag\nKey: 'Post.Description' Error:Field validation for 'Description' failed on the 'required' tag","time":"2024-02-07T11:02:07.301686765Z"}
+{"caller":"jobs.go:35","level":"debug","message":"Key: 'Post.JobTypeID' Error:Field validation for 'JobTypeID' failed on the 'required' tag\nKey: 'Post.Email' Error:Field validation for 'Email' failed on the 'required' tag","time":"2024-02-07T11:05:10.677299069Z"}
+{"caller":"jobs.go:73","level":"debug","message":"can't assert the request","time":"2024-02-07T11:32:54.748625366Z"}
+{"caller":"jobs.go:221","level":"debug","message":"invalid job id","time":"2024-02-07T13:07:42.746471507Z"}
+{"caller":"jobs.go:113","level":"debug","message":"can't assert the request","time":"2024-02-08T04:58:13.259185922Z"}
+{"caller":"jobs.go:113","level":"debug","message":"can't assert the request","time":"2024-02-08T04:59:10.775105235Z"}
+{"caller":"jobs.go:113","level":"debug","message":"can't assert the request","time":"2024-02-08T04:59:40.259194262Z"}
+{"caller":"jobs.go:113","level":"debug","message":"can't assert the request","time":"2024-02-08T05:00:59.738487348Z"}
+{"caller":"jobs.go:113","level":"debug","message":"can't assert the request","time":"2024-02-08T05:01:25.066867292Z"}
+{"caller":"jobs.go:113","level":"debug","message":"can't assert the request","time":"2024-02-08T05:06:45.108523171Z"}
+{"caller":"jobs.go:113","level":"debug","message":"can't assert the request","time":"2024-02-08T05:08:32.701405335Z"}
+{"caller":"jobs.go:113","level":"debug","message":"can't assert the request","time":"2024-02-08T05:08:52.346761145Z"}
+{"caller":"jobs.go:113","level":"debug","message":"can't assert the request","time":"2024-02-08T05:09:27.684013903Z"}
+{"caller":"jobs.go:113","level":"debug","message":"can't assert the request","time":"2024-02-08T05:10:01.03415004Z"}
+{"caller":"jobs.go:113","level":"debug","message":"can't assert the request","time":"2024-02-08T05:11:25.870667991Z"}
+{"caller":"jobs.go:113","level":"debug","message":"can't assert the request","time":"2024-02-08T05:12:32.150689875Z"}
+{"caller":"jobs.go:113","level":"debug","message":"can't assert the request","time":"2024-02-08T05:17:58.70497497Z"}
+{"caller":"jobs.go:113","level":"debug","message":"can't assert the request","time":"2024-02-08T05:21:39.073831935Z"}
+{"caller":"jobs.go:113","level":"debug","message":"can't assert the request","time":"2024-02-08T05:21:43.150268276Z"}
+{"caller":"jobs.go:113","level":"debug","message":"can't assert the request","time":"2024-02-08T05:25:41.786282127Z"}
+{"caller":"jobs.go:169","level":"debug","message":"can't assert the request","time":"2024-02-08T05:26:23.665523995Z"}
+{"caller":"jobs.go:186","level":"debug","message":"invalid value, should be pointer to struct or slice","time":"2024-02-08T05:26:59.231177139Z"}
+{"caller":"jobs.go:186","level":"debug","message":"invalid value, should be pointer to struct or slice","time":"2024-02-08T05:27:04.820342678Z"}
+{"caller":"jobs.go:175","level":"debug","message":"invalid job id","time":"2024-02-08T05:27:48.684139941Z"}
+{"caller":"comments.go:28","level":"debug","message":"can't assert the request","time":"2024-02-08T05:45:04.734207602Z"}
+{"caller":"comments.go:28","level":"debug","message":"can't assert the request","time":"2024-02-08T05:45:20.680725565Z"}
+{"caller":"comments.go:36","level":"debug","message":"Key: 'Comment.Content' Error:Field validation for 'Content' failed on the 'required' tag","time":"2024-02-08T05:45:30.499474247Z"}
+{"caller":"comments.go:36","level":"debug","message":"Key: 'Comment.Content' Error:Field validation for 'Content' failed on the 'required' tag","time":"2024-02-08T05:45:46.479093248Z"}
+{"caller":"jobs.go:40","level":"debug","message":"can't assert the request","time":"2024-02-08T05:56:12.108555437Z"}
+{"caller":"comments.go:125","level":"debug","message":"can't assert the request","time":"2024-02-08T06:40:51.132214678Z"}
+{"caller":"comments.go:125","level":"debug","message":"can't assert the request","time":"2024-02-08T06:41:06.931240886Z"}
+{"caller":"comments.go:176","level":"debug","message":"can't assert the request","time":"2024-02-08T07:11:41.470907759Z"}
+{"caller":"comments.go:183","level":"debug","message":"Roles: unsupported relations for schema Comment","time":"2024-02-08T07:12:35.281857432Z"}
+{"caller":"comments.go:189","level":"debug","message":null,"time":"2024-02-08T07:13:42.808394561Z"}
+{"caller":"comments.go:189","level":"debug","message":null,"time":"2024-02-08T07:14:10.161251639Z"}
+{"caller":"comments.go:189","level":"debug","message":null,"time":"2024-02-08T07:14:31.170778523Z"}
+{"caller":"comments.go:189","level":"debug","message":null,"time":"2024-02-08T07:14:47.754325519Z"}
+{"caller":"comments.go:189","level":"debug","message":null,"time":"2024-02-08T07:16:08.466893423Z"}
+{"caller":"comments.go:189","level":"debug","message":null,"time":"2024-02-08T07:16:36.555516232Z"}
+{"caller":"comments.go:189","level":"debug","message":null,"time":"2024-02-08T07:16:57.654939486Z"}
+{"caller":"comments.go:189","level":"debug","message":null,"time":"2024-02-08T07:18:56.858900695Z"}
+{"caller":"comments.go:189","level":"debug","message":null,"time":"2024-02-08T07:19:00.533409416Z"}
+{"caller":"comments.go:91","level":"error","message":"no such comment exist","time":"2024-02-08T10:26:04.520094886Z"}
+{"caller":"jobs.go:84","level":"error","message":"can't assert the request","time":"2024-02-08T10:35:12.662111139Z"}
+{"caller":"jobs.go:84","level":"error","message":"can't assert the request","time":"2024-02-08T10:36:06.214197003Z"}
+{"caller":"jobs.go:91","level":"error","message":"ERROR: syntax error at or near \")\" (SQLSTATE 42601)","time":"2024-02-08T10:36:37.634200055Z"}
+{"caller":"jobs.go:91","level":"error","message":"ERROR: argument of OR must be type boolean, not type text[] (SQLSTATE 42804)","time":"2024-02-08T10:38:50.178076353Z"}
+{"caller":"jobs.go:91","level":"error","message":"ERROR: argument of OR must be type boolean, not type text[] (SQLSTATE 42804)","time":"2024-02-08T10:39:52.927344358Z"}
+{"caller":"jobs.go:91","level":"error","message":"ERROR: argument of AND must be type boolean, not type text[] (SQLSTATE 42804)","time":"2024-02-08T10:41:06.230828034Z"}
+{"caller":"jobs.go:91","level":"error","message":"ERROR: column \"job_type_id\" does not exist (SQLSTATE 42703)","time":"2024-02-08T10:41:44.433896729Z"}
+{"caller":"jobs.go:91","level":"error","message":"ERROR: missing FROM-clause entry for table \"country\" (SQLSTATE 42P01)","time":"2024-02-08T10:42:50.843528336Z"}
+{"caller":"jobs.go:91","level":"error","message":"ERROR: missing FROM-clause entry for table \"country\" (SQLSTATE 42P01)","time":"2024-02-08T10:45:19.48779529Z"}
+{"caller":"jobs.go:91","level":"error","message":"ERROR: missing FROM-clause entry for table \"country\" (SQLSTATE 42P01)","time":"2024-02-08T10:45:30.646111184Z"}
+{"caller":"jobs.go:41","level":"error","message":"can't assert the request","time":"2024-02-08T11:06:15.949652514Z"}
+{"caller":"account.go:62","level":"error","message":"user name already exist","time":"2024-02-08T11:08:12.348590863Z"}
+{"caller":"account.go:137","level":"error","message":"email id already exist","time":"2024-02-08T11:08:54.966541993Z"}
+{"caller":"account.go:137","level":"error","message":"email id already exist","time":"2024-02-09T05:32:52.155955528Z"}
+{"caller":"jobs.go:136","level":"error","message":"invalid job id","time":"2024-02-09T05:35:39.734890046Z"}
+{"caller":"jobs.go:185","level":"error","message":"can't assert the request","time":"2024-02-09T05:36:31.572678358Z"}
+{"caller":"jobs.go:237","level":"error","message":"invalid job id","time":"2024-02-09T05:37:06.410132325Z"}
+{"caller":"account.go:196","level":"error","message":"no such user exist","time":"2024-02-09T05:46:02.832977987Z"}
+{"caller":"comments.go:192","level":"error","message":null,"time":"2024-02-09T05:47:03.843542452Z"}
+{"caller":"account.go:62","level":"error","message":"user name already exist","time":"2024-02-09T05:52:24.384657228Z"}
+{"caller":"account.go:62","level":"error","message":"user name already exist","time":"2024-02-09T05:52:29.557476602Z"}
+{"caller":"account.go:62","level":"error","message":"user name already exist","time":"2024-02-09T05:54:00.056185382Z"}
+{"caller":"account.go:62","level":"error","message":"user name already exist","time":"2024-02-09T05:54:52.923504867Z"}
+{"caller":"account.go:62","level":"error","message":"user name already exist","time":"2024-02-09T05:55:03.296418718Z"}
+{"caller":"account.go:63","level":"error","message":"user name already exist","time":"2024-02-09T05:58:02.257798423Z"}
+{"caller":"account.go:63","level":"error","message":"user name already exist","time":"2024-02-09T06:07:42.384990709Z"}
+{"caller":"account.go:129","level":"error","message":"can't assert the request","time":"2024-02-09T06:26:33.404218231Z"}
+{"caller":"account.go:231","level":"error","message":"no such user exist","time":"2024-02-09T06:27:12.774786382Z"}
+{"caller":"comments.go:113","level":"error","message":"invalid field found for struct job-post/models.CommentsResponse's field Comment: define a valid foreign key for relations or implement the Valuer/Scanner interface","time":"2024-02-09T07:48:36.830085734Z"}
+{"caller":"comments.go:91","level":"error","message":"no such comment exist","time":"2024-02-09T08:27:39.386215385Z"}
+{"caller":"account.go:105","level":"error","message":"ERROR: column users.- does not exist (SQLSTATE 42703)","time":"2024-02-09T09:31:09.263394101Z"}
+{"caller":"account.go:105","level":"error","message":"ERROR: column users.- does not exist (SQLSTATE 42703)","time":"2024-02-09T09:31:14.376476103Z"}
+{"caller":"account.go:164","level":"error","message":"no such user exist","time":"2024-02-09T09:39:28.893128721Z"}
+{"caller":"account.go:164","level":"error","message":"no such user exist","time":"2024-02-09T09:39:53.668059145Z"}
+{"caller":"account.go:164","level":"error","message":"no such user exist","time":"2024-02-09T09:39:57.067607415Z"}
+{"caller":"account.go:184","level":"error","message":"user name already exist","time":"2024-02-09T09:41:28.058793785Z"}
+{"caller":"account.go:171","level":"error","message":null,"time":"2024-02-09T09:41:57.212692975Z"}
+{"caller":"account.go:171","level":"error","message":null,"time":"2024-02-09T09:42:19.08762505Z"}
+{"caller":"account.go:184","level":"error","message":"user name already exist","time":"2024-02-09T09:42:24.683189784Z"}
+{"caller":"account.go:192","level":"error","message":null,"time":"2024-02-13T07:15:48.894850567Z"}
+{"caller":"jobs.go:91","level":"error","message":"ERROR: syntax error at or near \"OR\" (SQLSTATE 42601)","time":"2024-02-13T07:25:00.858284898Z"}
+{"caller":"jobs.go:91","level":"error","message":"ERROR: syntax error at or near \"job_title\" (SQLSTATE 42601)","time":"2024-02-13T07:44:46.174082354Z"}
+{"caller":"jobs.go:91","level":"error","message":"ERROR: syntax error at or near \")\" (SQLSTATE 42601)","time":"2024-02-13T07:49:05.318839217Z"}
+{"caller":"jobs.go:91","level":"error","message":"ERROR: syntax error at or near \")\" (SQLSTATE 42601)","time":"2024-02-13T07:51:33.75306876Z"}
+{"caller":"jobs.go:91","level":"error","message":"ERROR: syntax error at or near \"job_title\" (SQLSTATE 42601)","time":"2024-02-13T07:52:47.052145835Z"}
+{"caller":"jobs.go:91","level":"error","message":"ERROR: syntax error at or near \"job_type\" (SQLSTATE 42601)","time":"2024-02-13T07:55:07.88122433Z"}
+{"caller":"jobs.go:91","level":"error","message":"ERROR: syntax error at or near \"job_title\" (SQLSTATE 42601)","time":"2024-02-13T08:01:37.258051783Z"}
+{"caller":"jobs.go:91","level":"error","message":"ERROR: syntax error at or near \"job_title\" (SQLSTATE 42601)","time":"2024-02-13T08:01:57.559039776Z"}
+{"caller":"jobs.go:91","level":"error","message":"ERROR: syntax error at or near \"country_id\" (SQLSTATE 42601)","time":"2024-02-13T08:09:08.718098146Z"}
+{"caller":"account.go:328","level":"error","message":"can't assert the request","time":"2024-02-13T15:01:42.793259626Z"}
+{"caller":"account.go:335","level":"error","message":"please do login/register","time":"2024-02-13T15:02:03.015927086Z"}
+{"caller":"account.go:335","level":"error","message":"please do login/register","time":"2024-02-13T15:02:16.929600193Z"}
+{"caller":"account.go:100","level":"error","message":"can't assert the request","time":"2024-02-14T05:01:35.97398576Z"}
+{"caller":"jobs.go:41","level":"error","message":"can't assert the request","time":"2024-02-14T09:52:31.302229052Z"}
+{"caller":"jobs.go:41","level":"error","message":"can't assert the request","time":"2024-02-14T09:52:38.615343838Z"}
