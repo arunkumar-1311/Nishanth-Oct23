@@ -6,7 +6,7 @@ import (
 	"to-do/models"
 	"to-do/service/helper"
 
-	"github.com/go-playground/validator"
+	"github.com/go-playground/validator/v10"
 	"github.com/labstack/echo"
 )
 

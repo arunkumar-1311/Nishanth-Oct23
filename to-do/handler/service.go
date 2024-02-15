@@ -14,6 +14,7 @@ type EndPoint struct {
 
 type API interface {
 	Account
+	Task
 }
 
 // Helps to set the struct to interface
