@@ -2,12 +2,14 @@ package handler
 
 import (
 	"to-do/adaptor"
+	"to-do/middleware"
 	"to-do/service"
 )
 
 type EndPoint struct {
 	DB      adaptor.Database
 	Service service.ServiceMethods
+	MW      middleware.MiddleWareInterface
 }
 
 type API interface {

@@ -2,6 +2,7 @@ package repository
 
 import (
 	"context"
+	"fmt"
 	"time"
 )
 
@@ -25,6 +26,14 @@ func (d *DB_Connection) SetCache(uuid, userID, name, email string) error {
 
 // Helps to get all the key pair values
 func (d *DB_Connection) GetCache(uuid string) (map[string]string, error) {
+	
+	exist, err := d.Redis.Exists(context.TODO(), uuid).Result()
+	if err != nil {
+		return nil, err
+	}
+	if exist == 0 {
+		return nil, fmt.Errorf("no such cache key exists")
+	}
 	cache := d.Redis.HGetAll(context.TODO(), uuid)
 	return cache.Val(), cache.Err()
 }
