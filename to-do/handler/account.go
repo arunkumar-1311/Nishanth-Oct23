@@ -16,6 +16,7 @@ type Account interface {
 	GetProfile(c echo.Context) error
 	UpdateProfile(c echo.Context) error
 	DeleteProfile(c echo.Context) error
+	LogOut(c echo.Context) error
 }
 
 // Helps to create new account
@@ -175,4 +176,13 @@ func (e *EndPoint) DeleteProfile(c echo.Context) error {
 		return helper.SendResponse(c, "", echo.ErrInternalServerError.Code, err.Error(), "Try Again Later")
 	}
 	return helper.SendResponse(c, "", http.StatusOK, "", "Deleted Successfully")
+}
+
+// Helps to log out the account
+func (e *EndPoint) LogOut(c echo.Context) error {
+	if err := e.DB.DeleteCache(c.Get("uuid").(string)); err != nil {
+		logger.ZeroLogger().Msg(err.Error())
+		return helper.SendResponse(c, "", echo.ErrInternalServerError.Code, err.Error(), "Try Again Later")
+	}
+	return helper.SendResponse(c, "", http.StatusOK, "", "Logged Out Successfully")
 }

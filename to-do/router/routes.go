@@ -32,12 +32,17 @@ func Router(db adaptor.Database, service service.ServiceMethods) error {
 	profile.GET("", api.GetProfile)
 	profile.PATCH("", api.UpdateProfile)
 	profile.DELETE("", api.DeleteProfile)
+	profile.DELETE("/logout", api.LogOut)
 
 	task := routes.Group("/task", handlers.MW.Authentication)
 	task.POST("", api.AddTask)
+	task.GET("", api.ReadAllTasks)
+	task.GET("/deleted", api.GetDeletedTasks)
 	task.PATCH("/:id", api.UpdateTask)
-	task.DELETE("/:id", api.DeleteTask)
 	task.PATCH("/status", api.UpdateAllTaskStatus)
+	task.PATCH("/status/:id", api.UpdateTaskStatus)
+	task.DELETE("/:id", api.DeleteTask)
+	task.DELETE("/clear", api.ClearCompletedTasks)
 
 	if err := routes.Start(":8000"); err != nil {
 		return err

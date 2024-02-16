@@ -9,11 +9,19 @@ import (
 
 type Task interface {
 	AddTask(task models.Tasks) error
-	UpdateTask(id string, content string) error
-	DeleteTask(id string) error
+
 	ReadTaskByID(id string, task *models.Tasks) error
 	ReadDeletedTask(id string, tasks *[]models.Tasks) error
+	ReadAllTask(id string, dest *[]models.Tasks, status ...bool) error
+
+	UpdateTask(id string, content string) error
+	UpdateTaskStatus(id string, status bool) error
 	UpdateAllStatus(id string) error
+
+	DeleteTask(id string) error
+	ClearCompleted(id string) error
+
+	CountActiveTasks(id string, dest *int64) error
 }
 
 // Helps to add task
@@ -44,12 +52,12 @@ func (d *DB_Connection) DeleteTask(id string) error {
 	if result.RowsAffected == 0 {
 		return fmt.Errorf("no such task exist invalid task id")
 	}
-	return d.UpdateTaskStatus(id, false)
+	return nil
 }
 
 // helps to get all deleted task
 func (d *DB_Connection) ReadDeletedTask(id string, tasks *[]models.Tasks) error {
-	return d.DB.Model(models.Tasks{}).Unscoped().Where("user_id = ? AND deleted_at != nil", id).Find(&tasks).Error
+	return d.DB.Model(models.Tasks{}).Unscoped().Where("user_id = ? AND deleted_at IS NOT NULL", id).Find(&tasks).Error
 }
 
 // Helps to read the task by its ID
@@ -68,7 +76,13 @@ func (d *DB_Connection) ReadTaskByID(id string, task *models.Tasks) error {
 
 // Helps to update the task status
 func (d *DB_Connection) UpdateTaskStatus(id string, status bool) error {
-	return d.DB.Model(models.Tasks{}).Unscoped().Where("task_id = ?", id).Update("active", status).Error
+	if status {
+		if err := d.DB.Model(models.Tasks{}).Unscoped().Where("task_id = ?", id).Update("active", false).Error; err != nil {
+			return err
+		}
+		return nil
+	}
+	return d.DB.Model(models.Tasks{}).Unscoped().Where("task_id = ?", id).Update("active", true).Error
 }
 
 // helps to update all tasks status
@@ -82,7 +96,30 @@ func (d *DB_Connection) UpdateAllStatus(id string) error {
 		if err := d.DB.Model(models.Tasks{}).Where("user_id = ?", id).Update("active", false).Error; err != nil {
 			return err
 		}
+		return nil
 	}
 	return d.DB.Model(models.Tasks{}).Where("user_id = ?", id).Update("active", true).Error
 
+}
+
+// Helps to read all user task
+func (d *DB_Connection) ReadAllTask(id string, dest *[]models.Tasks, status ...bool) error {
+	if len(status) > 0 {
+		if err := d.DB.Model(&models.Tasks{}).Where("user_id = ? AND active = ?", id, status[0]).Find(&dest).Error; err != nil {
+			return err
+		}
+		return nil
+	}
+
+	return d.DB.Model(&models.Tasks{}).Where("user_id = ?", id).Find(&dest).Error
+}
+
+// helps to count All active tasks
+func (d *DB_Connection) CountActiveTasks(id string, dest *int64) error {
+	return d.DB.Model(&models.Tasks{}).Where("user_id = ? AND active = ?", id, true).Count(dest).Error
+}
+
+// Helps to delete all completed tasks
+func (d *DB_Connection) ClearCompleted(id string) error {
+	return d.DB.Model(&models.Tasks{}).Unscoped().Where("active = ?", false).Or("deleted_at IS NOT NULL").Delete(id).Error
 }

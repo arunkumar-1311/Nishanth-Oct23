@@ -55,3 +55,9 @@
 {"level":"error","caller":"/home/mitrah196/Desktop/Exercise/GoExercies/RTE/to-do/handler/task.go:32","time":"2024-02-15T19:43:32+05:30","message":"Key: 'Tasks.Users.UserID' Error:Field validation for 'UserID' failed on the 'required' tag\nKey: 'Tasks.Users.UserName' Error:Field validation for 'UserName' failed on the 'required' tag\nKey: 'Tasks.Users.Email' Error:Field validation for 'Email' failed on the 'email' tag\nKey: 'Tasks.Users.Password' Error:Field validation for 'Password' failed on the 'required' tag"}
 {"level":"error","caller":"/home/mitrah196/Desktop/Exercise/GoExercies/RTE/to-do/handler/task.go:69","time":"2024-02-15T19:47:31+05:30","message":"code=400, message=Request body can't be empty"}
 {"level":"error","caller":"/home/mitrah196/Desktop/Exercise/GoExercies/RTE/to-do/handler/task.go:49","time":"2024-02-15T20:19:47+05:30","message":"no such task exist invalid task id"}
+{"level":"error","caller":"/home/mitrah196/Desktop/Exercise/GoExercies/RTE/to-do/handler/account.go:74","time":"2024-02-16T11:46:08+05:30","message":"record not found"}
+{"level":"error","caller":"/home/mitrah196/Desktop/Exercise/GoExercies/RTE/to-do/handler/account.go:38","time":"2024-02-16T11:46:14+05:30","message":"user name already exist"}
+{"level":"error","caller":"/home/mitrah196/Desktop/Exercise/GoExercies/RTE/to-do/handler/account.go:75","time":"2024-02-16T11:52:17+05:30","message":"record not found"}
+{"level":"error","caller":"/home/mitrah196/Desktop/Exercise/GoExercies/RTE/to-do/handler/account.go:119","time":"2024-02-16T11:53:59+05:30","message":"email id already exist"}
+{"level":"error","caller":"/home/mitrah196/Desktop/Exercise/GoExercies/RTE/to-do/handler/account.go:75","time":"2024-02-16T11:54:18+05:30","message":"record not found"}
+{"level":"error","caller":"/home/mitrah196/Desktop/Exercise/GoExercies/RTE/to-do/handler/account.go:75","time":"2024-02-16T11:57:23+05:30","message":"record not found"}

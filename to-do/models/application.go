@@ -33,3 +33,9 @@ type Login struct {
 	Email    string `json:"email" validate:"required_without=Name"`
 	Password string `json:"password" validate:"required"`
 }
+
+// helps to send the task response
+type TaskResponse struct {
+	Task   []Tasks `json:"tasks"`
+	Active int64   `json:"active"`
+}

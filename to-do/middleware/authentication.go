@@ -26,7 +26,7 @@ func (m Middleware) Authentication(next echo.HandlerFunc) echo.HandlerFunc {
 		user, err := m.DB.GetCache(claims.UUID)
 
 		if err != nil {
-			return helper.SendResponse(ctx, "", echo.ErrBadRequest.Code, err.Error(), "Invalid request")
+			return helper.SendResponse(ctx, "", echo.ErrBadRequest.Code, err.Error(), "invalid token")
 		}
 		ctx.Set("userid", user["userid"])
 		ctx.Set("name", user["name"])
